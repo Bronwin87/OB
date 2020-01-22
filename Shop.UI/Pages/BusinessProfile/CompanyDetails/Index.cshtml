@@ -1,0 +1,70 @@
+﻿@page
+@model Shop.UI.Pages.BusinessProfile.CompanyDetails.IndexModel
+@{
+}
+<p class="title secondary--text">
+    Company Detials
+</p>
+<div class="column is-6">
+    @if (!String.IsNullOrEmpty(Model.Message))
+    {
+        <div class="notification is-success">
+            <p>@Model.Message</p>
+        </div>
+    }
+
+    <div class="field">
+        <label class="label">Company Name</label>
+        <div class="control">
+            <input class="input" value="@Model.Account.CompanyName" disabled />
+        </div>
+    </div>
+    <div class="field">
+        <label class="label">Co. Reg. No</label>
+        <div class="control">
+            <input class="input" value="@Model.Account.RegistrationNumber" disabled />
+        </div>
+    </div>
+    <div class="field">
+        <label class="label">Vat. Number</label>
+        <div class="control">
+            <input class="input" value="@Model.Account.VatNumber" disabled />
+        </div>
+    </div>
+    <div class="field">
+        <label class="label">Phone Number</label>
+        <div class="control">
+            <input class="input" value="@Model.Account.PhoneNumber" disabled />
+        </div>
+    </div>
+    <div class="field">
+        <label class="label">Address 1</label>
+        <div class="control">
+            <input class="input" value="@Model.Account.Address.Address1" disabled />
+        </div>
+    </div>
+    <div class="field">
+        <label class="label">Address 2</label>
+        <div class="control">
+            <input class="input" value="@Model.Account.Address.Address2" disabled />
+        </div>
+    </div>
+    <div class="field">
+        <label class="label">City</label>
+        <div class="control">
+            <input class="input" value="@Model.Account.Address.City" disabled />
+        </div>
+    </div>
+    <div class="field">
+        <label class="label">Post Code</label>
+        <div class="control">
+            <input class="input" value="@Model.Account.Address.PostCode" disabled />
+        </div>
+    </div>
+
+    @if (User.Claims.FirstOrDefault(x => x.Type == "type")?.Value == "authorizer"
+   || User.Claims.FirstOrDefault(x => x.Type == "type")?.Value == "superuser")
+    {
+        <a class="button secondary" asp-page="/BusinessProfile/CompanyDetails/EditAccount">Edit</a>
+    }
+</div>

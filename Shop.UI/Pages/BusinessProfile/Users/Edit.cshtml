@@ -1,0 +1,107 @@
+﻿@page "{id}"
+@model Shop.UI.Pages.BusinessProfile.Users.EditModel
+@{
+}
+<div class="column is-6">
+    <p class="title secondary--text">Add New User</p>
+    <form method="post">
+        <input type="hidden" asp-for="Input.Id" />
+        <div class="field">
+            <label class="label">First Name</label>
+            <div class="control">
+                <input class="input" asp-for="Input.FirstName" />
+            </div>
+            <span class="help is-danger" asp-validation-for="Input.FirstName"></span>
+        </div>
+        <div class="field">
+            <label class="label">Last Name</label>
+            <div class="control">
+                <input class="input" asp-for="Input.LastName" />
+            </div>
+            <span class="help is-danger" asp-validation-for="Input.LastName"></span>
+        </div>
+        <div class="field">
+            <label class="label">Email</label>
+            <div class="control">
+                <input class="input" asp-for="Input.Email" />
+            </div>
+            <span class="help is-danger" asp-validation-for="Input.Email"></span>
+        </div>
+        <div class="field">
+            <label class="label">User Type</label>
+            <div class="field  has-addons">
+
+                <div class="control">
+                    <div class="select">
+                        <select asp-for="Input.Type">
+                            <option value="3">User</option>
+                            <option value="2">Authorizer</option>
+                            <option value="1">Super User</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control">
+                    <div class="dropdown is-hoverable is-left">
+                        <div class="dropdown-trigger">
+                            <a aria-haspopup="true" aria-controls="dropdown-menu">
+                                <span class="icon is-small">
+                                    <i class="fas fa-question-circle" aria-hidden="true"></i>
+                                </span>
+                            </a>
+                        </div>
+                        <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                            <div class="dropdown-content">
+                                <p>User - </p>
+                                <p>Authorizer - </p>
+                                <p>Super User -</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="field">
+            <button type="submit" class="button secondary">Apply</button>
+        </div>
+    </form>
+</div>
+@*@if (Model.Input.Type == Shop.Domain.Enums.UserType.Authorizer)
+{
+    <div class="column is-6">
+        @if (Model.AssignedUsers.Count() > 0)
+        {
+            <p>Assigned Users</p>
+            foreach (var user in Model.AssignedUsers)
+            {
+                <form asp-page-handler="UnAssignUser" method="post">
+                    <input type="hidden" name="userId" value="@user.Id" />
+                    <span>@user.Email</span>
+                    <button type="submit">Delete</button>
+                </form>
+            }
+        }
+
+        @if (Model.AssignableUsers.Count() > 0)
+        {
+            <p>Assign Users to Authorizer</p>
+            <form asp-page-handler="AssignUser" method="post">
+                <div class="field">
+                    <label class="label">Assign User</label>
+                    <div class="control">
+                        <div class="select">
+                            <select name="userId">
+                                <option value="">Select User</option>
+                                @foreach (var user in Model.AssignableUsers)
+                                {
+                                    <option value="@user.Id">@user.Email</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit">Assign</button>
+                </div>
+            </form>
+        }
+
+    </div>
+}*@

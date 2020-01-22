@@ -1,0 +1,122 @@
+﻿@page
+@model Shop.UI.Pages.BusinessProfile.IndexModel
+@inject Shop.Database.ApplicationDbContext DbContext
+@{
+    Layout = "_Layout";
+}
+
+<style>
+    .card {
+        margin: 1px;
+        height: 100%;
+    }
+
+        .card .card-header {
+            background-color: #ee8534;
+        }
+
+            .card .card-header .card-header-title,
+            .card .card-header .card-header-icon {
+                color: #ffffff;
+            }
+</style>
+
+<div class="container section">
+    <div class="columns is-multiline">
+        <div class="column is-3">
+            <div class="card">
+                <header class="card-header">
+                    <p class="card-header-title">
+                        Customer Information
+                    </p>
+                    <div class="card-header-icon" aria-label="more options">
+                        <span class="icon">
+                            <i class="fas fa-2x fa-user-circle" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                </header>
+                <div class="card-content">
+                    <div class="content">
+                        <ul>
+                            <li><a asp-page="/BusinessProfile/MyDetails">My Details</a></li>
+                            <li><a asp-page="/BusinessProfile/ChangePassword">Password</a></li>
+                            <li><a asp-page="/BusinessProfile/CompanyDetails/Index">Company Details</a></li>
+                            <li><a asp-page="/BusinessProfile/Term/Index">30 Day Terms</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="column is-3">
+            <div class="card">
+                <header class="card-header">
+                    <p class="card-header-title">
+                        Manage Account
+                    </p>
+                    <div class="card-header-icon" aria-label="more options">
+                        <span class="icon">
+                            <i class="fas fa-2x fa-users" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                </header>
+                <div class="card-content">
+                    <div class="content">
+                        <ul>
+                            <li><a asp-page="/BusinessProfile/Users/Index">Users</a></li>
+                            <li><a asp-page="/BusinessProfile/Locations/Index">Multiple Locations</a></li>
+                            @if (DbContext.AccountUsers.Where(x => x.UserId == User.FindFirst(ClaimTypes.NameIdentifier).Value).Count() > 1)
+                            {
+                                <li><a asp-page="/BusinessProfile/SwitchAccounts">Switch Account</a></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="column is-3">
+            <div class="card">
+                <header class="card-header">
+                    <p class="card-header-title">
+                        Orders
+                    </p>
+                    <div class="card-header-icon" aria-label="more options">
+                        <span class="icon">
+                            <i class="fas fa-2x fa-clipboard-list" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                </header>
+                <div class="card-content">
+                    <div class="content">
+                        <ul>
+                            <li><a asp-page="/BusinessProfile/Orders/Index">Orders</a></li>
+                            <li><a asp-page="/BusinessProfile/Exchanges/Index">Exchanges & Returns</a></li>
+                            <li><a asp-page="/BusinessProfile/Quotes/Index">Quotes</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="column is-3">
+            <div class="card">
+                <header class="card-header">
+                    <p class="card-header-title">
+                        Favorites Lists
+                    </p>
+                    <div class="card-header-icon" aria-label="more options">
+                        <span class="icon">
+                            <i class="fas fa-2x fa-star" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                </header>
+                <div class="card-content">
+                    <div class="content">
+                        <partial name="Forms/_AddFavouriteList" model='new Shop.UI.Pages.AddFavouriteListModel() { ProfileView = "BusinessProfile" }' />
+                        <ul>
+                            <li><a asp-page="/BusinessProfile/FavouriteList/Index">My Lists</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

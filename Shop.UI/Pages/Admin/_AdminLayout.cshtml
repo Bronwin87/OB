@@ -1,0 +1,58 @@
+﻿@inject IAuthorizationService authService
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Shop.UI</title>
+
+    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/2.5.94/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
+    <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
+    <style type="text/css">
+        @@media screen and (min-width:1216px) {
+            .container {
+                max-width: 1600px
+            }
+        }
+    </style>
+</head>
+<body>
+    <h3 class="title has-text-centered">Admin Panel</h3>
+
+    <div class="container" style="">
+        <div class="columns">
+            <div class="column is-2">
+                <div class="menu">
+                    @if ((await authService.AuthorizeAsync(User, "Admin")).Succeeded)
+                    {
+                        <p class="menu-label">Admin Menu</p>
+                        <ul class="menu-list">
+                            <li><a asp-page="/Admin/Index">Products</a></li>
+                            <li><a asp-page="/Admin/AccountManager">Account Manager</a></li>
+                            <li><a asp-page="/Admin/Orders">Orders</a></li>
+                            <li><a asp-page="/Admin/Discounts">Discounts</a></li>
+                            <li><a asp-page="/Admin/Users">Users</a></li>
+                            <li><a asp-page="/Admin/Categories">Categories</a></li>
+                        </ul>
+                    }
+                    <p class="menu-label"></p>
+                    <ul class="menu-list">
+                        <li><a asp-page="/Index">Back to Main</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="column is-10" style="overflow-x: scroll;">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.js"></script>
+    <script src="https://unpkg.com/buefy/dist/buefy.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

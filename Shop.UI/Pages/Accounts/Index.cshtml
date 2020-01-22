@@ -1,0 +1,70 @@
+﻿@page
+@model Shop.UI.Pages.Accounts.IndexModel
+@{
+}
+<style>
+    .hero-body {
+        padding: 40px !important;
+    }
+
+    .vl {
+        border-left: 2px solid #e0e0e0;
+        height: inherit;
+        width: 0% !important;
+    }
+
+    .columns {
+        margin: 10px !important;
+        margin-top: 20px !important;
+    }
+
+    column .is-1 {
+        width: 0% !important;
+    }
+</style>
+<div class="container">
+    <section class="hero is-medium is-bold">
+        <div class="hero-body" style="margin:0px">
+            <div class="container">
+                <div class="main-header"><p class="title has-text-centered">What kind of <span class="primary--text has-text-weight-bold">ACCOUNT</span> do you need?</p></div>
+                <div class="columns">
+                    <div class="column is-1 img-fluid"><img src="/public/assets/images/profileIcon@1x.png" style="width:80px;height:80px;"></div>
+                    <div class="column is-4" style="">
+                        <div class="field">
+                            <p class="title primary--text">INDIVIDUAL</p>
+                            <h5 style="color: #adb5b8;text-align: left;font-size: 14pt;margin-right:25px;">Checkout using Credit Card or EFT. Quick & Easy!</h5>
+                        </div>
+                        <div class="field">
+                            <a class="button secondary" asp-controller="Accounts" asp-action="UserRegister">Create Profile</a>
+                        </div>
+                    </div>
+                    <div class="vl column is-1"></div>
+                    <div class="column is-1 img-fluid"><img src="/public/assets/images/suitcaseIcon@1x.png" style="width:80px;height:80px; margin-left:-12px;"></div>
+                    <div class="column is-4">
+                        <div class="field">
+                            <p class="title primary--text">BUSINESS</p>
+                             <h5 style="color: #adb5b8;text-align: left;font-size: 14pt;margin-right:25px;">30 day terms available to businesses, or simply pay online</h5>
+                        </div>
+                        <div class="field">
+                            <div class="field">
+                                <a class="button secondary" asp-controller="Accounts" asp-action="BusinessRegister">Create Business Account</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div class="container">
+    <section class="hero is-medium is-bold" style="background:#f4f9f5">
+        <div class="hero-body" style="margin:0px">
+            <div class="main-header has-text-centered" style="align-self:center">
+                <p style="font-weight:150" class="title ">Have an account? <span style="color:#0bdd6f;font-weight:bold">SIGN IN</span> now.</p>
+                <p>Glad to have you back.</p>
+                <a class="button is-warning is-primary" asp-controller="Accounts" asp-action="Login">SIGN IN </a>
+            </div>
+        </div>
+    </section>
+</div>

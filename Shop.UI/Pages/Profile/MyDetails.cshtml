@@ -1,0 +1,59 @@
+﻿@page
+@model Shop.UI.Pages.Profile.MyDetailsModel
+@{
+}
+
+<div class="column is-6">
+    <p class="title">My Details</p>
+    @if (!String.IsNullOrEmpty(Model.Message))
+    {
+        <div class="notification is-success">
+            <p>@Model.Message</p>
+        </div>
+    }
+    <form method="post" v-cloak id="app">
+        <div class="field">
+            <label class="label">First Name</label>
+            <div class="control">
+                <input class="input" asp-for="Input.FirstName" :disabled="disabled" />
+            </div>
+            <span class="help is-danger" asp-validation-for="Input.FirstName"></span>
+        </div>
+        <div class="field">
+            <label class="label">Last Name</label>
+            <div class="control">
+                <input class="input" asp-for="Input.LastName" :disabled="disabled" />
+            </div>
+            <span class="help is-danger" asp-validation-for="Input.LastName"></span>
+        </div>
+        <div class="field">
+            <label class="label">Email</label>
+            <div class="control">
+                <input class="input" asp-for="Input.Email" :disabled="disabled" />
+            </div>
+            <span class="help is-danger" asp-validation-for="Input.Email"></span>
+        </div>
+        <div class="field">
+            <label class="label">JobTitle</label>
+            <div class="control">
+                <input class="input" asp-for="Input.JobTitle" :disabled="disabled" />
+            </div>
+            <span class="help is-danger" asp-validation-for="Input.JobTitle"></span>
+        </div>
+        <div class="field has-text-centered">
+            <button type="button" v-if="disabled" @@click="disabled = false" class="button secondary">Edit</button>
+            <button type="submit" v-else class="button secondary">Update</button>
+        </div>
+    </form>
+</div>
+
+@section scripts {
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+                disabled: true
+            }
+        })
+    </script>
+}

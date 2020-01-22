@@ -1,0 +1,52 @@
+﻿
+<style>
+    a{
+        color:black;
+    }
+</style>
+<div class="container">
+    <div id="cat" class="category main" style="background:#efeeec;color:black">
+        <div>
+            <nav class="level">
+                <p class="level-item has-text-centered">
+                    <a class="has-text-black has-text-weight-bold" @@mouseenter="section = 0">Office Supplies</a>
+                </p>
+                <p class="level-item has-text-centered">
+                    <a class="has-text-black has-text-weight-bold">Electronics & Accessories</a>
+                </p>
+                <p class="level-item has-text-centered">
+                    <a class="has-text-black has-text-weight-bold">School Stationery</a>
+                </p>
+                <p class="level-item has-text-centered">
+                    <a class="has-text-black has-text-weight-bold">Inks & Toner</a>
+                </p>
+                <p class="level-item has-text-centered">
+                    <a class="has-text-black has-text-weight-bold">Canteen & Janitorial</a>
+                </p>
+            </nav>
+            <div @@mouseleave="section = 0" class="section has-background-grey-light drop-menu" @@mouseleave="sub = -1" v-if="section === 0">
+                <div class="columns">
+                    <div class="column is-4">
+                        <ul>
+
+                            <li><a @@mouseenter="sub = 1">Adhesives & Adhesive Tapes</a></li>
+                        </ul>
+                    </div>
+                    <div class="column is-8 has-background-grey">
+                        <div v-if="sub === 1">
+                            <ul>
+                                <li><a>All Purpose</a></li>
+                            </ul>
+                        </div>
+                        <div v-if="sub === 2">
+                            <ul>
+                                <li><a>Account Books</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

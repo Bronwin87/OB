@@ -1,0 +1,42 @@
+﻿@page
+@model Shop.UI.Pages.Checkout.PayfastConfirmation
+
+<style>
+    .my-1 {
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .buttons .button {
+        flex-grow: 1;
+    }
+</style>
+<div class="container" id="app">
+    <h1 class="title my-1 primary--text">Confirmation</h1>
+
+    <div class="columns my-1">
+        <div class="column is-3"><a class="button primary is-block is-radiusless">1. Cart</a></div>
+        <div class="column is-3">
+            <div class="buttons has-addons">
+                <span class="button is-block is-radiusless primary">Sign In</span>
+                <span class="button is-block is-radiusless primary">Register</span>
+            </div>
+        </div>
+        <div class="column is-3"><a class="button is-block primary is-radiusless">3. Payment</a></div>
+        <div class="column is-3"><a class="button is-block primary is-radiusless">4. Confirmation</a></div>
+    </div>
+
+    <div>
+        <p class="is-bold">Thank you, your order has been placed successfully. @*<span class="">Your order number is @Model.OrderReferenceModel</span></p>*@
+        <p>
+            If you have any questions or would like any more info, please don't hesitate to get in <br />
+            touch with us by email <a class="md-contact-email">info@officebox.co.za</a>
+        </p>
+    </div>
+
+    @if (Model.OrderPlaced)
+    {
+        <p class="title primary--text">Order Request Sent.</p>
+    }
+
+</div>

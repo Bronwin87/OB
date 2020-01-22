@@ -1,0 +1,303 @@
+﻿@page
+@model Shop.UI.Pages.Accounts.GuestBusinessTermRegisterModel
+@{
+}
+
+<style>
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+</style>
+
+<div id="app" class="container">
+    <div class="columns my-1">
+        <div class="column is-8 is-offset-2">
+            <div class="columns">
+                <div class="column is-4"><a class="button is-block is-radiusless" :class="{'primary': step === 0}" @@click="returnTo(0)">Step 1 - Business Details</a></div>
+                <div class="column is-4"><a class="button is-block is-radiusless" :class="{'primary': step === 1}" :disabled="step < 1">Step 2 - 30 Days Terms</a></div>
+                <div class="column is-4"><a class="button is-block is-radiusless" disabled>Step 3 - Approval & Setup</a></div>
+            </div>
+        </div>
+    </div>
+    <form method="post" id="main-form">
+        <div class="columns is-multiline">
+            <div class="column is-10 is-offset-1" v-show="step === 0">
+                <div class="columns">
+                    <div class="column is-6">
+                        <p class="title primary--text">Company Details</p>
+                        <div class="field">
+                            <label class="label">Company Name</label>
+                            <div class="control">
+                                <input class="input" asp-for="Input.CompanyName" />
+                            </div>
+                            <span class="help is-danger" asp-validation-for="Input.CompanyName"></span>
+                        </div>
+                        <div class="field">
+                            <label class="label">Registered Trading Name</label>
+                            <div class="control">
+                                <input class="input is-success" asp-for="TermInput.TradingName" />
+                            </div>
+                            <span class="help is-danger" asp-validation-for="TermInput.TradingName"></span>
+                        </div>
+                        <div class="field">
+                            <div class="columns">
+                                <div class="column is-6">
+                                    <label class="label">Company Reg. Number</label>
+                                    <div class="control">
+                                        <input class="input is-success" asp-for="Input.RegistrationNumber" />
+                                    </div>
+                                    <span class="help is-danger" asp-validation-for="Input.RegistrationNumber"></span>
+                                </div>
+                                <div class="column is-6">
+                                    <label class="label">Company VAT Number</label>
+                                    <div class="control">
+                                        <input class="input is-success" asp-for="Input.CompanyVAT" />
+                                    </div>
+                                    <span class="help is-danger" asp-validation-for="Input.CompanyVAT"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column is-6">
+                        <p class="title primary--text">Company Address Details</p>
+                        <div class="field">
+                            <label class="label">Address 1</label>
+                            <div class="control">
+                                <input class="input is-success" asp-for="Input.Address1" />
+                            </div>
+                            <span class="help is-danger" asp-validation-for="Input.Address1"></span>
+                        </div>
+                        <div class="field">
+                            <label class="label">Address 2</label>
+                            <div class="control">
+                                <input class="input is-success" asp-for="Input.Address2" />
+                            </div>
+                            <span class="help is-danger" asp-validation-for="Input.Address2"></span>
+                        </div>
+                        <div class="field">
+                            <label class="label">City</label>
+                            <div class="control">
+                                <input class="input is-success" asp-for="Input.City" />
+                            </div>
+                            <span class="help is-danger" asp-validation-for="Input.City"></span>
+                        </div>
+                        <div class="field">
+                            <label class="label">Post Code</label>
+                            <div class="control">
+                                <input class="input is-success" asp-for="Input.PostCode" />
+                            </div>
+                            <span class="help is-danger" asp-validation-for="Input.PostCode"></span>
+                        </div>
+                        <div class="field">
+                            <label class="label">Phone number</label>
+                            <div class="control">
+                                <input class="input is-success" asp-for="Input.PhoneNumber" />
+                            </div>
+                            <span class="help is-danger" asp-validation-for="Input.PhoneNumber"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="field has-text-centered">
+                    <button type="button" class="button secondary" @@click="nextStep()">Next</button>
+                </div>
+            </div>
+            <div class="column is-10 is-offset-1" v-show="step === 1">
+                <div class="column is-8 is-offset-2">
+                    <div class="has-text-centered">
+                        <p class="title primary--text">Credit Related Information</p>
+                    </div>
+                    <div class="field">
+                        <div class="columns">
+                            <div class="column is-6">
+                                <label class="label">Avarage Monthly Spend</label>
+                                <div class="control">
+                                    <input class="input is-success" type="number" asp-for="TermInput.AvgMonthly" />
+                                </div>
+                                <span class="help is-danger" asp-validation-for="TermInput.AvgMonthly"></span>
+                            </div>
+                            <div class="column is-6">
+                                <label class="label">Credit Limit</label>
+                                <div class="control">
+                                    <input class="input is-success" type="number" asp-for="Input.CreditLimit" />
+                                </div>
+                                <span class="help is-danger" asp-validation-for="Input.CreditLimit"></span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="columns">
+                            <div class="column is-6">
+                                <label class="label">First Name</label>
+                                <div class="control">
+                                    <input class="input is-success" asp-for="Input.FirstName" />
+                                </div>
+                                <span class="help is-danger" asp-validation-for="Input.FirstName"></span>
+                            </div>
+                            <div class="column is-6">
+                                <label class="label">Last Name</label>
+                                <div class="control">
+                                    <input class="input is-success" asp-for="Input.LastName" />
+                                </div>
+                                <span class="help is-danger" asp-validation-for="Input.LastName"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column is-6-is-offset-3">
+                        <div class="field">
+                            <label class="label has-text-centered">Email</label>
+                            <div class="control">
+                                <input class="input is-success" asp-for="Input.Email" />
+                            </div>
+                            <span class="help is-danger" asp-validation-for="Input.Email"></span>
+                        </div>
+                        <div class="field">
+                            <div class="columns">
+                                <div class="column is-6">
+                                    <label class="label">Password</label>
+                                    <div class="control">
+                                        <input class="input is-success" asp-for="Input.Password" />
+                                    </div>
+                                    <span class="help is-danger" asp-validation-for="Input.Password"></span>
+                                </div>
+                                <div class="column is-6">
+                                    <label class="label">Confirm Password</label>
+                                    <div class="control">
+                                        <input class="input is-success" asp-for="Input.ConfirmPassword" />
+                                    </div>
+                                    <span class="help is-danger" asp-validation-for="Input.ConfirmPassword"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="has-text-centered">
+                            <div class="field">
+                                <label class="checkbox">
+                                    <input v-model="agreeTOC" asp-for="TermInput.AgreeTOC" type="checkbox">
+                                    I AGREE TO THE <a asp-page="/TermsAndConditions/Index" target="_blank"><span class="primary--text">TERMS AND CONDITIONS</span></a>
+                                </label>
+                                <span class="help is-danger" v-if="errTOC">Need to agree to the Terms and Conditions</span>
+                            </div>
+                            <div style="margin-top: 1.5rem;">
+                                <p class="subtitle">Please provide us with three Trade References.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="columns">
+                    @for (int i = 0; i < 2; i++)
+                    {
+                        <div class="column is-4">
+                            <div class="field">
+                                <label class="label">Company Name</label>
+                                <div class="control">
+                                    <input class="input" asp-for="Input.References[i].CompanyName" />
+                                </div>
+                                <span class="help is-danger" asp-validation-for="Input.References[i].CompanyName"></span>
+                            </div>
+                            <div class="field">
+                                <label class="label">Contact Name</label>
+                                <div class="control">
+                                    <input class="input" asp-for="Input.References[i].FirstName" />
+                                </div>
+                                <span class="help is-danger" asp-validation-for="Input.References[i].FirstName"></span>
+                            </div>
+                            <div class="field">
+                                <label class="label">Contact Surname</label>
+                                <div class="control">
+                                    <input class="input" asp-for="Input.References[i].SureName" />
+                                </div>
+                                <span class="help is-danger" asp-validation-for="Input.References[i].SureName"></span>
+                            </div>
+                            <div class="field">
+                                <label class="label">Email</label>
+                                <div class="control">
+                                    <input class="input" asp-for="Input.References[i].Email" />
+                                </div>
+                                <span class="help is-danger" asp-validation-for="Input.References[i].Email"></span>
+                            </div>
+                            <div class="field">
+                                <label class="label">Phone Number</label>
+                                <div class="control">
+                                    <input class="input" asp-for="Input.References[i].Telephone" />
+                                </div>
+                                <span class="help is-danger" asp-validation-for="Input.References[i].Telephone"></span>
+                            </div>
+                        </div>
+                    }
+                    <div class="column is-4">
+                        <div class="field">
+                            <label class="label">Company Name</label>
+                            <div class="control">
+                                <input class="input" name="Input.References[2].CompanyName" />
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Contact Name</label>
+                            <div class="control">
+                                <input class="input" name="Input.References[2].FirstName" />
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Contact Surename</label>
+                            <div class="control">
+                                <input class="input" name="Input.References[2].SureName" />
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Email</label>
+                            <div class="control">
+                                <input class="input" name="Input.References[2].Email" />
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Phone Number</label>
+                            <div class="control">
+                                <input class="input" name="Input.References[2].Telephone" />
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="field has-text-centered">
+                    <button type="submit" class="button secondary" v-if="agreeTOC">Submit</button>
+                    <span v-else>You need to accept Terms and Condidtions</span>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+@section scripts {
+
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+    <script>
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                step: 0,
+                agreeTOC: false,
+                errTOC: false,
+            },
+            methods: {
+                nextStep() {
+                    var valid = $("#main-form").valid()
+                    if (valid)
+                        if (!(this.step === 1 && !this.agreeTOC))
+                            this.step++;
+                        else
+                            this.errTOC = true;
+                },
+                returnTo(step) {
+                    if (step > this.step) return;
+                    this.step = step;
+                }
+            }
+        })
+
+    </script>
+}

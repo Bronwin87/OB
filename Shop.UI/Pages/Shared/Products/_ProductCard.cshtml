@@ -1,0 +1,85 @@
+﻿@model Shop.Application.Services.Products.Entities.ProductViewModel
+
+<div class="column is-flex is-4-tablet is-6-mobile" style="flex-grow: 1;">
+    <div class="card is-horizontal columns is-0 is-marginless store-tiles animate-transition">
+        <a asp-page="/Shop/Product" asp-route-id="@Model.Id" class="column is-6">
+            <div class=" card-img">
+                <img src="@Model.ImageUrl" alt="@Model.Name" style="max-height:270px">
+            </div>
+        </a>
+        <div class="column is-6">
+
+            <a asp-page="/Shop/Product" asp-route-id="@Model.Id">
+                <p class="is-size-7">@Model.Name</p>
+                <p class="is-size-7">UOM: @Model.UOM</p>
+                <p class="is-size-7">Colour: @Model.Colour</p>
+                <p class="is-size-7">Code: @Model.Code</p>
+                <p class="secondary--text is-size-3">
+                    @Model.Price
+                    @if (Model.ValueAdded)
+                    {
+                        <img src="/public/valueAdd_box.png" class="image is-24x24 is-pulled-right" />
+                    }
+                </p>
+            </a>
+
+            <form method="post"
+                  data-ajax="true"
+                  data-ajax-method="post"
+                  data-ajax-url="@Url.Action("AddToCart", "Shop")"
+                  data-ajax-update="#live-cart"
+                  data-ajax-begin="onAddToCartBegin('@Model.Id')"
+                  data-ajax-complete="onAddToCartComplete('@Model.Id')">
+                <input type="hidden" class="product-id" name="Input.ProductId" value="@Model.Id" />
+
+                <div class="field">
+                    @if (Model.OutOfStock)
+                    {
+                        <button type="submit" id="AddToCart_@Model.Id" style="width: 100%;" class="is-warning button is-block" disabled>Out Of Stock</button>
+                        <a class="button secondary is-block" style="width: 100%;" asp-page="/Shop/Product" asp-route-id="@Model.Id">
+                            <span class="content2">
+                                View Alternatives
+                            </span>
+                        </a>
+                    }
+                    else
+                    {
+                        <button type="submit" id="AddToCart_@Model.Id" style="width: 100%;" class="secondary button is-block">Add to Cart</button>
+                    }
+                </div>
+
+                <div class="field">
+                    <div class="columns">
+                        <div class="column is-3">
+                            <div class="dropdown" tabindex="-1" id="product-dropdown-@Model.Id">
+                                <div class="dropdown-trigger" v-on:click="">
+                                    <button type="button" class="button is-paddingless is-text" onclick="openUserFavList('@Model.Id')" aria-haspopup="true" aria-controls="product-dropdown-menu-@Model.Id">
+                                        <img src="~/public/like-unselected-icon.png" />
+                                    </button>
+                                </div>
+                                <div class="dropdown-menu" id="product-dropdown-menu-@Model.Id" role="menu">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column is-3">
+                            <button type="button" style="width: 30px;height: 30px;" class="button is-paddingless is-text"
+                                    onclick="openProductModal('@Model.Id')">
+                                <img src="~/public/broken-replaced.png" />
+                            </button>
+                        </div>
+                        <div class="column is-1"></div>
+                        <div class="column">
+                            <div class="input-group spinner">
+                                <input class="input small form-control product-qty" type="number" min="1" name="Input.Qty" value="1" />
+                                <div class="input-group-btn-vertical">
+                                    <button class="btn btn-default" type="button"><i class="fa fa-caret-up"></i></button>
+                                    <button class="btn btn-default" type="button"><i class="fa fa-caret-down"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

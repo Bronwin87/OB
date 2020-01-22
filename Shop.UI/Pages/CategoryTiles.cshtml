@@ -1,0 +1,130 @@
+﻿@page "{category}/{id}/{topname}/{sortvalue}"
+@model Shop.UI.Pages.Shop.CategoryTilesModel
+@{
+    ViewData["Title"] = Model.CategoryModel.Name;
+}
+@section MetaTags{
+    <meta name="description" content="@Model.CategoryModel.Name" />
+    <meta name="keywords" content="@Model.CategoryModel.Keywords" />
+}
+<div class="container section">
+    <h2 class="title">@Model.CategoryModel.Name</h2>
+    <div class="columns is-multiline">
+        <div class="column is-9">
+            <nav class="breadcrumb" aria-label="breadcrumbs">
+                <ul>
+                    <li><a href="/Shop">Shop</a></li>
+                    @foreach (var item in Model.CategoryModel.Path)
+                    {
+                        <li>
+                            <a asp-page="/CategoryTiles" asp-route-category="@item.Type" asp-route-id="@item.Id" asp-route-topName="@item.Name" asp-route-sortValue="AZ">@item.Name</a>
+                        </li>
+                    }
+                    <li class="is-active"><a href="#" aria-current="page">@Model.CategoryModel.Name</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="column is-3">
+            <div class="dropdown is-hoverable is-right">
+                @if (Model.Products != null)
+                {
+                    if (Model.Products.Count() > 0)
+                    {
+                        if (Model.SubCats == null && Model.TerCats == null)
+                        {
+                            <div class="dropdown-trigger">
+                                <button class="button" aria-haspopup="true" aria-controls="dropdown-menu2">
+                                    <span>Sort Products</span>
+                                    <span class="icon is-small">
+                                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+                                    </span>
+                                </button>
+                            </div>
+                            <div class="dropdown-menu" id="dropdown-menu2" role="menu">
+                                <div class="dropdown-content">
+                                    <div>
+                                        <a asp-page="/categorytiles" asp-route-category="tri" asp-route-id="@Model.CategoryModel.Id" asp-route-topname="@Model.CategoryModel.Name" asp-route-sortvalue="AZ" class="dropdown-item">A-Z</a>
+                                    </div>
+                                    <hr class="dropdown-divider">
+                                    <div>
+                                        <a asp-page="/categorytiles" asp-route-category="tri" asp-route-id="@Model.CategoryModel.Id" asp-route-topname="@Model.CategoryModel.Name" asp-route-sortvalue="Lowest" class="dropdown-item">Price Lowest</a>
+                                    </div>
+                                    <hr class="dropdown-divider">
+                                    <div>
+                                        <a asp-page="/categorytiles" asp-route-category="tri" asp-route-id="@Model.CategoryModel.Id" asp-route-topname="@Model.CategoryModel.Name" asp-route-sortvalue="Highest" class="dropdown-item">Price Highest</a>
+                                    </div>
+                                    <hr class="dropdown-divider">
+                                    <div>
+                                        <a class="dropdown-item" asp-page="/categorytiles" asp-route-category="tri" asp-route-id="@Model.CategoryModel.Id" asp-route-topname="@Model.CategoryModel.Name" asp-route-sortvalue="Brand"> Brand</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+            </div>
+        </div>
+        @foreach (var item in Model.CategoryModel.ChildCategories)
+        {
+            if (!string.IsNullOrEmpty(item.ImageUrl))
+            {
+                <div class="column columnCard img3 is-one-fifth" style="background-image:url('@(item.ImageUrl)'); position: relative;">
+                    <a asp-page="/categorytiles" asp-route-category="@item.Type" asp-route-id="@item.Id" asp-route-topname="@item.Name" asp-route-sortValue="AZ" class="category-tile" style="position: absolute; height: 100%; width: 100%;">
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div class="column columnCard img3 is-one-fifth" style="background-image: none; position: relative;">
+                    <a asp-page="/categorytiles" asp-route-category="@item.Type" asp-route-id="@item.Id" asp-route-topname="@item.Name" asp-route-sortValue="AZ" class="category-tile" style="position: absolute; height: 100%; width: 100%;">
+                        @item.Name
+                    </a>
+                </div>
+            }
+        }
+    </div>
+
+    @if (Model.Products != null)
+    {
+        if (Model.Products.Count() > 0)
+        {
+            if (Model.SubCats == null && Model.TerCats == null)
+            {
+                <div class="columns my-1 is-multiline is-mobile">
+                    @switch (Model.SortOrderValue)
+                    {
+                        case "AZ":
+                            @foreach (var p in Model.Products.OrderBy(x => x.Name))
+                            {
+                                <partial name="Products/_ProductSearchCard" model="p" />
+                            }
+                            break;
+                        case "Highest":
+                            @foreach (var p in Model.Products.OrderByDescending(x => x.PriceDec))
+                            {
+                                <partial name="Products/_ProductSearchCard" model="p" />
+                            }
+                            break;
+                        case "Lowest":
+                            @foreach (var p in Model.Products.OrderBy(x => x.PriceDec))
+                            {
+                                <partial name="Products/_ProductSearchCard" model="p" />
+                            }
+                            break;
+                        case "Brand":
+                            @foreach (var p in Model.Products.OrderBy(x => x.brand))
+                            {
+                                <partial name="Products/_ProductSearchCard" model="p" />
+                            }
+                            break;
+                    }
+                </div>
+
+            }
+        }
+        else
+        {
+            @*<h2 class="subtitle">No items to display</h2>*@
+        }
+    }
+</div>

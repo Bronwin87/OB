@@ -1,0 +1,318 @@
+﻿@page
+@model Shop.UI.Pages.Profile.Quotes.IndexModel
+@{
+}
+
+<style>
+    .faded div {
+        opacity: 0.3;
+    }
+
+        .faded div.ex-faded {
+            opacity: 1;
+        }
+
+    .products * {
+        font-size: 12px;
+    }
+
+    .products .columns:not(:last-child) {
+        margin-bottom: 1rem;
+    }
+
+    .columns.is-1 .column {
+        padding: .25rem !important;
+        display: flex;
+        align-items: center;
+    }
+
+    .max-height {
+        height: 100%;
+    }
+</style>
+
+<div class="columns is-multiline" id="app" style="margin-top: 2rem;">
+    <div class="column is-12 is-paddingless" v-if="selectedList">
+        <div class="card has-background-grey-light">
+            <header class="card-header">
+                <div class="card-header-title is-paddingless">
+                    <div class="column is-4 has-text-white primary">
+                        {{selectedList.name}}
+                    </div>
+                    <div class="column is-8 is-paddingless">
+                        <div class="field is-expanded">
+                            <div class="field has-addons">
+                                <p class="control">
+                                    <a class="button is-static is-uppercase is-size-7 max-height">
+                                        add more products to list
+                                    </a>
+                                </p>
+                                <p class="control is-expanded">
+                                    <input class="input" placeholder="Search For Products" v-model="search" />
+                                </p>
+                                <p class="control">
+                                    <a class="button is-static">
+                                        <i class="fa fa-search"></i>
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="#" class="card-header-icon" aria-label="more options" @@click="closeList">
+                    <span class="icon">
+                        <i class="fas fa-times" aria-hidden="true"></i>
+                    </span>
+                </a>
+            </header>
+            <div class="card-content is-paddingless">
+                <div class="column is-12 has-background-grey-lighter" v-if="searchResult.length > 0">
+                    <div class="columns is-gapless">
+                        <div class="column is-1"></div>
+                        <div class="column is-3">Product</div>
+                        <div class="column is-2">Code</div>
+                        <div class="column is-2">UOM</div>
+                        <div class="column is-2">Price</div>
+                        <div class="column is-2"></div>
+                    </div>
+                    <div class="columns is-gapless has-background-grey-light" v-for="p in searchResult">
+                        <div class="column is-1">
+                            <img :src="p.imageUrl" />
+                        </div>
+                        <div class="column is-3">{{p.name}}</div>
+                        <div class="column is-2">{{p.code}}</div>
+                        <div class="column is-2">{{p.uom}}</div>
+                        <div class="column is-2">{{p.price}}</div>
+                        <div class="column is-2">
+                            <a class="button secondary is-block" @@click="addToList(p)">Add to List</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="columns is-marginless has-background-grey-lighter products">
+                    <div class="column is-9">
+                        <div class="columns is-1">
+                            <div class="column is-1"></div>
+                            <div class="column is-4">Product</div>
+                            <div class="column is-2">Code</div>
+                            <div class="column is-1">UOM</div>
+                            <div class="column is-1">Price</div>
+                            <div class="column is-1 has-text-centered">QTY</div>
+                            <div class="column is-1">Total</div>
+                            <div class="column is-2"></div>
+                        </div>
+                        <div class="columns is-1 has-background-grey-light" v-for="p in selectedList.products" :class="{'faded': p.deleted}">
+                            <div class="column is-1">
+                                <img :src="p.imageUrl" />
+                            </div>
+                            <div class="column is-4">{{p.name}}</div>
+                            <div class="column is-2">{{p.code}}</div>
+                            <div class="column is-1">{{p.uom}}</div>
+                            <div class="column is-1">R {{p.price}}</div>
+                            <div class="column is-1 has-text-centered">
+                                <input class="input" type="number" v-model="p.qty" :disabled="p.deleted" />
+                            </div>
+                            <div class="column is-1">R {{p.totalPrice}}</div>
+                            <div class="column is-2 ex-faded">
+                                <a v-show="!p.deleted" @@click="p.deleted = true">
+                                    <i class="fa fa-fw fa-times has-background-grey has-text-white"></i>
+                                </a>
+                                <a v-show="p.deleted" @@click="p.deleted = false">
+                                    <i class="fa fa-fw fa-check secondary"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column is-3 is-paddingless">
+                        <div class="box">
+                            <p class="subtitle">QUOTE SUMMARY</p>
+                            <p class="is-uppercase">Total Products: <span class="primary--text has-text-weight-bold">{{totalQty}}</span></p>
+                            <p class="is-uppercase">Delivery: <span class="primary--text has-text-weight-bold">{{delivery}}</span></p>
+                            <p class="is-uppercase">sub total (ex vat): <span class="primary--text has-text-weight-bold">R {{totalPrice}}</span></p>
+                            <p class="is-uppercase">vat: <span class="primary--text has-text-weight-bold">R {{vat}}</span></p>
+                            <p class="is-uppercase">order total (inc vat):</p>
+                            <p class="primary--text is-uppercase has-text-weight-bold is-size-3">R {{totalVatPrice}}</p>
+                            <a class="button is-block primary" v-if="selectedDirty" @@click="updateList">Update Quote</a>
+                            <a class="button is-block secondary" v-else="selectedDirty" @@click="addCart(selectedList.id)">Add To Cart</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="column is-12">
+        <div class="columns">
+            <div class="column is-2">Created Date</div>
+            <div class="column is-2">Quote Name</div>
+            <div class="column is-2">Quote Total</div>
+            <div class="column is-6"></div>
+        </div>
+        <div class="columns has-background-grey has-text-white is-gapless" v-for="(list, index) in favLists">
+            <div class="column is-2">{{list.dateCreated}}</div>
+            <div class="column is-2">{{list.name}}</div>
+            <div class="column is-2">{{list.totalPrice}}</div>
+            <div class="column is-4"></div>
+            <div class="column is-1 is-paddingless"><a class="button is-block secondary" @@click="selectList(list)">View</a></div>
+            <div class="column is-1 is-paddingless"><a class="button primary" @@click="addCart(list.id)">Add To Cart</a></div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+    <script>
+
+        var formatter = new Intl.NumberFormat('sa-ZA', { maximumSignificantDigits: 2 });
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                favLists: [],
+                loading: true,
+                selectedList: null,
+                search: "",
+                timeout: null,
+                searchResult: [],
+                selectedDirty: false
+            },
+            created() {
+                this.getFavouriteLists();
+            },
+            watch: {
+                selectedListChanges: function (n, o) {
+                    console.log(n, o);
+                    if (n !== null && o !== null) {
+                        this.selectedDirty = n.id === o.id;
+                    }
+                },
+                search: function (v) {
+                    if (v === '') {
+                        this.searchResult = [];
+                        return;
+                    }
+                    var self = this;
+
+                    if (self.timeout !== null)
+                        clearTimeout(self.timeout);
+
+                    self.timeout = setTimeout(function () {
+                        axios
+                            .get('/Shop/SearchProducts?search=' + self.search)
+                            .then(res => {
+                                self.searchResult = res.data;
+                            });
+                    }, 500);
+                }
+            },
+            methods: {
+                getFavouriteLists() {
+                    axios.get('/Quotes/Get').then(res => {
+                        this.favLists = res.data
+                    })
+                },
+                selectList(list) {
+                    this.closeList();
+                    list.show = false;
+                    this.selectedList = {
+                        id: list.id,
+                        name: list.name,
+                        products: list.products.map(x => {
+                            return {
+                                id: x.id,
+                                imageUrl: x.imageUrl,
+                                name: x.name,
+                                code: x.code,
+                                uom: x.uom,
+                                price: x.price,
+                                qty: x.qty,
+                                totalPrice: x.totalPrice,
+                                deleted: false
+                            }
+                        })
+                    };
+                },
+                closeList() {
+                    this.showLists();
+                    this.selectedDirty = false;
+                    this.selectedList = null;
+                    this.search = '';
+                    this.searchResult = [];
+                    this.timeout = null;
+                },
+                showLists() {
+                    this.favLists = this.favLists.map(x => {
+                        x.show = true;
+                        return x;
+                    })
+                },
+                addToList(p) {
+                    var pIndex = this.selectedList.products.map(x => x.id).indexOf(p.id);
+                    if (pIndex >= 0) {
+                        let product = this.selectedList.products[pIndex];
+                        product.qty++;
+                        var newTotalPrice = this.moneyToNum(product.totalPrice) + this.moneyToNum(product.price);
+                        product.totalPrice = this.numToMoney(newTotalPrice);
+                    }
+                    else {
+                        this.selectedList.products.push({
+                            id: p.id,
+                            imageUrl: p.imageUrl,
+                            name: p.name,
+                            code: p.code,
+                            uom: p.uom,
+                            price: p.price,
+                            qty: 1,
+                            totalPrice: p.price,
+                            deleted: false
+                        });
+                    }
+                },
+                updateList() {
+                    axios.post('/Quotes/Post', this.selectedList).then(res => {
+                        location.reload();
+                    })
+                },
+                addCart(id) {
+                    axios.post('/Quotes/Cart/' + id, {}).then(res => {
+                        location.reload();
+                    })
+                },
+                moneyToNum(m) {
+                    return parseFloat(m.replace('R', ''))
+                },
+                numToMoney(n) {
+                    return 'R' + n.toFixed(2)
+                }
+            },
+            computed: {
+                selectedListChanges() {
+                    if (this.selectedList === null) return null;
+                    return this.selectedList.products.length > 0
+                        ? {
+                            id: this.selectedList.id,
+                            dirt: this.selectedList.products.map(x => x.qty + x.deleted).reduce((x, y) => x + y)
+                        }
+                        : null;
+                },
+                totalQty() {
+                    return this.selectedList.products.map(x => x.deleted ? 0 : x.qty).reduce((x, y) => x + y);
+                },
+                totalPrice() {
+                    return (this.selectedList.products
+                        .map(x => x.deleted ? 0 : x.qty * x.price).reduce((x, y) => x + y)).toFixed(2);
+                },
+                vat() {
+                    return ((((this.totalPrice + 60.0) * (15.0 / 100.0)) * 100.0) / 100.0).toFixed(2)
+                },
+                totalVatPrice() {
+                    return (parseFloat(this.totalPrice) + parseFloat(this.vat)).toFixed(2);
+                },
+                delivery() {
+                    if (this.totalQty === 0) return "R 0";
+                    return parseFloat(this.totalVatPrice) > 650 ? "FREE" : "R 60";
+                }
+            }
+        })
+
+    </script>
+}

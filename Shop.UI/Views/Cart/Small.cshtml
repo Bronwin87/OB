@@ -1,0 +1,99 @@
+﻿@model IEnumerable<Shop.Application.Cart.GetCart.Response>
+<nav class="navbar is-marginless has-shadow" role="navigation" style="min-height: auto" aria-label="dropdown navigation">
+    <div class="is-primary" Style="border: 2px solid #CBCBCB;border-radius: 2px !important;">
+        <div class="navbar-item has-dropdown is-hoverable">
+
+            <a class="navbar-link is-arrowless" asp-page="/Checkout/Index" style="padding: 0.175rem 1rem;">
+                <div class="is-3" style="color:gray">Cart</div>
+                <div class="is-3" style="margin: 6px 10px 0 5px;"> <img src="~/public/cart-icon-grey.png" /></div>
+                <div class="is-6" style="background-color:#0cdd6b;color:#fff;padding: 0px 7px;"> @Model.Sum(x => x.Qty) </div>
+            </a>
+
+            <div class="navbar-dropdown columnCard">
+                <div class="navbar-item">
+                    <div class="navbar-brand" style="min-height: 2rem; margin-left: -4px;"><img src="/public/logo.png" class="header-logo"></div>
+                </div>
+
+                @foreach (var product in Model)
+                {
+                    <div class="navbar-item" style="border-bottom: 1px dashed darkgray">
+                        <div class="column is-1" style="padding:0">
+                            <img src="@product.ImageUrl" />
+                        </div>
+                        <div class="column is-8" style="text-overflow: ellipsis;overflow:hidden;font-size: 12px;font-weight: 400; margin-bottom:0px;">
+
+                            <span>@product.Qty x </span><span class="has-text-weight-bold" style="font-size: 12px;">@product.Name</span>
+
+                        </div>
+                        <div class="column is-2"></div>
+                        <div class="column is-1">
+                            <form method="POST" name="form-@product.Id" id="form-@product.Id">
+                                <input type="hidden" name="Input.ProductId" value="@product.Id" />
+                                <div class="field">
+                                    <a asp-controller="Shop" asp-action="DeleteFromCart" asp-route-id="@product.Id">
+                                        <span class="icon" style="opacity:0.4;">
+                                            <i aria-hidden="true" class="fas fa-times"></i>
+                                        </span>
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                }
+                @{
+                    decimal sub = Model.Sum(x => x.Qty * x.Value);
+                    bool delivery = (sub < 650m) ? true : false;
+                    decimal total = (delivery) ? sub + 60m : sub;
+                    decimal discountedTotal = Model.Any() ? Model.FirstOrDefault().ProductThresholdDiscount : 0;
+                    decimal vat = (total - discountedTotal) * 0.15m;
+                }
+
+                @{
+                    if (Model.Sum(x => x.Qty) > 0)
+                    {
+                        <div class="navbar-item" style="border-bottom: 1px dashed darkgray;">
+                            <div class="field">
+                                <p class="has-text-grey has-text-weight-bold" style="font-size: 12px;">
+                                    SubTotal: <span class="has-text-success has-text-weight-bold">R @sub.ToString("N2")</span><br>
+                                    @if (Model.Sum(x => x.Qty * x.Value) > 1500)
+                                    {
+                                        <span class="is-orange">Threshold Discount : R @discountedTotal.ToString("N2")</span><br>
+                                    }
+                                    Delivery:
+                                    @if (delivery)
+                                    {
+                                        <span class="has-text-weight-bold">R 60.00</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="has-text-weight-bold is-orange"><b>FREE</b></span>
+                                    }
+                                    <br>
+                                    VAT: <span class="has-text-weight-bold">R @vat.ToString("N2")</span><br>
+                                    Total: <span class="has-text-weight-bold has-text-success">R @(((total - discountedTotal) * 1.15m).ToString("N2"))</span>
+                                </p>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="navbar-item" style="border-bottom: 1px dashed darkgray;border-top: 1px dashed darkgray;">
+                            <div class="column">
+                                You have <strong>0</strong> items in your cart
+                            </div>
+                        </div>
+                    }
+                }
+                <div class="navbar-item is-size-7 mt-1" style="font-style:italic">If you have a voucher code remember to use it during checkout</div>
+                @{
+                    if (Model.Sum(x => x.Qty) > 0)
+                    {
+                        <a class="button is-radiusless is-primary is-block has-text-white is-uppercase has-text-weight-semibold is-size-6" href="/Checkout/CustomerDetails">Proceed To Checkout</a>
+                    }
+                }
+
+                <a class="button is-radiusless is-block has-text-white is-uppercase has-text-weight-semibold is-size-6 is-bg-green" href="/Checkout">View Cart</a>
+            </div>
+        </div>
+    </div>
+</nav>

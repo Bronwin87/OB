@@ -1,0 +1,103 @@
+﻿@page
+@model Shop.UI.Pages.SavingsCalculator.IndexModel
+
+<div class="container">
+    <div class="sc--table" style="margin-left: 0; margin-right: 0;">
+        <table class="table is-fullwidth is-narrow is-bordered">
+            <thead>
+                <tr>
+                    <th>Value Add</th>
+                    <th>Code</th>
+                    <th>Product Description</th>
+                    <th>Colour</th>
+                    <th>UOM</th>
+                    <th>QTY</th>
+                    <th>Price</th>
+                    <th>Discount(%)</th>
+                    <th>Competitor <br /> Pricing</th>
+                    <th>OB Total</th>
+                    <th>Competitor <br /> Total</th>
+                    <th>Saving</th>
+                    <th>Saving(%)</th>
+                </tr>
+            </thead>
+            <tr class="empty-table">
+                <td colspan="13" style="text-align: center;">
+                    Use the Search Or Menu to find items and Add them to the calculator grid.
+                </td>
+            </tr>
+            <tr v-for="p in selectedProducts" :key="p.id">
+                <td><div :class="p.classValue"></div></td>
+                <td>{{p.code}}</td>
+                <td>{{p.name}}</td>
+                <td>{{p.colour}}</td>
+                <td>{{p.uom}}</td>
+                <td>
+                    <div class="input-group spinner">
+                        <input class="input sm" type="number" :id="'Qty_' + p.id" v-model="p.qty" min="1" />
+                        <div class="input-group-btn-vertical">
+                            <button class="btn btn-default" type="button" v-on:click="updateQtyUp(p)"><i class="fa fa-caret-up"></i></button>
+                            <button class="btn btn-default" type="button" v-on:click="updateQtyDown(p)"><i class="fa fa-caret-down"></i></button>
+                        </div>
+                    </div>
+                </td>
+                <td>R{{p.price}}</td>
+                <td><input class="input sm" v-model="p.discount" /></td>
+                <td><input class="input md" v-model="p.competitorPrice" /></td>
+                <td>R{{getOurTotal(p)}}</td>
+                <td>R{{getCompTotal(p)}}</td>
+                <td>R{{getSavings(p)}}</td>
+                <td>{{getSavingsPercent(p)}} %</td>
+            </tr>
+            <tr v-if="selectedProducts.length > 0">
+                <td colspan="9"></td>
+                <td class="has-text-weight-bold">R{{ourTotal}}</td>
+                <td class="has-text-weight-bold">R{{compTotal}}</td>
+                <td class="has-text-weight-bold">R{{savingsTotal}}</td>
+                <td class="has-text-weight-bold">{{savingsPercentTotal}} %</td>
+            </tr>
+        </table>
+
+        <div class="level" v-if="savingsTotal < 0 || savingsPercentTotal < 0">
+            <div class="level-left"></div>
+            <div class="level-right">
+                <div class="level-item">
+                    <span>
+                        Oops that doesnt look right. <br />
+                        Please email us here
+                    </span>
+                </div>
+                <div class="level-item">
+                    <button class="button secondary">Email</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="columns my-1 is-multiline is-mobile tile is-ancestor my-1 is-multiline is-mobile">
+        <div class="column is-4-tablet is-6-mobile" style="flex-grow:1;" v-for="p in products" :key="p.id">
+            <div class="card is-horizontal columns is-0 is-marginless store-tiles">
+                <a @@click="selectProduct(p)" class="column is-6">
+                    <div class="card-img">
+                        <img :src="p.imageUrl" :alt="p.name">
+                    </div>
+                </a>
+
+                <div class="column is-6">
+                    <a @@click="selectProduct(p)">
+                        <p class="is-size-7">{{p.name}}</p>
+                        <p class="is-size-7">UOM: {{p.uom}}</p>
+                        <p class="is-size-7">Colour: {{p.colour}}</p>
+                        <p class="is-size-7">Code: {{p.code}}</p>
+                        <p class="secondary--text is-size-3">{{p.price}}</p>
+                    </a>
+                    <div class="field">
+                        <button type="submit" style="width: 100%;" @@click="selectProduct(p)" class="secondary button is-block">Select Product</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

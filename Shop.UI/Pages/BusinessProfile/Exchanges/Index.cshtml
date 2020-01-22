@@ -1,0 +1,127 @@
+﻿@page
+@model Shop.UI.Pages.BusinessProfile.Exchanges.IndexModel
+
+<style>
+    .label {
+        font-size 14px;
+        color: #858585;
+        margin-left: 20px;
+        font-weight: 400;
+        margin-bottom: 0px;
+    }
+
+    .input {
+        width: 100%;
+    }
+</style>
+
+<form method="post">
+    <p class="title secondary--text">Exchanges and Returns</p>
+    <div class="columns">
+        <div class="column is-5">
+            <div class="field">
+                <label class="label">Name</label>
+                <div class="control">
+                    <input class="input" asp-for="Input.Name" />
+                </div>
+                <span class="help is-danger"></span>
+            </div>
+            <div class="field">
+                <label class="label">Company Name</label>
+                <div class="control">
+                    <input class="input" asp-for="Input.Representing" />
+                </div>
+                <span class="help is-danger"></span>
+            </div>
+            <div class="field">
+                <label class="label">Email Address</label>
+                <div class="control">
+                    <input class="input" asp-for="Input.Email" />
+                </div>
+                <span class="help is-danger"></span>
+            </div>
+
+            @*<div class="field">
+                <label class="label">Detailed Reason for Return</label>
+                <div class="control">
+                    <input class="input" asp-for="Input.Message" />
+                </div>
+                <span class="help is-danger"></span>
+            </div>*@
+
+            <div class="field">
+                <label class="label">Detailed Reason for Return</label>
+                <div class="control">
+                    <div class="dropdown">
+                        <div class="select">
+                            <select asp-for="Input.Details">
+                                <option value="I ordered the incorrect product">I ordered the incorrect product</option>
+                                <option value="I over ordered">I over ordered</option>
+                                <option value="I received the incorrect product">I received the incorrect product</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Invoice Number</label>
+                <div class="control">
+                    <input class="input" asp-for="Input.Number" />
+                </div>
+                <span class="help is-danger"></span>
+            </div>
+            <div class="field">
+                <label class="label">Products &amp; Quantity to be Returned</label>
+                <div class="control">
+                    <textarea class="textarea" asp-for="Input.ProductsQuantity"></textarea>
+                </div>
+                <span class="help is-danger"></span>
+            </div>
+
+            <div class="field">
+                <label class="label">Comments</label>
+                <div class="control">
+                    @*<input class="input" style="te" asp-for="Input.Comments" />*@
+                    <textarea class="textarea" asp-for="Input.Comments"></textarea>
+                </div>
+                <span class="help is-danger"></span>
+            </div>
+
+            <div class="columns">
+                <div class="field column is-6">
+                    <button type="submit" class="button is-primary">Submit</button>
+                </div>
+            </div>
+        </div>
+        <div class="column is-6 is-offset-1">
+            <p>
+                OfficeBox accepts returns on most products purchased from our online store, returned within 7 days of delivery.
+                <br /><br />
+                This excludes customised products, furniture and products specifically indicated as being non refundable.
+                <br /><br />
+                Goods must be returned in original packaging and in a re-saleable condition.
+                <br /><br />
+                To prevent delays, please re-order goods online and you will be credited for the returned goods once received and approved.
+                <br /><br />
+
+                <strong>Steps for a Clean Return & Refund.</strong>
+                <ol>
+                    <li>
+                        Complete and submit the online Return Enquiry form below.
+                    </li>
+                    <li>
+                        You will be contacted by our Customer Service Team. If the return is approved, you will be emailed a Return Approved Doc with a Return Authority Number.
+                    </li>
+                    <li>
+                        A copy of the Return Approved Doc must accompany the Goods returned.
+                    </li>
+                    <li>
+                        After we’ve received and checked the returned Goods, you will be contacted by our Customer Service Team who will email the Credit Note or notify you of any reason why the credit has been declined. I.e not in original packaging.
+                    </li>
+                </ol>
+            </p>
+        </div>
+    </div>
+</form>
+

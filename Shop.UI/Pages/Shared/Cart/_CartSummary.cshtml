@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Shop.Application.Cart.GetCart.Response>
+
+<div style="padding:18px;" id="cart-summary">
+    <p class="headerDarkBold">Order Summary</p>
+    <div class="field">
+        @{
+            var total = Model.Sum(x => x.Qty * x.Value);
+            var discountedTotal = Model.FirstOrDefault().ProductThresholdDiscount;
+            decimal delivery = 60;
+        }
+        <p>Total Products: @Model.Sum(x => x.Qty)</p>
+        <p>SubTotal: <span class="has-text-success">R @total.ToString("N2")</span></p>
+        @if (@Model.Sum(x => x.Qty * x.Value) > 1500)
+        {
+            <div class="columns" style="margin-left:0; margin-top:0; margin-right:0;">
+                <div class="">
+                    <p>
+                        Discount : <span>R @discountedTotal.ToString("N2")</span>
+                    </p>
+                </div>
+                &nbsp;
+                <div class="control">
+                    <div class="dropdown is-hoverable is-left">
+                        <div class="dropdown-trigger">
+                            <a aria-haspopup="true" aria-controls="dropdown-menu" style="color: #ee8534;">
+                                <span class="icon is-small">
+                                    <i class="fas fa-question-circle" aria-hidden="true"></i>
+                                </span>
+                            </a>
+                        </div>
+                        <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                            <div class="dropdown-content" style="padding-left:0.5rem;padding-right:0.5rem">
+                                <p>
+                                    <span class="subtitle-text">Savings Threshold Reached!</span><br />The total of your cart products is equal or greater than R 1500, which means you receive a 2.5% discount on certain products.<br />
+                                    Once your total reaches our R 2500 Threshold you will receive a 5% discount on certain items.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        @if (@Model.Sum(x => x.Qty * x.Value) < 650)
+        {
+            <p>Delivery: <span style="color: #FAA341;">R 60</span></p>
+        }
+        else
+        {
+            delivery = 0;
+
+            <p>Delivery: FREE</p>
+        }
+        @{
+            //var vat = (Math.Round(((Convert.ToDouble(Model.Sum(x => x.Qty * x.Value)) + 60.0) * (15.0 / 100.0)) * 100.0) / 100.0);
+            var vat = ((total + delivery) - discountedTotal) * 0.15m;
+        }
+        <p>VAT: <span style="color: #FAA341;">R @vat.ToString("N2")</span> </p>
+    </div>
+    <div class="field">
+        <p class="is-size-4">Order Total inc vat</p>
+        <p class="title primary--text">R@(((vat + total + delivery) - discountedTotal).ToString("N2"))</p>
+    </div>
+</div>

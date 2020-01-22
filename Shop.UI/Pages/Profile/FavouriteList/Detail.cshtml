@@ -1,0 +1,402 @@
+﻿@page
+@model Shop.UI.Pages.Profile.FavouriteList.DetailModel
+
+<style type="text/css">
+    .faded div {
+        opacity: 0.3;
+    }
+
+        .faded div.ex-faded {
+            opacity: 1;
+        }
+
+    .fav-line-heading {
+        background-color: #dbdbdb;
+        font-weight: 600;
+    }
+
+    .fav-line {
+        background-color: #efeeec;
+    }
+
+    .products * {
+        font-size: 12px;
+    }
+
+    #ProductsList,
+    #ProductsSummary {
+        background-color: #ffffff;
+    }
+
+        #ProductsSummary .box {
+            position: sticky;
+            top: 0;
+        }
+
+    .card-header {
+        background-color: #efeeec;
+    }
+
+    .products .column {
+        padding: 0.75rem 0.3rem;
+    }
+
+        .products .column .columns {
+            margin-left: -0.3rem;
+            margin-right: -0.3rem;
+        }
+
+    .products .spinner .form-control {
+        border-radius: 0;
+    }
+
+    .products .spinner .input-group-btn-vertical > .btn {
+        padding: 6.25px;
+    }
+
+    .products .columns:not(:last-child) {
+        margin-bottom: 1rem;
+    }
+
+    .columns.is-1 .column {
+        padding: .25rem !important;
+        display: flex;
+        align-items: center;
+    }
+
+    .max-height {
+        height: 100%;
+    }
+
+    #AddAllToCartButton,
+    #UpdateButton {
+        width: 100%;
+        color: #ffffff;
+    }
+
+    #UpdateButton {
+        display: none;
+        font-size: 1rem;
+    }
+
+        #UpdateButton:hover {
+            color: lightgray;
+        }
+
+    .undelete-row {
+        display: none;
+    }
+</style>
+
+<form method="post" autocomplete="off" id="FavouriteListForm">
+    <input autocomplete="false" name="hidden" type="text" style="display:none;">
+    @Html.HiddenFor(model => model.ListModel.Id)
+    <div class="columns is-multiline" id="app" style="margin-top: 0rem;">
+        <div class="column is-12 is-paddingless">
+            <div class="card has-background-grey-light">
+                <header class="card-header">
+                    <div class="card-header-title is-paddingless">
+                        <div class="column is-4 has-text-white primary">
+                            <input class="input" value="@Model.ListModel.Name" name="ListModel.Name" id="ListModel_Name" />
+                        </div>
+                        <div id="FavList" class="column is-8 is-paddingless">
+                            <div class="field is-expanded">
+                                <div class="field has-addons">
+                                    <p class="control">
+                                        <a class="button is-static is-uppercase is-size-7 max-height" style="border: none;">
+                                            add more products to list
+                                        </a>
+                                    </p>
+                                    <p class="control is-expanded">
+                                        <input id="SearchBox" v-model="search" class="input" placeholder="Search For Products" />
+                                    </p>
+                                    <p class="control">
+                                        <a class="button is-static">
+                                            <i class="fa fa-search"></i>
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
+                            <div id="SearchBoxResults" class="sc--search-result is-hidden" v-if="Object.keys(searchResult).length > 0">
+                                <div class="level">
+                                    <div class="level-left">
+                                        <img class="header-logo" style="height:50px" src="/public/logo.png">
+                                    </div>
+                                    <div class="level-right">
+                                        <div class="navbar-end is-inline-flex search-link" v-on:click="searchResult = []">X Close Search</div>
+                                    </div>
+                                </div>
+                                <div v-for="(items, categoryIndex, arrIndex) in searchResult">
+                                    <div class="search-heading">
+                                        {{categoryIndex.replace(/_/g, ' ')}}
+                                    </div>
+                                    <div class="products" v-for="p in items">
+                                        <a @@click="selectProduct(p)" class="search-link">
+                                            <div class="columns" style="width: 100%;">
+                                                <div class="column is-3">
+                                                    <img :src="p.imageUrl" style="width: 50px;" />
+                                                </div>
+                                                <div class="column is-9">
+                                                    {{p.name}}
+                                                    <br />
+                                                    <span>{{p.price}}</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="card-header-icon" aria-label="more options" asp-page="/Profile/FavouriteList/Index">
+                        <span class="icon">
+                            <i class="fas fa-times" aria-hidden="true"></i>
+                        </span>
+                    </a>
+                </header>
+                <div class="card-content is-paddingless">
+                    <div class="columns is-marginless has-background-grey-lighter products">
+                        <div class="column is-9" id="ProductsList">
+                            <div class="columns is-1 fav-line-heading" style="height: 30px;">
+                                <div class="column is-1"></div>
+                                <div class="column is-3">Product</div>
+                                <div class="column is-2">Code</div>
+                                <div class="column is-1">UOM</div>
+                                <div class="column is-1">Price</div>
+                                <div class="column is-1 has-text-centered">QTY</div>
+                                <div class="column is-1">Total</div>
+                                <div class="column is-2"></div>
+                            </div>
+                            @for (int i = 0; i < Model.ListModel.Products.Count(); i++)
+                            {
+                                Model.ListModel.Products[i].Index = i;
+                                <partial name="Products/_FavLine" model="Model.ListModel.Products[i]" />
+                            }
+                        </div>
+                        <div class="column is-3 is-paddingless" id="ProductsSummary">
+                            <div class="box">
+                                <p class="subtitle">LIST SUMMARY</p>
+                                <p class="is-uppercase">Total Products: <span class="primary--text has-text-weight-bold" id="TotalQty">@Model.ListModel.TotalQty</span></p>
+                                <p class="is-uppercase">Delivery: <span class="primary--text has-text-weight-bold" id="TotalDelivery">@Model.ListModel.DeliveryText</span></p>
+                                <p class="is-uppercase">sub total (ex vat): <span class="primary--text has-text-weight-bold" id="SubTotal">R @Model.ListModel.SubTotal.ToString("N2")</span></p>
+                                <p class="is-uppercase">vat: <span class="primary--text has-text-weight-bold" id="TotalVat">R @Model.ListModel.Vat.ToString("N2")</span></p>
+                                <p class="is-uppercase">order total (inc vat):</p>
+                                <p class="primary--text is-uppercase has-text-weight-bold is-size-3" id="TotalIncl">R @Model.ListModel.TotalPriceIncl.ToString("N2")</p>
+                                <button id="UpdateButton" name="SubmitAction" class="button primary" type="submit" value="UpdateChanges">UPDATE CHANGES</button>
+                                <button id="AddAllToCartButton" name="SubmitAction" class="button secondary" type="submit" value="AddCart">ADD ALL TO CART</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section scripts {
+    <script type="text/javascript">
+        var request;
+
+        $('body').on('change', '#FavouriteListForm input', function () {
+            //$("#UpdateButton").slideDown(150);
+            RecalculateTotals();
+        });
+
+        $("#ListModel_Name").keyup(function () {
+            $("#UpdateButton").slideDown(150);
+        });
+
+        $('body').on('click', '.delete-row', function () {
+            var productId = $(this).data("product-id");
+            var $row = $("#Row_" + productId);
+            $row.addClass("faded");
+            $row.removeClass("not-faded");
+            $("#ProductDeleted_" + productId).val("true");
+            $("#DeleteBtn_" + productId).hide();
+            $("#UndeleteBtn_" + productId).show();
+
+            $("#UpdateButton").slideDown(150);
+            $("#AddAllToCartButton").slideUp(150);
+            RecalculateTotals();
+        });
+
+        $('body').on('click', '.undelete-row', function () {
+            var productId = $(this).data("product-id");
+            var $row = $("#Row_" + productId);
+            $("#ProductDeleted_" + productId).val("false");
+            $row.removeClass("faded");
+            $row.addClass("not-faded");
+            $("#DeleteBtn_" + productId).show();
+            $("#UndeleteBtn_" + productId).hide();
+
+            RecalculateTotals();
+        });
+
+        var searchBox = new Vue({
+            el: '#FavList',
+            data: {
+                search: "",
+                timeout: null,
+                searchResult: [],
+                products: []
+            },
+            created() {
+                $("#SearchBoxResults").removeClass("is-hidden");
+            },
+            watch: {
+                search: function () {
+                    var self = this;
+                    var count = $(".fav-line").length;
+
+                    if (self.timeout !== null)
+                        clearTimeout(self.timeout);
+
+                    if (self.search.length > 2) {
+                        self.timeout = setTimeout(function () {
+                            axios
+                                .get('/Shop/SearchProducts?search=' + self.search + "&partialName=/Pages/Shared/Products/_FavLine.cshtml&partialIndex=" + count)
+                                .then(res => {
+                                    const productsByGroup = res.data.reduce((productsByGroup, product, index) => {
+                                        return {
+                                            ...productsByGroup,
+                                            [product.tertiaryCategory.replace(/ /g, '_')]: [...(productsByGroup[product.tertiaryCategory.replace(/ /g, '_')] || []), product]
+                                        };
+                                    }, {});
+                                    Object.keys(productsByGroup).forEach(k => productsByGroup[k] = productsByGroup[k].slice(0, 5));
+
+                                    self.searchResult = productsByGroup;
+                                });
+                        }, 500);
+                    }
+                }
+            },
+            methods: {
+                selectProduct(p) {
+                    $("#ProductsList").append(p.productAddPartialHtml)
+                    this.searchResult = [];
+                    $("#UpdateButton").slideDown(150);
+                    $("#AddAllToCartButton").slideUp(150);
+                    RecalculateTotals();
+                }
+            }
+        });
+
+        $('body').on('click', '.add-to-cart-action', function () {
+        //$(".add-to-cart-action").click(function () {
+            var $this = $(this);
+            var productId = $this.data("product-id");
+            var qty = $("#Qty_" + productId).val();
+
+            $this.waitMe({
+                effect: 'pulse',
+                text: '',
+                bg: 'rgb(238,133,52)',
+                color: '#ffffff '
+            });
+
+            // Abort any pending request
+            if (request) {
+                request.abort();
+            }
+
+            // Disable inputs
+            $("#FavouriteListForm input").prop("readonly", true);
+
+            // Construct form data
+            var pageData = {
+                ProductId: productId,
+                Qty: qty
+            };
+
+            // Fire off the request to /form.php
+            request = $.ajax({
+                url: "@Url.Action("AddToCart", "Shop")",
+                type: "post",
+                data: pageData
+            });
+
+            // Callback handler that will be called on success
+            request.done(function (response, textStatus, jqXHR) {
+                // Log a message to the console
+                $("#live-cart").html(response);
+            });
+
+            // Callback handler that will be called on failure
+            request.fail(function (jqXHR, textStatus, errorThrown) {
+                // Log the error to the console
+                console.error(
+                    "The following error occurred: " +
+                    textStatus, errorThrown
+                );
+            });
+
+            // Callback handler that will be called regardless
+            // if the request failed or succeeded
+            request.always(function () {
+                // Reenable the inputs
+
+                setTimeout(function () {
+                    $this.waitMe('hide');
+                    $("#FavouriteListForm input").prop("readonly", false);
+                    $("#Qty_" + productId).val(1);
+                    RecalculateTotals();
+                }, 800);
+            });
+        });
+
+        $("#AddAllToCartButton").click(function () {
+            $(this).waitMe({
+                effect: 'pulse',
+                text: '',
+                bg: 'rgb(238,133,52)',
+                color: '#ffffff '
+            });
+        });
+
+        $("#UpdateButton").click(function () {
+            $(this).waitMe({
+                effect: 'pulse',
+                text: '',
+                bg: '#0bdd6f',
+                color: '#ffffff '
+            });
+        });
+
+        function RecalculateTotals() {
+
+            var productCount = parseInt(0),
+                subtotal = parseFloat(0.00);
+
+            $("div.not-faded .product-qty").each(function (index, element) {
+                var productId = $(element).data("product-id");
+                var qty = parseInt($(element).val());
+                var productPriceString = $("#ProductPrice_" + productId).val();
+                productPriceString = productPriceString.replace(",", ".");
+                var productPriceFloat = parseFloat(productPriceString);
+
+                var productTotalString = (qty * productPriceFloat);
+                var productTotalFloat = parseFloat(productTotalString);
+                $("#ProductTotal_" + productId).html(productTotalFloat.toFixed(2));
+
+                productCount += qty;
+                subtotal += productTotalFloat;
+            });
+
+            var delivery = 60.00;
+            var deliveryString = "R 60.00";
+            if (subtotal > 650) {
+                delivery = 0;
+                deliveryString = "Free";
+            }
+            subtotal += delivery;
+            var vat = subtotal * 0.15;
+            var totalIncl = subtotal + vat
+
+            $("#TotalQty").html(productCount);
+            $("#TotalDelivery").html(deliveryString);
+            $("#SubTotal").html("R " + subtotal.toFixed(2));
+            $("#TotalVat").html("R" + vat.toFixed(2));
+            $("#TotalIncl").html("R " + totalIncl.toFixed(2));
+        }
+    </script>
+}

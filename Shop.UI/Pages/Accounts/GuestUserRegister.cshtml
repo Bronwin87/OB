@@ -1,0 +1,162 @@
+﻿@page
+@model Shop.UI.Pages.Accounts.GuestUserRegisterModel
+@{
+}
+<style>
+    .py-0 {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+
+    .no-label-field {
+        flex-direction: column;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+        .no-label-field .control {
+            margin-bottom: 0.23rem;
+        }
+</style>
+
+<div class="container">
+    <div class="columns my-1">
+        <div class="column is-3"><a class="button primary is-block is-radiusless" asp-page="/Checkout/Index">1. Cart</a></div>
+        <div class="column is-3"><a class="button primary is-block is-radiusless">2. Register & Shipping</a></div>
+        <div class="column is-3"><a class="button is-block is-radiusless" disabled>3. Payment</a></div>
+        <div class="column is-3"><a class="button is-block is-radiusless" disabled>4. Confirmation</a></div>
+    </div>
+    <form method="post" class="column is-10 is-offset-1">
+        <div class="columns ">
+            <div class="column is-6">
+                <p class="title primary--text">Your Details</p>
+                <div class="field">
+                    <label class="label">First Name</label>
+                    <div class="control">
+                        <input class="input" asp-for="Input.FirstName" />
+                    </div>
+                    <span class="help is-danger" asp-validation-for="Input.FirstName"></span>
+                </div>
+                <div class="field">
+                    <label class="label">Last Name</label>
+                    <div class="control">
+                        <input class="input is-success" asp-for="Input.LastName" />
+                    </div>
+                    <span class="help is-danger" asp-validation-for="Input.LastName"></span>
+                </div>
+                <div class="field">
+                    <label class="label">Email</label>
+                    <div class="control">
+                        <input class="input is-success" asp-for="Input.Email" />
+                    </div>
+                    <span class="help is-danger" asp-validation-for="Input.Email"></span>
+                </div>
+                <div class="field">
+                    <label class="label">Password</label>
+                    <div class="control">
+                        <input class="input is-success" asp-for="Input.Password" />
+                    </div>
+                    <span class="help is-danger" asp-validation-for="Input.Password"></span>
+                </div>
+                <div class="field">
+                    <label class="label">Confirm Password</label>
+                    <div class="control">
+                        <input class="input is-success" asp-for="Input.ConfirmPassword" />
+                    </div>
+                    <span class="help is-danger" asp-validation-for="Input.ConfirmPassword"></span>
+                </div>
+            </div>
+            <div class="column is-6">
+                <p class="title primary--text">Shipping Details</p>
+                <div class="field">
+                    <div class="columns">
+                        <div class="column is-6 no-label-field">
+                            <div class="control">
+                                <div class="select is-fullwidth">
+                                    <select asp-for="Input.LocationType" value="Home">
+                                        <option>Home</option>
+                                        <option>Office</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column is-paddingles is-6">
+                            <label class="label">Company</label>
+                            <div class="control">
+                                <input class="input is-success" asp-for="Input.Company" />
+                            </div>
+                            <span class="help is-danger" asp-validation-for="Input.Company"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="columns">
+                        <div class="column py-0 is-6">
+                            <label class="label">Recievers First Name</label>
+                            <div class="control">
+                                <input class="input is-success" asp-for="Input.RecieversFirstName" />
+                            </div>
+                            <span class="help is-danger" asp-validation-for="Input.RecieversFirstName"></span>
+                        </div>
+                        <div class="column py-0 is-6">
+                            <label class="label">Recievers Last Name</label>
+                            <div class="control">
+                                <input class="input is-success" asp-for="Input.RecieversLastName" />
+                            </div>
+                            <span class="help is-danger" asp-validation-for="Input.RecieversLastName"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Phone number</label>
+                    <div class="control">
+                        <input class="input is-success" asp-for="Input.PhoneNumber" />
+                    </div>
+                    <span class="help is-danger" asp-validation-for="Input.PhoneNumber"></span>
+                </div>
+                <div class="field">
+                    <label class="label">Address 1</label>
+                    <div class="control">
+                        <input class="input is-success" asp-for="Input.Address1" />
+                    </div>
+                    <span class="help is-danger" asp-validation-for="Input.Address1"></span>
+                </div>
+                <div class="field">
+                    <label class="label">Address 2</label>
+                    <div class="control">
+                        <input class="input is-success" asp-for="Input.Address2" />
+                    </div>
+                    <span class="help is-danger" asp-validation-for="Input.Address2"></span>
+                </div>
+
+                <div class="columns">
+                    <div class="column is-6">
+                        <label class="label">City</label>
+                        <div class="control">
+                            <input class="input is-success" asp-for="Input.City" />
+                        </div>
+                        <span class="help is-danger" asp-validation-for="Input.City"></span>
+                    </div>
+                    <div class="column is-6">
+                        <label class="label">Post Code</label>
+                        <div class="control">
+                            <input class="input is-success" asp-for="Input.PostCode" />
+                        </div>
+                        <span class="help is-danger" asp-validation-for="Input.PostCode"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="field column is-6 has-text-right">
+                <button type="submit" class="button secondary">Proceed To Payment</button>
+            </div>
+            <div class="column is-6" style="width:100%">
+                <p style="font-size:14px">ALREADY REGISTERED?</p>
+                <a asp-page="/Accounts/Login" class="primary--text is-size-6">SIGN IN</a>
+
+            </div>
+        </div>
+    </form>
+</div>
+

@@ -1,0 +1,41 @@
+﻿@page
+@model Shop.UI.Pages.BusinessProfile.Term.IndexModel
+@{
+}
+<p class="title secondary--text">30 Day Terms</p>
+<div class="column is-6">
+    <div class="field">
+        <label class="label">Your Current Credit Limit</label>
+        <div class="control">
+            <input class="input" value="R5000" disabled />
+        </div>
+    </div>
+    @if (User.Claims.FirstOrDefault(x => x.Type == "type")?.Value == "authorizer"
+|| User.Claims.FirstOrDefault(x => x.Type == "type")?.Value == "superuser")
+    {
+        <div>
+            <form method="post">
+                <label class="label">
+                    Increase your Credit Limit by
+                </label>
+                <div class="field">
+                    <div class="control">
+                        <input class="input" />
+                    </div>
+                </div>
+                <div class="field">
+                    <button class="button secondary" type="submit">Apply</button>
+                </div>
+                @if (Model.Confirm)
+                {
+                    <p class="has-text-centered">
+                        Thank you, your customer <br />
+                        relationship manager will be in touch <br />
+                        with you within 24 hr to confirm. <br />
+                        If urgent please email info@@officebox.co.za
+                    </p>
+                }
+            </form>
+        </div>
+    }
+</div>

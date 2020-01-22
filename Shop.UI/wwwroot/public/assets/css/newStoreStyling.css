@@ -1,0 +1,180 @@
+@media (min-width: 400px) {
+    .item-icons {
+        display: inline-flex;
+        text-align: center
+    }
+
+    .item-image {
+        display: block;
+        margin: auto;
+        width: 150px;
+        height: 150px;
+    }
+
+    input[type="number"] {
+        position: relative;
+        margin: 0 0 1rem;
+        border: 5px solid #FFF;
+        border-color: #FFF #FFF #FFF #FFF;
+        padding: .2rem;
+    }
+
+    /* Spin Buttons modified */
+    input[type="number"].mod::-webkit-outer-spin-button,
+    input[type="number"].mod::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        background: #FFF url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAYAAADgkQYQAAAAKUlEQVQYlWNgwAT/sYhhKPiPT+F/LJgEsHv37v+EMGkmkuImoh2NoQAANlcun/q4OoYAAAAASUVORK5CYII=) no-repeat center center;
+        width: 1em;
+        border-left: 1px solid #FFF;
+        opacity: 1; /* shows Spin Buttons per default (Chrome >= 39) */
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    input[type="number"].mod::-webkit-inner-spin-button:hover,
+    input[type="number"].mod::-webkit-inner-spin-button:active {
+        box-shadow: 0 0 2px #0CF;
+        opacity: .8;
+    }
+
+    /* Override browser form filling */
+    input:-webkit-autofill {
+        background: black;
+        color: red;
+    }
+
+    ::-webkit-input-placeholder { /* Chrome */
+        color: red;
+    }
+}
+
+.storeButton {
+    cursor: pointer;
+    width: 92%;
+    height: 42px;
+    border: 0;
+    text-transform: uppercase;
+    background-color: #EE8534;
+    color: #FFFFFF;
+    letter-spacing: 2px;
+    font-weight: 300;
+}
+
+.productInfo {
+    color: #8d8d8d;
+    font-size: 16px;
+    font-weight: 300;
+    margin-bottom: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 92%;
+    white-space: nowrap;
+}
+
+.bootstrap-select{
+    width:130px !important;
+}
+
+.spinner-button {
+    position: absolute;
+    cursor: default;
+    z-index: 2;
+    background-color: #ccc;
+    width: 14.5px;
+    text-align: center;
+    margin: 0px;
+    pointer-events: none;
+    height: 10px;
+    line-height: 10px;
+}
+
+#inc-button {
+    left: 34px;
+    top: 1.5px;
+    font-size:5px;
+    width:12px;
+    background-color: white;
+    transform:scale(2,1);
+    font-color:#868686;
+    -webkit-transform:scale(2,1);
+}
+
+#dec-button {
+    left: 34px;
+    top: 9.5px;
+    font-size:5px;
+    width:12px;
+    background-color: white;
+    transform:scale(2,1);
+    font-color:#868686;
+    -webkit-transform:scale(2,1);
+}
+
+.productDetail {
+    color: #8d8d8d;
+    font-size: 16px;
+    font-weight: 300;
+    margin-bottom: 0;
+}
+
+.productValue {
+    color: #ec8534;
+    font-size: 44px;
+    font-weight: 600;
+    margin-bottom: 0;
+    margin-top: -10px;
+}
+
+.ob-btn-info {
+    background-image: -webkit-linear-gradient(top, #ffffff 0%, #ffffff 100%)!important;
+    background-image: -o-linear-gradient(top, #ffffff 0%, #ffffff 100%)!important;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#D3D3D3), to(#D3D3D3))!important;
+    background-image: linear-gradient(to bottom, #ffffff 0%, #ffffff 100%)!important;
+    background-repeat: repeat-x!important;
+    border-color: #D3D3D3!important;
+    color: #D3D3D3!important;
+    background-color: #ffffff!important;
+    border-radius: 0!important;
+}
+
+.caret {
+    color: #0cdd6b;
+}
+
+.bootstrap-select.btn-group .dropdown-toggle .filter-option{
+    text-align: center;
+}
+.bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn){
+    margin-right: 15px;
+}
+
+.firstProductDiscount{
+    display:none;
+}
+.secondProductDiscount{
+    display:none;
+}
+
+.five-bar{
+    width:20%;
+}
+
+@media (max-width: 1280px) {
+    .three-bar{
+        display:inline-block;
+    }
+    .five-bar{
+        display:none;
+    }
+}
+
+@media (min-width: 1280px) {
+    .three-bar{
+        display:none;
+    }
+    .five-bar{
+        display:inline-block;
+    }
+}

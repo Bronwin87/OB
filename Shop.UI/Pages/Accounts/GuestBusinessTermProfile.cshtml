@@ -1,0 +1,247 @@
+﻿@page
+@model Shop.UI.Pages.Accounts.GuestBusinessTermProfileModel
+@{
+}
+
+<style>
+    .column-divider:not(:last-child) {
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #999;
+    }
+</style>
+
+<div class="container" id="app">
+    <div class="columns my-1">
+        <div class="column is-8 is-offset-2">
+            <div class="columns">
+                <div class="column is-4"><a class="button is-block is-radiusless">Step 1 - Business Details</a></div>
+                <div class="column is-4"><a class="button is-block is-radiusless">Step 2 - 30 Days Terms</a></div>
+                <div class="column is-4"><a class="button is-block is-radiusless primary">Step 3 - Approval & Setup</a></div>
+            </div>
+        </div>
+    </div>
+    <form method="post" class="column is-10 is-offset-1">
+        <div class="has-text-centered content subtitle-text">
+            <p class="title">Awesome. Your request is being processed</p>
+            <p>
+                We aim to get 30 Day Accounts approved <br />
+                within 24-48hrs. Your dedicated relationship <br />
+                manager will be intouch once opened
+            </p>
+            @*<p class="title">
+                In the mean while help us set up <br />
+                your profile
+            </p>*@
+        </div>
+        <div class="columns is-multiline">
+            @*<div class="column is-6">
+                <div>
+                    <div class="column-divider" v-for="(user, index) in regularUsers" :key="'r-' + index">
+                        <div class="field">
+                            <label class="label">First Name</label>
+                            <div class="control">
+                                <input class="input" v-model="user.firstName" />
+                            </div>
+                            <span class="help is-danger" v-if="user.fnValid">{{user.fnValid}}</span>
+                        </div>
+                        <div class="field">
+                            <label class="label">Last Name</label>
+                            <div class="control">
+                                <input class="input" v-model="user.lastName" />
+                            </div>
+                            <span class="help is-danger" v-if="user.lnValid">{{user.lnValid}}</span>
+                        </div>
+                        <div class="field">
+                            <label class="label">Email</label>
+                            <div class="control">
+                                <input class="input" v-model="user.email" />
+                            </div>
+                            <span class="help is-danger" v-if="user.eValid">{{user.eValid}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <a class="button" @@click="addPerson(false)">Add More</a>
+                </div>
+            </div>
+            <div class="column  is-6">
+                <div>
+                    <div class="column-divider" v-for="(user, index) in authorizers" :key="'r-' + index">
+                        <div class="field">
+                            <label class="label">First Name</label>
+                            <div class="control">
+                                <input class="input" v-model="user.firstName" />
+                            </div>
+                            <span class="help is-danger" v-if="user.fnValid">{{user.fnValid}}</span>
+                        </div>
+                        <div class="field">
+                            <label class="label">Last Name</label>
+                            <div class="control">
+                                <input class="input" v-model="user.lastName" />
+                            </div>
+                            <span class="help is-danger" v-if="user.lnValid">{{user.lnValid}}</span>
+                        </div>
+                        <div class="field">
+                            <label class="label">Email</label>
+                            <div class="control">
+                                <input class="input" v-model="user.email" />
+                            </div>
+                            <span class="help is-danger" v-if="user.eValid">{{user.eValid}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <a class="button" @@click="addPerson(true)">Add More</a>
+                </div>
+            </div>*@
+
+            <div class="column is-6 is-offset-3 has-text-centered">
+                @*<div class="field">
+                    <a class="button secondary" @@click="submit">Submit</a>
+                </div>*@
+                <div v-if="success" class="field">
+                    <p class="primary--text">Perfect, we'll get right on it</p>
+                </div>
+                <div class="field">
+                    <p class="subtitle-text">
+                        If your order is urgent you <br />
+                        can check out your order via <br />
+                        EFT or Credit Card while your <br />
+                        30 Day Account is being processed.
+                    </p>
+                </div>
+                <div class="field">
+                    <a class="button secondary" asp-page="/Checkout/Payment">Proceed to Payment</a>
+                    <a class="button secondary" onclick="requestPayment()">Request Payment</a>
+                </div>
+
+            </div>
+        </div>
+        @Html.AntiForgeryToken()
+    </form>
+    <form asp-page-handler="RequestPayment" method="post">
+        <div class="modal" id="payer-modal">
+            <div class="modal-background"></div>
+            <button type="button" class="modal-close is-large" aria-label="close" onclick="closeRequestPayment()"></button>
+            <div class="modal-content">
+                <div class="card">
+                    <header class="card-header">
+                        <p class="card-header-title">
+                            Request Payment
+                        </p>
+                    </header>
+                    <div class="card-content">
+                        <div class="field">
+                            <label class="label">Payer Name</label>
+                            <div class="control">
+                                <input class="input is-success" asp-for="Input.PayerName" />
+                            </div>
+                            <span class="help is-danger" asp-validation-for="Input.PayerName"></span>
+                        </div>
+                        <div class="field">
+                            <label class="label">Payer Email</label>
+                            <div class="control">
+                                <input class="input is-success" asp-for="Input.PayerEmail" />
+                            </div>
+                            <span class="help is-danger" asp-validation-for="Input.PayerEmail"></span>
+                        </div>
+                    </div>
+                    <footer class="card-footer has-text-centered">
+                        <div class="column">
+                            <button type="submit" class="button secondary">Submit</button>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+@section scripts {
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        var requestPayment = function () {
+            document.getElementById('payer-modal').classList.add('is-active')
+        }
+
+        var closeRequestPayment = function () {
+            document.getElementById('payer-modal').classList.remove('is-active')
+        }
+    </script>
+    <script>
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                users: [],
+                success: false
+            },
+            created() {
+                this.addPerson(false);
+                this.addPerson(true);
+            },
+            methods: {
+                addPerson(authorizer) {
+                    this.users.push(this.newPerson(authorizer))
+                },
+                newPerson(authorizer) {
+                    return {
+                        firstName: "",
+                        fnValid: "",
+                        lastName: "",
+                        lnValid: "",
+                        email: "",
+                        eValid: "",
+                        authorizer: authorizer
+                    }
+                },
+                validate() {
+                    let valid = true
+                    for (var i = 0; i < this.users.length; i++) {
+                        if (this.users[i].firstName === "") {
+                            this.users[i].fnValid = "First name is required."
+                            valid = false;
+                        } else {
+                            this.users[i].fnValid = ""
+                        }
+
+                        if (this.users[i].lastName === "") {
+                            this.users[i].lnValid = "Last name is required."
+                            valid = false;
+                        } else {
+                            this.users[i].lnValid = ""
+                        }
+
+                        if (this.users[i].email === "") {
+                            this.users[i].eValid = "Email is required."
+                            valid = false;
+                        } else {
+                            this.users[i].eValid = ""
+                        }
+                    }
+                    return valid;
+                },
+                submit() {
+                    if (this.validate()) {
+                        axios.post('/Accounts/GuestBusinessTermProfile', this.users, { headers: { "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val() } })
+                            .then(res => {
+                                this.success = true
+                            })
+                    }
+                }
+            },
+            computed: {
+                regularUsers() {
+                    return this.users.filter(x => !x.authorizer)
+                },
+                authorizers() {
+                    return this.users.filter(x => x.authorizer)
+                }
+            }
+        })
+
+    </script>
+}

@@ -1,0 +1,70 @@
+﻿@page
+@model Shop.UI.Pages.BusinessProfile.CompanyDetails.EditAccountModel
+
+<div class="columns">
+    <div class="column is-6">
+        <form method="post">
+            <input type="hidden" asp-for="Input.Id" />
+            <div class="field">
+                <label class="label">Company Name</label>
+                <div class="control">
+                    <input class="input" value="@Model.Input.CompanyName" disabled />
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Co. Reg. No</label>
+                <div class="control">
+                    <input class="input" value="@Model.Input.RegistrationNumber" disabled />
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Vat. Number</label>
+                <div class="control">
+                    <input class="input" value="@Model.Input.CompanyVAT" disabled />
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Phone Number</label>
+                <div class="control">
+                    <input class="input" asp-for="Input.PhoneNumber" />
+                </div>
+                <span asp-validation-for="Input.PhoneNumber"></span>
+            </div>
+            <div class="field">
+                <label class="label">Address 1</label>
+                <div class="control">
+                    <input class="input" asp-for="Input.Address1" />
+                </div>
+                <span asp-validation-for="Input.Address1"></span>
+            </div>
+            <div class="field">
+                <label class="label">Address 2</label>
+                <div class="control">
+                    <input class="input" asp-for="Input.Address2" />
+                </div>
+                <span asp-validation-for="Input.Address2"></span>
+            </div>
+            <div class="field">
+                <label class="label">City</label>
+                <div class="control">
+                    <input class="input" asp-for="Input.City" />
+                </div>
+                <span asp-validation-for="Input.City"></span>
+            </div>
+            <div class="field">
+                <label class="label">Post Code</label>
+                <div class="control">
+                    <input class="input" asp-for="Input.PostCode" />
+                </div>
+                <span asp-validation-for="Input.PostCode"></span>
+            </div>
+            <button type="submit" class="button secondary">Update</button>
+        </form>
+
+    </div>
+    <div class="column is-6">
+        <p>
+            Please contact us on <a href="mailto:customerservice@officebox.co.za">customerservice@officebox.co.za</a> if you wish to change your company name, registration or vat number.
+        </p>
+    </div>
+</div>

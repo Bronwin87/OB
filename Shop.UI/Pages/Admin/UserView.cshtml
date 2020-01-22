@@ -1,0 +1,91 @@
+﻿@page
+@model Shop.UI.Pages.Admin.UserViewModel
+
+<style type="text/css">
+    .validation-summary-errors {
+        color: red;
+        font-weight: 600;
+    }
+</style>
+
+<p class="subtitle is-size-3">@Model.User.FirstName @Model.User.LastName</p>
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(model => Model.User.Id)
+    @Html.HiddenFor(model => Model.UpdatePassword)
+    @Html.ValidationSummary(false, "", new { @class = "error-content" })
+
+    <div class="columns is-multiline">
+        <div class="column is-6">
+            <table class="table is-fullwidth">
+                <tr>
+                    <th>Id</th>
+                    <td>@Model.User.Id</td>
+                </tr>
+                <tr>
+                    <th>First name</th>
+                    <td>@Html.TextBoxFor(model => model.User.FirstName, new { @class = "input" })</td>
+                </tr>
+                <tr>
+                    <th>Last name</th>
+                    <td>@Html.TextBoxFor(model => model.User.LastName, new { @class = "input" })</td>
+                </tr>
+                <tr>
+                    <th>Username</th>
+                    <td>@Html.TextBoxFor(model => model.User.UserName, new { @class = "input" })</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>@Html.TextBoxFor(model => model.User.Email, new { @class = "input" })</td>
+                </tr>
+                <tr>
+                    <th>Job title</th>
+                    <td>@Html.TextBoxFor(model => model.User.JobTitle, new { @class = "input" })</td>
+                </tr>
+                <tr>
+                    <th>Type</th>
+                    <td>
+                        <select asp-for="User.Type" class="input select">
+                            <option value="3">Business User</option>
+                            <option value="2">Authoriser</option>
+                            <option value="1">Super User</option>
+                            <option value="0">COD User</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Password</th>
+                    <td>
+                        @Html.PasswordFor(model => model.Password, new { @class = "input", @readonly = true })
+                        <button id="UpdatePasswordButton" type="button" class="button formsubmit">Edit</button>&nbsp;
+                        <span id="UpdatePasswordLink" style="display: none;">Enter new password</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Confirm Password</th>
+                    <td>
+                        @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "input", @readonly = true })
+                    </td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <td><button type="submit" class="button is-primary formsubmit">Submit</button></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+}
+
+@section scripts {
+    <script src="/public/assets/js/jquery-3.1.0.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#UpdatePasswordButton").click(function () {
+                $("#Password").prop("readonly", false);
+                $("#ConfirmPassword").prop("readonly", false);
+                $("#UpdatePasswordLink").show(300);
+            });
+        });
+    </script>
+}

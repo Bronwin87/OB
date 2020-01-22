@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<!-- This page is displayed when someone navigates to a verify email or reset password link
+     but their security token is wrong. This can either mean the user has clicked on a
+     stale link (i.e. re-click on a password reset link after resetting their password) or
+     (rarely) this could be a sign of a malicious user trying to tamper with your app.
+ -->
+<html>
+  <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <title>Invalid Link</title>
+  <style type='text/css'>
+    body {
+      font-family: 'Open Sans', 'Helvetica Neue', Helvetica;
+      color: #666666;
+      margin: 15px 99px 0px 98px;
+      background-color: #1a1b1a;
+    }
+
+    h1 {
+      font-size: 20px;
+      font-weight: 400;
+      margin: 10px 0px 45px 0px;
+    }
+
+    @media screen and (max-width: 320px) {
+    .container {
+     margin-left: -60px;
+     text-align: left !important;
+    }
+  }
+
+    @media screen and (max-width: 320px) {
+    h1 {
+     font-size: 17px !important;
+     text-align: right !important;
+    }
+  }
+  </style>
+  <body> 
+    <div class="container" style="text-align: center">
+      <img src="../../public/images/LogoBig.png" style="width:200px">
+      <h1>Invalid Link</h1>
+    </div> 
+  </body>
+</html>

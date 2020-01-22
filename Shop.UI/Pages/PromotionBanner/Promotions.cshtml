@@ -1,0 +1,175 @@
+﻿@page
+@model Shop.UI.Pages.PromotionBanner.PromotionsModel
+@{
+    ViewData["Title"] = "Promotions";
+}
+
+<style>
+    .label {
+        font-size 14px;
+        color: #858585;
+        margin-left: 20px;
+        font-weight: 400;
+        margin-bottom: 0px;
+    }
+
+    .input {
+        width: 100%;
+    }
+</style>
+
+<div class="container section">
+    <div class="columns">
+        <div class="column is-6" data-aos="fade-right">
+            <div class="col-xs-2">
+            </div>
+            <div class="col-xs-10">
+                <div class="title">BRANDED PROMOTIONAL ITEMS </div>
+                <div class="subtitle">Corporate clothing, headgear, banners, gazebos… and so much more! </div>
+                <div class="subtitle-text">
+                    Get 25% off your first Branded Items order (up to R5000 Disc)
+                </div>
+                <div class="spacer2"></div>
+                <div class="column is-4">
+                    <a href="/ContactPromotions" class="button navbar-item is-primary secondary" target="_blank">YES I'm Interested</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="column is-6" data-aos="fade-left">
+        <div class="section-image-wraper">
+            <img class="img-responsive" src="~/public/assets/images/promotions.jpg">
+        </div>
+    </div>
+</div>
+<style>
+    .ao-preview {
+        position: relative;
+    }
+
+    input.ao-toggle {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        margin: 0;
+        padding: 0;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+        filter: alpha(opacity=0);
+        opacity: 0;
+        z-index: 100;
+        border: none;
+        cursor: pointer;
+    }
+
+    .img-responsive, .thumbnail > img, .thumbnail a > img, .carousel-inner > .item > img, .carousel-inner > .item > a > img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+    }
+
+    .ao-annotations {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        opacity: 0;
+        z-index: 5;
+        -webkit-transform: scale(0.8);
+        -moz-transform: scale(0.8);
+        -o-transform: scale(0.8);
+        -ms-transform: scale(0.8);
+        transform: scale(0.8);
+        -webkit-transition: all 0.3s ease-in-out;
+        -moz-transition: all 0.3s ease-in-out;
+        -o-transition: all 0.3s ease-in-out;
+        -ms-transition: all 0.3s ease-in-out;
+        transition: all 0.3s ease-in-out;
+    }
+
+        .ao-annotations span:nth-child(1) {
+            top: 50%;
+            left: 15%;
+        }
+
+        .ao-annotations span {
+            display: block;
+            position: absolute;
+            padding: 10px 25px;
+            width: 33%;
+            min-width: 140px;
+            text-align: center;
+            background: rgba(255,255,255,1);
+            color: rgba(20,40,47,0.9);
+            font-size: 16px;
+            font-style: italic;
+            text-shadow: 1px 1px 1px rgba(255,255,255,0.9);
+            box-shadow: 0px 1px 4px rgba(0,0,0,0.2);
+            -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+            filter: alpha(opacity=0);
+            opacity: 0;
+            -webkit-transform: scale(1.3);
+            -moz-transform: scale(1.3);
+            -o-transform: scale(1.3);
+            -ms-transform: scale(1.3);
+            transform: scale(1.3);
+            -webkit-transition: all 0.3s ease-in-out;
+            -moz-transition: all 0.3s ease-in-out;
+            -o-transition: all 0.3s ease-in-out;
+            -ms-transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
+        }
+</style>
+<!-- <div class="container">
+    <form method="post" class="container">
+            <div class="column is-4 is-offset-4">
+                <div class="field">
+                    <label class="label">First Name</label>
+                    <div class="control">
+                        <input class="input"  />
+                    </div>
+                    <span class="help is-danger" ></span>
+                </div>
+                <div class="field">
+                    <label class="label">Last Name</label>
+                    <div class="control">
+                        <input class="input" />
+                    </div>
+                    <span class="help is-danger" ></span>
+                </div>
+                <div class="field">
+                    <label class="label">Email</label>
+                    <div class="control">
+                        <input class="input" />
+                    </div>
+                    <span class="help is-danger" ></span>
+                </div>
+                <div class="field">
+                    <label class="label">Password</label>
+                    <div class="control">
+                        <input class="input" />
+                    </div>
+                    <span class="help is-danger" ></span>
+                </div>
+                <div class="field">
+                    <label class="label">Confirm Password</label>
+                    <div class="control">
+                        <input class="input" />
+                    </div>
+                    <span class="help is-danger"></span>
+                </div>
+                <div class="columns">
+                    <div class="field column is-6">
+                        <button type="submit" class="button" style="background:#ee8534;color:#fff;width:100%">Sign Up</button>
+                    </div>
+                    <div class="column is-6" style="width:100%">
+                        <p style="font-size:14px">ALREADY REGISTERED?</p>
+                        <p style="color:#0bdd6f;font-size:14px;font-weight:300">SIGN IN</p>
+
+                    </div>
+                </div>
+
+            </div>
+    </form> -->

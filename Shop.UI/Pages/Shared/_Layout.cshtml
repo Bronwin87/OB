@@ -1,0 +1,546 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="all" />
+    @if (!string.IsNullOrEmpty(ViewData["Title"]?.ToString()))
+    {
+        <title>OfficeBox - @ViewData["Title"]</title>
+    }
+    else
+    {
+        <title>OfficeBox</title>
+    }
+    @if (IsSectionDefined("MetaTags"))
+    {
+        @RenderSection("MetaTags", required: false)
+    }
+    else
+    {
+        <meta name="description" content="OfficeBox (Pty) Ltd" />
+        <meta name="keywords" content="Stationery, online shopping, ecommerce, Office Supplies" />
+    }
+    <script src="/public/assets/js/jquery-3.1.0.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.unobtrusive-ajax/3.2.5/jquery.unobtrusive-ajax.min.js"></script>
+    <style type="text/css">
+        .body {
+            display: none;
+        }
+
+        .buttonClass {
+            border-radius: 0;
+            border: none;
+            background-image: none;
+            background-color: #0cdd6b;
+            text-transform: uppercase;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-size: 14px;
+            color: #fff !important;
+            width: 135px;
+            display: inline-block;
+            line-height: 1.6;
+            white-space: pre;
+            height: 40px;
+            margin-top: -4px;
+            font-size: 14px;
+            */ outline: none;
+            /* width: auto; */
+            /* height: auto; */
+            padding: 10px 15px;
+            /* line-height: 35px; */
+            text-decoration: none !important;
+            cursor: pointer;
+        }
+    </style>
+    <environment include="Development">
+        <link href="~/lib/bulma-0.7.2/css/bulma.css" rel="stylesheet" />
+        <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" />
+        <link href="https://use.fontawesome.com/releases/v5.0.7/css/all.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="@Url.Content("~/public/assets/css/waitMe.css")">
+        <link rel="stylesheet" type="text/css" href="@Url.Content("~/css/spinner.css")">
+    </environment>
+    <environment include="Production">
+        <link href="~/lib/bulma-0.7.2/css/bulma.min.css" rel="stylesheet" />
+        <link href="https://use.fontawesome.com/releases/v5.0.7/css/all.css" rel="stylesheet">
+        <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/officebox_form_stylings.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/officebox_signIn.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" />
+        <link rel="stylesheet" type="text/css" href="@Url.Content("~/public/assets/css/waitMe.css")">
+        <link rel="stylesheet" type="text/css" href="@Url.Content("~/css/spinner.css")">
+    </environment>
+
+    @*<script>
+            $(document).ready(function () {
+                if ((/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))) {
+
+                    $('body > *').hide();
+                    $('#myDiv').appendTo('body');
+                } else {
+                    $('#myDiv').hide();
+                }
+            });
+
+        </script>*@
+    <script src="https://ssense.github.io/vue-carousel/js/vue-carousel.min.js"></script>
+</head>
+<body>
+    @{
+        await Html.RenderPartialAsync("_SendProductEmailModal");
+    }
+    <div id="contents">
+        <div class="slide-container" style="position:absolute;display:none">
+            Notification alert: Lorem ipsum dolor sit amet.
+        </div>
+
+        <nav class="navbar is-marginless" role="navigation" aria-label="main navigation" style="z-index: 600;">
+            <div class="container" style="align-items: center;">
+                <div class="columns  is-marginless is-multiline" style="align-items: center;">
+                    <div class="column  is-12">
+                        <a asp-page="/shop/index">
+                            <img class="header-logo" src="@Url.Content("~/public/logo.png")" alt="OfficeBox">
+                        </a>
+                    </div>
+                    @{var currPath = ViewContext.RouteData.Values.Values.FirstOrDefault().ToString(); }
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div class="column  is-12">
+                            <div class="dropdown is-hoverable">
+                                <div class="dropdown-trigger">
+                                    <p class="content2 has-text-weight-semibold" style="padding-left:0.75rem">
+
+                                        Hi, @await Component.InvokeAsync("Salutation")
+                                    </p>
+
+                                    @if (User.Claims.FirstOrDefault(x => x.Type == "Role")?.Value == "Admin")
+                                    {
+
+                                        <a asp-page="/Admin/Index">
+                                            <button class="button dashboard-button" aria-haspopup="true" aria-controls="dropdown-menu4">
+                                                CMS Portal
+                                            </button>
+                                        </a>
+
+                                    }
+                                    @if (User.Claims.FirstOrDefault(x => x.Type == "type")?.Value == "user")
+                                    {
+                                        <a asp-page="/Profile/Index">
+                                            <button class="button dashboard-button" aria-haspopup="true" aria-controls="dropdown-menu4">
+                                                My dashboard&nbsp;
+                                                <span class="icon is-small">
+                                                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                                </span>
+                                            </button>
+                                        </a>
+                                    }
+                                    else if (User.Claims.FirstOrDefault(x => x.Type == "type")?.Value == "superuser"
+                                    || User.Claims.FirstOrDefault(x => x.Type == "type")?.Value == "authorizer"
+                                    || User.Claims.FirstOrDefault(x => x.Type == "type")?.Value == "businessuser")
+                                    {
+
+                                        <a asp-page="/BusinessProfile/Index">
+                                            <button class="button dashboard-button" aria-haspopup="true" aria-controls="dropdown-menu4">
+                                                My dashboard&nbsp;
+                                                <span class="icon is-small">
+                                                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                                </span>
+                                            </button>
+                                        </a>
+                                    }
+
+                                </div>
+                                @if (User.Claims.FirstOrDefault(x => x.Type == "type")?.Value == "user")
+                                {
+                                    <div class="dropdown-menu" style="padding-top:0;" id="dropdown-menu4" role="menu">
+                                        <div class="dropdown-content">
+                                            <div class="dropdown-item" style="border-bottom: 1px dashed #d6d6d6;">
+                                                <a href="/Profile/FavouriteList" class="id-link">Favourites List</a>
+                                            </div>
+                                            <div class="dropdown-item" style="border-bottom: 1px dashed #d6d6d6;">
+                                                <a href="/Profile/OrderHistory" class="id-link">Order History</a>
+                                            </div>
+                                            <div class="dropdown-item">
+                                                <a href="/Profile/Exchanges/Index" class="id-link">Log Exchange/Return</a>
+                                                @*//<li><a asp-page="/BusinessProfile/Exchanges/Index">Exchanges & Returns</a></li>*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else if (User.Claims.FirstOrDefault(x => x.Type == "type")?.Value == "superuser"
+                                || User.Claims.FirstOrDefault(x => x.Type == "type")?.Value == "authorizer"
+                                || User.Claims.FirstOrDefault(x => x.Type == "type")?.Value == "businessuser")
+                                {
+                                    <div class="dropdown-menu" style="padding-top:0;" id="dropdown-menu4" role="menu">
+                                        <div class="dropdown-content">
+                                            <div class="dropdown-item" style="border-bottom: 1px dashed #d6d6d6;">
+                                                <a href="/BusinessProfile/FavouriteList" class="id-link">Favourites List</a>
+                                            </div>
+                                            <div class="dropdown-item" style="border-bottom: 1px dashed #d6d6d6;">
+                                                <a href="/BusinessProfile/Orders" class="id-link">Order History</a>
+                                            </div>
+                                            <div class="dropdown-item" style="border-bottom: 1px dashed #d6d6d6;">
+                                                <a href="/BusinessProfile/Quotes" class="id-link">Quotes</a>
+                                            </div>
+                                            <div class="dropdown-item">
+                                                <a href="/BusinessProfile/Exchanges/Index" class="id-link">Log Exchange/Return</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                }
+                            </div>
+                        </div>
+                    }
+
+                </div>
+                <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+
+                <div id="navbarMenuHeroA" class="navbar-menu">
+
+                    @if (currPath != "/Index")
+                    {
+
+                        <div class="navbar-end">
+                            <div class="navbar-item field is-gapless is-marginless" id="search">
+                                <div class="control has-icons-right">
+                                    <input class="input" v-model="search" placeholder="SEARCH PRODUCTS">
+                                    <span class="icon is-small is-right">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="#ddd" d="M23.822 20.88l-6.353-6.354c.93-1.465 1.467-3.2 1.467-5.059.001-5.219-4.247-9.467-9.468-9.467s-9.468 4.248-9.468 9.468c0 5.221 4.247 9.469 9.468 9.469 1.768 0 3.421-.487 4.839-1.333l6.396 6.396 3.119-3.12zm-20.294-11.412c0-3.273 2.665-5.938 5.939-5.938 3.275 0 5.94 2.664 5.94 5.938 0 3.275-2.665 5.939-5.94 5.939-3.274 0-5.939-2.664-5.939-5.939z" /></svg>
+                                    </span>
+                                    <div class="is-overlay has-dropdown" style="top: 40px;" role="navigation" v-if="Object.keys(products).length > 0">
+                                        <div class="navbar-menu">
+                                            <div class="navbar-start">
+                                                <div class="navbar-dropdown" id="search-navbar">
+                                                    <div class="navbar-item">
+                                                        <div class="navbar-brand" style="min-height: 2rem;margin-left:-4px">
+                                                            <img class="header-logo" src="@Url.Content("~/public/logo.png")" alt="OfficeBox">
+                                                        </div>
+                                                        <div class="navbar-end is-inline-flex search-link" v-on:click="products = {}">X Close Search</div>
+                                                    </div>
+                                                    <div v-for="(items, categoryIndex, arrIndex) in products">
+                                                        <div class="search-heading">
+                                                            {{items.key}}
+                                                            <div v-if="items.products.length > 2" class="navbar-end is-inline-flex search-link" style="color: #ee8534;font-weight: 400;text-transform: capitalize;font-style: italic;font-size:8px">
+                                                                <a :href="'/CategoryTiles/tri/'+ items.products[0].tertiaryCategoryId + '/' + items.products[0].tertiaryCategory + '/' + AZ" class="search-link is-orange">See more >></a>
+                                                            </div>
+                                                        </div>
+                                                        <div v-for="p in items.products" class="navbar-item">
+                                                            <a :href="'/shop/product/' + p.id" class="search-link">
+                                                                <span style="width: 50px; min-width: 50px; text-align: center; margin-right: 15px;">
+                                                                    <img :src="p.imageUrl" style="max-height: 50px" :alt="p.name" />
+                                                                </span>
+                                                                <span>
+                                                                    <strong>{{p.name}}</strong>
+                                                                    <br />
+                                                                    {{p.code}}
+                                                                    <br />
+                                                                    {{p.price}}
+                                                                </span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="search-heading" style="color: #ee8534;font-style:italic;" class="navbar-item">
+                                                        <a asp-page="/Shop/VAIndex" class="search-link">>> See Value Added Items</a>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="navbar-end">
+                                <div class="navbar-item">
+                                    <div class="navbar-item" id="live-cart">
+                                        <vc:cart view="Small"></vc:cart>
+                                    </div>
+                                    <div class="nav-item" style="padding-top:10px;padding-left:50px">
+                                        <div class="columns" style="margin-bottom: 11px;">
+                                            @if (User.Identity.IsAuthenticated)
+                                            {
+
+                                            }
+                                            else
+                                            {
+
+                                                <a id="createAccountBtn" class="navbar-item is-primary" asp-page="/Accounts/Index" style="margin-right: 60px;margin-top:2.25rem;background-color: #0cdd6b; color:#fff;font-weight:400;letter-spacing:1px;text-transform:uppercase">
+                                                    Create  Account
+                                                </a>
+                                            }
+                                        </div>
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                                            if (User.Claims.FirstOrDefault(x => x.Type == "Role")?.Value == "Admin")
+                                            {
+
+                                            }
+                                            if (User.Claims.FirstOrDefault(x => x.Type == "type")?.Value == "user")
+                                            {
+
+                                            }
+                                            else if (User.Claims.FirstOrDefault(x => x.Type == "type")?.Value == "superuser"
+                                                || User.Claims.FirstOrDefault(x => x.Type == "type")?.Value == "authorizer"
+                                                || User.Claims.FirstOrDefault(x => x.Type == "type")?.Value == "businessuser")
+                                            {
+
+                                            }
+                                            <a class="button navbar-item is-primary" asp-controller="Account" asp-action="Logout">Sign Out</a>
+                                        }
+                                        else
+                                        {
+                                            <a class="is-primary" style="text-transform:uppercase;background-color: #fff;margin-right: 60px;color:grey;letter-spacing:1px" asp-page="/Accounts/Login">Sign In</a>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="navbar-end">
+                            <div class="navbar-item">
+                                <a class="header-link" asp-page="/Nationaldelivery/Index">
+                                    National Delivery
+                                </a>
+                            </div>
+                        </div>
+                        <div class="navbar-item">
+                            <a class="header-link" asp-page="/OnlineOrdering/Index">
+                                Online Ordering
+                            </a>
+                        </div>
+                        <div class="navbar-item">
+                            <a class="header-link" asp-page="/PaymentOption/Index">
+                                Payment Option
+                            </a>
+                        </div>
+                        <div class="navbar-item">
+                            <a id="createAccountBtn" class="navbar-item is-primary" asp-page="/Accounts/Index" style="font-weight: 600;background-color: #0cdd6b; color:#fff;font-weight:400;letter-spacing:1px;text-transform:uppercase">
+                                Create Account
+                            </a>
+
+                        </div>
+                        <div class="navbar-item">
+                            <a class="button navbar-item is-primary secondary" asp-page="/Accounts/Login" style="margin:0">Sign In</a>
+                        </div>
+
+                    }
+                </div>
+
+
+            </div>
+        </nav>
+
+        @if (ViewData["Title"]?.ToString() != "Home")
+        {
+            @await Component.InvokeAsync("Category");
+        }
+
+        @*<partial name="_CookieConsentPartial" />*@
+        <div class="body-content">
+            @RenderBody()
+        </div>
+
+
+    </div>
+
+    <footer class="footer">
+        <style>
+            .footer {
+                background: #fff !important;
+            }
+
+                .footer a {
+                    color: #757575 !important;
+                    text-decoration: none;
+                    font-weight: 500;
+                }
+
+                    .footer a:visited {
+                        text-decoration: none !important;
+                    }
+
+                    .footer a:hover {
+                        color: #0bdd6f !important;
+                    }
+
+            .footerCSS {
+                list-style: none !important;
+            }
+        </style>
+        <div class="container">
+            <div class="columns">
+                <img src="https://s3.us-east-2.amazonaws.com/officeboxnew/whatsinit/business/Logo+-+Grey.png" alt="OfficeBox" class="image" style="padding-left:10px;padding-bottom:25px">
+            </div>
+            <div class="columns">
+                <div class="column">
+                    <p style="color:#A7A8A7;text-align: left">©OfficeBox 2019</p>
+                    <p style="color: #fff">Now:&nbsp;@DateTime.UtcNow</p>
+                    <p style="color: #fff">UTC:&nbsp;&nbsp;@DateTime.UtcNow</p>
+                </div>
+                <div class="column">
+                    <h4 class="footer-widget-title" style="color:#757575; font-weight:600; font-size:17px;  margin-bottom:0px;">SHOP</h4>
+                    <ul style="padding-left:0px;">
+                        <li class="footerCSS">
+                            <a asp-page="/CategoryTiles" asp-route-category="main" asp-route-sortValue="AZ"
+                               asp-route-id="t7hn4VVSsS" asp-route-topname="Office Supplies" class="sub-nav" style=" color: #757575 !important;text-decoration: none;font-weight: 300;" target="_blank">Office Supplies</a>
+                        </li>
+                        <li class="footerCSS">
+                            <a asp-page="/CategoryTiles" asp-route-category="main"
+                               asp-route-id="wQMi50cmyU" asp-route-topname="Electronic & Accessories" class="sub-nav" style=" color: #757575 !important;text-decoration: none;font-weight: 300;" target="_blank">Electronics & Accessories</a>
+                        </li>
+                        <li class="footerCSS">
+                            <a asp-page="/CategoryTiles" asp-route-category="main" asp-route-sortValue="AZ"
+                               asp-route-id="gobLTfv1S4" asp-route-topname="School Stationery" class="sub-nav" style=" color: #757575 !important;text-decoration: none;font-weight: 300;" target="_blank">School Stationery</a>
+                        </li>
+                        <li class="footerCSS">
+                            <a asp-page="/CategoryTiles" asp-route-category="main" asp-route-sortValue="AZ"
+                               asp-route-id="m5dyoUcQJZ" asp-route-topname="Inks & Toners" class="sub-nav" style=" color: #757575 !important;text-decoration: none;font-weight: 300;" target="_blank">Inks & Toners</a>
+                        </li>
+                        <li class="footerCSS">
+                            <a asp-page="/CategoryTiles" asp-route-category="main" asp-route-sortValue="AZ"
+                               asp-route-id="KC6HdFoE3x" asp-route-topname="Canteen & Janitorial" class="sub-nav" style=" color: #757575 !important;text-decoration: none;font-weight: 300;" target="_blank">Canteen & Janitorial</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <h4 class="footer-widget-title" style="color:#757575; font-weight:600; font-size:17px;  margin-bottom:0px;">ABOUT</h4>
+                    <ul style="padding-left:0px;">
+                        <li class="footerCSS">
+                            <a href="/Index?skipcookie=true" class="sub-nav" style=" color: #757575 !important;text-decoration: none;font-weight: 300;">About OfficeBox</a>
+                        </li>
+                        <li class="footerCSS">
+                            <a href="/TermsAndConditions" class="sub-nav" style=" color: #757575 !important;text-decoration: none;font-weight: 300;" target="_blank">T's &amp; C's</a>
+                        </li>
+                        <li class="footerCSS">
+                            <a href="/privacy/Index" class="sub-nav" style=" color: #757575 !important;text-decoration: none;font-weight: 300;" target="_blank">Privacy</a>
+                        </li>
+                        <li class="footerCSS">
+                            <a href="/BBBEE" class="sub-nav" style=" color: #757575 !important;text-decoration: none;font-weight: 300;" target="_blank">B-BBEE</a>
+                        </li>
+                        <li class="footerCSS">
+                            <a href="http://blog.officebox.co.za/" class="sub-nav" style=" color: #757575 !important;text-decoration: none;font-weight: 300;" target="_blank">Blog</a>
+                        </li>
+                        <li class="footerCSS">
+                            <a href="/Index?skipcookie=true#testimonials" class="sub-nav" style=" color: #757575 !important;text-decoration: none; font-weight: 300;" target="_blank">Testimonials</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <h4 class="footer-widget-title" style="color:#757575; font-weight:600; font-size:17px;  margin-bottom:0px;">FEATURES</h4>
+                    <ul style="padding-left:0px;">
+                        <!--<li class="footerCSS"><a href="/cartDiscountDevelopment" class="sub-nav" style="font-weight:300;">Savings Calculator</a></li>-->
+                        <li class="footerCSS">
+                            <a asp-page="/NationalDelivery/Index" class="sub-nav" style=" color: #757575 !important;text-decoration: none;font-weight: 300;" target="_blank">National Delivery</a>
+
+                        </li>
+                        <li class="footerCSS">
+                            <a href="/OnlineOrdering" class="sub-nav" style=" color: #757575 !important;text-decoration: none;font-weight: 300;" target="_blank">Online Ordering</a>
+                        </li>
+                        <li class="footerCSS">
+                            <a href="/RelationshipManager/Index" class="sub-nav" style=" color: #757575 !important; text-decoration: none; font-weight: 300;" target="_blank">Relationship Manager</a>
+                        </li>
+                        <li class="footerCSS">
+                            <a asp-page="/SavingsCalculator/Index" class="sub-nav" style=" color: #757575 !important; text-decoration: none; font-weight: 300;" target="_blank">Savings Calculator</a>
+                        </li>
+                        @*<li><a asp-page="/SavingsCalculator/Index"></a></li>*@
+                    </ul>
+                </div>
+                <div class="column">
+                    <h4 class="footer-widget-title" style="color:#757575; font-weight:600; font-size:17px;  margin-bottom:0px;">SUPPORT</h4>
+                    <ul style="padding-left:0px;">
+                        <li class="footerCSS">
+                            <a asp-page="/Contact/Index" class="sub-nav" style=" color: #757575 !important;
+		  text-decoration: none;
+		  font-weight: 300;" target="_blank">Help Desk</a>
+                        </li>
+                        <li class="footerCSS">
+                            <a href="/Faq" class="sub-nav" style=" color: #757575 !important;
+		  text-decoration: none;
+		  font-weight: 300;" target="_blank">FAQ's</a>
+                        </li>
+                </div>
+                <div class="column">
+                    <h4 class="footer-widget-title" style="color:#757575; font-weight:600; font-size:17px;  margin-bottom:0px;">CONTACT</h4>
+                    <a href="https://web.facebook.com/OfficeboxSA/" target="_blank">
+                        <img src="https://s3.us-east-2.amazonaws.com/officeboxnew/whatsinit/business/Facebook.png" alt="Facebook" style="margin-right: 5px; margin-top: 5px; margin-bottom: 5px">
+                    </a>
+                    <a href="https://twitter.com/OfficeBox_SA" target="_blank">
+                        <img src="https://s3.us-east-2.amazonaws.com/officeboxnew/whatsinit/me/Twitter.png" alt="Twitter" style="margin-right: 5px; margin-top: 5px; margin-bottom: 5px">
+                    </a>
+                    <a href="https://www.linkedin.com/company-beta/5099206/" target="_blank">
+                        <img src="https://s3.us-east-2.amazonaws.com/officeboxnew/whatsinit/business/LinkedIn.png" alt="LinkedIn" style="margin-right: 5px; margin-top: 5px; margin-bottom: 5px">
+                    </a>
+                    <p>
+                        <a href="mailto:info@officebox.co.za" style=" color: #757575 !important;
+		  text-decoration: none;
+		  font-weight: 300;" target="_blank">info@officebox.co.za</a>
+                        <br>
+                        <a href="tel:027872855845" style=" color: #757575 !important;
+		  text-decoration: none;
+		  font-weight: 300;" target="_blank">+27 87 285 5845</a>
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+
+        @*<div class="container" id="myDiv">
+                <div class="field" style="padding:1rem;background-color:#F4F8F5;margin-bottom:0;">
+                    <img src="@Url.Content("~/public/logo.png")" class="header-logo" style="max-width:70%;margin-left:0.25rem">
+                </div>
+                <div class="notification has-text-left has-text-weight-light" style="border-top: 0.5px solid rgb(170, 168, 168);border-radius:2px;">
+                    <div class="is-orange is-size-6-mobile" style="font-weight:100;letter-spacing:0.2px;padding-bottom:0.75rem;">
+                        Our Mobile Store will land very soon! Meanwhile, please visit again on any <span class="is-green">desktop device</span>
+                    </div>
+
+                    <div class="has-text-justified has-text-left has-text-weight-light">
+                        Please send any queries to our
+                        <a href="mailto:info@officebox.co.za" class="is-green">Info Center</a> <br />
+                        Or contact us direct via:  <span class="has-text-weight-semibold">+27 87 285 5845</span>
+                    </div>
+
+                </div>
+            </div>*@
+    </footer>
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+            asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+            asp-fallback-test="window.jQuery"
+            crossorigin="anonymous"
+            integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script src="~/js/linq.min.js"></script>
+    <script src="~/js/cat.js"></script>
+    <script src="~/js/search_v2.js"></script>
+    <script src="~/MVCGridHandler.axd/script.js"></script>
+    <script src="@Url.Content("~/public/assets/js/waitMe.js")"></script>
+    <script src="@Url.Content("~/js/spinner.js")"></script>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/gh/cferdinandi/smooth-scroll@15.0.0/dist/smooth-scroll.polyfills.min.js"></script>
+    <script src="~/MVCGridHandler.axd/script.js"></script>
+    <!-- Start of HubSpot Embed Code -->
+    <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/487860.js"></script>
+    <!-- End of HubSpot Embed Code -->
+
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

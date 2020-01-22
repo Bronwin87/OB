@@ -1,0 +1,67 @@
+﻿@page
+@model Shop.UI.Pages.ContactPromotions.IndexModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<style>
+    .label {
+        font-size 14px;
+        color: #858585;
+        margin-left: 20px;
+        font-weight: 400;
+        margin-bottom: 0px;
+    }
+
+    .input {
+        width: 100%;
+    }
+</style>
+
+<div class="container">
+    <form method="post">
+        <div class="column is-4 is-offset-4">
+            <br />
+            <div class="field">
+                <label class="label">Name and Surname</label>
+                <div class="control">
+                    <input class="input" asp-for="Input.Name" />
+                </div>
+                <span class="help is-danger"></span>
+            </div>
+            <div class="field">
+                <label class="label">Company</label>
+                <div class="control">
+                    <input class="input" asp-for="Input.Representing" />
+                </div>
+                <span class="help is-danger"></span>
+            </div>
+            <div class="field">
+                <label class="label">Email Address</label>
+                <div class="control">
+                    <input class="input" asp-for="Input.Email" />
+                </div>
+                <span class="help is-danger"></span>
+            </div>
+            <div class="field">
+                <label class="label">Contact Number</label>
+                <div class="control">
+                    <input class="input" asp-for="Input.Number" />
+                </div>
+                <span class="help is-danger"></span>
+            </div>
+            <div class="field">
+                <label class="label">Message</label>
+                <div class="control">
+                    <textarea class="textarea" asp-for="Input.Message"></textarea>
+                </div>
+                <span class="help is-danger"></span>
+            </div>
+            <div class="columns">
+                <div class="field column is-6">
+                    <button type="submit" class="button is-primary">Submit</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

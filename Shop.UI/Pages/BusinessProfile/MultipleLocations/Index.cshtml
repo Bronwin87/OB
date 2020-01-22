@@ -1,0 +1,374 @@
+﻿@page
+@model Shop.UI.Pages.BusinessProfile.MultipleLocations.IndexModel
+@{
+    int i = 0;
+    int j = 0;
+}
+
+<style>
+    .cover {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: grey;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        cursor: pointer;
+    }
+</style>
+
+@if (Model.CanEdit)
+{
+
+    @if (!String.IsNullOrEmpty(Model.Message))
+    {
+        <div class="notification is-success">
+            <p>@Model.Message</p>
+        </div>
+    }
+    <div class="columns is-multiline">
+        @foreach (var location in Model.Locations)
+        {
+            <div class="column is-6">
+                <form method="post">
+                    <input type="hidden" asp-for="Input.AccountId" value="@Model.Account.Id" />
+                    <input type="hidden" asp-for="Input.Id" value="@location.Id" />
+                    <div class="field">
+                        <label class="label">Location Name</label>
+                        <div class="control">
+                            <input class="input" asp-for="Input.CompanyName" value="@location.CompanyName" />
+                        </div>
+                        <span class="help is-danger" asp-validation-for="Input.CompanyName"></span>
+                    </div>
+                    <div class="field">
+                        <label class="label">Address 1</label>
+                        <div class="control">
+                            <input class="input" asp-for="Input.Address1" value="@location.Address1" />
+                        </div>
+                        <span class="help is-danger" asp-validation-for="Input.Address1"></span>
+                    </div>
+                    <div class="field">
+                        <label class="label">Address 2</label>
+                        <div class="control">
+                            <input class="input" asp-for="Input.Address2" value="@location.Address2" />
+                        </div>
+                        <span class="help is-danger" asp-validation-for="Input.Address2"></span>
+                    </div>
+                    <div class="field">
+                        <label class="label">City</label>
+                        <div class="control">
+                            <input class="input" asp-for="Input.City" value="@location.City" />
+                        </div>
+                        <span class="help is-danger" asp-validation-for="Input.City"></span>
+                    </div>
+                    <div class="field">
+                        <label class="label">Post Code</label>
+                        <div class="control">
+                            <input class="input" asp-for="Input.PostCode" value="@location.PostCode" />
+                        </div>
+                        <span class="help is-danger" asp-validation-for="Input.PostCode"></span>
+                    </div>
+                    <div class="field">
+                        <label class="label">Phone Number</label>
+                        <div class="control">
+                            <input class="input" asp-for="Input.PhoneNumber" value="@location.PhoneNumber" />
+                        </div>
+                        <span class="help is-danger" asp-validation-for="Input.PhoneNumber"></span>
+                    </div>
+                    @*<div class="field">
+                        <label class="label">User Or Superuser</label>
+                        <div class="control">
+                            <div class="select">
+                                <select asp-for="Input.UserId" asp-items="@(new SelectList(Model.Users, "Id", "Email", location.UserId))">
+                                    <option>Select User</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>*@
+                    <div class="field">
+                        <label class="label">Authorizers</label>
+                        <div class="control">
+                            <div class="select">
+                                <select asp-for="Input.AuthorizerId" asp-items="@(new SelectList(Model.Authorizers, "Id", "Email", location.AuthorizerId))">
+                                    <option>Select User</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field has-text-centered">
+                        <button type="submit" class="button secondary">Edit</button>
+                    </div>
+                </form>
+                <p class="subtitle">Cost Centers</p>
+                @foreach (var costCenter in location.CostCenters)
+                {
+                <form method="post">
+                    <input type="hidden" asp-for="Input2.LocationId" value="@location.Id" />
+                    <input type="hidden" asp-for="Input2.Id" value="@costCenter.Id" />
+                    <div class="field is-grouped">
+                        <p class="control is-expanded">
+                            <input class="input" asp-for="Input2.Name" value="@costCenter.Name"
+                                   id="cost-center-input-@costCenter.Id" disabled />
+                        </p>
+                        <p class="control" id="edit-button-@costCenter.Id">
+                            <a class="button" onclick="editCostCenter('@costCenter.Id')">
+                                <span>Edit</span>
+                            </a>
+                        </p>
+                        <p class="control" id="delete-button-@costCenter.Id">
+                            <button class="button" asp-page-handler="DeleteCostCenter">
+                                <span>Delete</span>
+                            </button>
+                        </p>
+                        <p class="control is-hidden" id="save-button-@costCenter.Id">
+                            <button class="button" asp-page-handler="EditCostCenter">
+                                <span>Save</span>
+                            </button>
+                        </p>
+
+                        <p class="control is-hidden" id="cancel-button-@costCenter.Id">
+                            <a class="button" onclick="cancelEdit(@costCenter.Id)">
+                                <span>Cancel</span>
+                            </a>
+                        </p>
+                    </div>
+                    <div class="columns" style="font-size:x-small">
+                        @{
+                            var costCenterUser = Model.Users.FirstOrDefault(x => x.Id == costCenter.UserId);
+                            var costCenterAuth = Model.Authorizers.FirstOrDefault(y => y.Id == location.AuthorizerId);
+
+                        }
+                        @*<div class="column is-1 is-green">User: </div>
+                        <div class="column is-3">@costCenterUser.Email</div>
+                        <div class="column is-1 is-green">Auth: </div>
+                        <div class="column is-3">@costCenterAuth.Email</div>*@
+
+                    </div>
+ 
+                    <div class="field is-hidden" id="cost-center-users-@costCenter.Id">
+                        <div class="field">
+                            <label class="label">User</label>
+                            <div class="control">
+                                <div class="select">
+                                    <select asp-for="Input2.UserId" asp-items="@(new SelectList(Model.Users.Where(x => x.Type == Shop.Domain.Enums.UserType.BusinessUser), "Id", "Email", costCenter.UserId))">
+                                        <option>Select User</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        @*<div class="field">
+                            <label class="label">Authorizer</label>
+                            <div class="control">
+                                <div class="select">
+                                    <select asp-for="Input2.UserId" asp-items="@(new SelectList(Model.Authorizers, "Id", "Email", costCenter.AuthorizerId))">
+                                        <option>Select User</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>*@
+                    </div>
+                </form>
+                    j++;
+                }
+                <div class="field has-text-centered">
+                    <button class="button secondary" onclick="document.getElementById('cost-center-@i').classList.remove('is-hidden')">Add Cost Center for this location</button>
+                </div>
+                <form class="is-hidden" asp-page-handler="CostCenter" method="post" id="cost-center-@i">
+                    <div class="field">
+                        <label class="label">Cost Center Name</label>
+                        <div class="control">
+                            <input type="hidden" asp-for="Input2.LocationId" value="@location.Id" />
+                            <input class="input" asp-for="Input2.Name" />
+                        </div>
+                    </div>
+                    <div class="field has-text-centered">
+                        <button type="submit" class="button secondary">Apply</button>
+                    </div>
+                </form>
+            </div>
+            i++;
+        }
+        <div class="column is-6" style="position: relative;">
+            <div class="cover" id="cover">
+                <div onclick="document.getElementById('cover').remove()">
+                    <a>
+                        <i class="fa fa-plus fa-3x"></i>
+                    </a>
+                </div>
+                <p>Add Location</p>
+            </div>
+            <form method="post">
+                <input type="hidden" asp-for="Input.AccountId" value="@Model.Account.Id" />
+                <div class="field">
+                    <label class="label">Company Name</label>
+                    <div class="control">
+                        <input class="input" asp-for="Input.CompanyName" />
+                    </div>
+                    <span class="help is-danger" asp-validation-for="Input.CompanyName"></span>
+                </div>
+                <div class="field">
+                    <label class="label">Address 1</label>
+                    <div class="control">
+                        <input class="input" asp-for="Input.Address1" />
+                    </div>
+                    <span class="help is-danger" asp-validation-for="Input.Address1"></span>
+                </div>
+                <div class="field">
+                    <label class="label">Address 2</label>
+                    <div class="control">
+                        <input class="input" asp-for="Input.Address2" />
+                    </div>
+                    <span class="help is-danger" asp-validation-for="Input.Address2"></span>
+                </div>
+                <div class="field">
+                    <label class="label">City</label>
+                    <div class="control">
+                        <input class="input" asp-for="Input.City" />
+                    </div>
+                    <span class="help is-danger" asp-validation-for="Input.City"></span>
+                </div>
+                <div class="field">
+                    <label class="label">Post Code</label>
+                    <div class="control">
+                        <input class="input" asp-for="Input.PostCode" />
+                    </div>
+                    <span class="help is-danger" asp-validation-for="Input.PostCode"></span>
+                </div>
+                <div class="field">
+                    <label class="label">Phone Number</label>
+                    <div class="control">
+                        <input class="input" asp-for="Input.PhoneNumber" />
+                    </div>
+                    <span class="help is-danger" asp-validation-for="Input.PhoneNumber"></span>
+                </div>
+                @*<div class="field">
+                    <label class="label">User Or Superuser</label>
+                    <div class="control">
+                        <div class="select">
+                            <select asp-for="Input.UserId">
+                                <option value="">Select User</option>
+                                @foreach (var user in Model.Users)
+                                {
+                                    <option value="@user.Id">@user.Email</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>*@
+                @*<div class="field">
+                    <label class="label">Authorizers</label>
+                    <div class="control">
+                        <div class="select">
+                            <select asp-for="Input.AuthorizerId">
+                                @foreach (var user in Model.Authorizers)
+                                {
+                                    <option value="@user.Id">@user.Email</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>*@
+                <div class="field">
+                    <button type="submit" class="button secondary">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+else
+{
+    if (Model.UserLocations.Count() > 0)
+    {
+        <div class="columns is-multiline">
+            @foreach (var location in Model.UserLocations)
+            {
+                <div class="column is-6">
+                    <form method="post">
+                        <div class="field">
+                            <label class="label">Company Name</label>
+                            <div class="control">
+                                <input class="input" disabled value="@location.Name" />
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Address 1</label>
+                            <div class="control">
+                                <input class="input" disabled value="@location.Address.Address1" />
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Address 2</label>
+                            <div class="control">
+                                <input class="input" disabled value="@location.Address.Address2" />
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">City</label>
+                            <div class="control">
+                                <input class="input" disabled value="@location.Address.City" />
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Post Code</label>
+                            <div class="control">
+                                <input class="input" disabled value="@location.Address.PostCode" />
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Phone Number</label>
+                            <div class="control">
+                                <input class="input" disabled value="@location.PhoneNumber" />
+                            </div>
+                        </div>
+                        @if (location.User != null)
+                        {
+                            <div class="field">
+                                <label class="label">User Or Superuser</label>
+                                <div class="control">
+                                    <input class="input" disabled value="@location.User.FirstName @location.User.LastName" />
+                                </div>
+                            </div>
+                        }
+                        @if (location.Authorizer != null)
+                        {
+                            <div class="field">
+                                <label class="label">Authorizers</label>
+                                <div class="control">
+                                    <input class="input" disabled value="@location.Authorizer.FirstName @location.Authorizer.LastName" />
+                                </div>
+                            </div>
+                        }
+                    </form>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="title">Not Assigned to a location</p>
+    }
+}
+@section scripts{
+    <script>
+        var editCostCenter = function (id) {
+            document.getElementById('cost-center-input-' + id).removeAttribute('disabled')
+            document.getElementById('edit-button-' + id).classList.add('is-hidden')
+            document.getElementById('delete-button-' + id).classList.add('is-hidden')
+            document.getElementById('cost-center-users-' + id).classList.remove('is-hidden')
+            document.getElementById('save-button-' + id).classList.remove('is-hidden')
+            document.getElementById('cancel-button-' + id).classList.remove('is-hidden')
+        }
+
+        var cancelEdit = function (id) {
+            document.getElementById('cost-center-input-' + id).setAttribute('disabled', "")
+            document.getElementById('edit-button-' + id).classList.remove('is-hidden')
+            document.getElementById('delete-button-' + id).classList.remove('is-hidden')
+            document.getElementById('cost-center-users-' + id).classList.add('is-hidden')
+            document.getElementById('save-button-' + id).classList.add('is-hidden')
+            document.getElementById('cancel-button-' + id).classList.add('is-hidden')
+        }
+    </script>
+}

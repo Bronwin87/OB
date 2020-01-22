@@ -1,0 +1,22 @@
+﻿
+
+<div class="modal" id="product-share-modal">
+    <div class="modal-background" onclick="closeProductModal()"></div>
+    <div class="modal-content has-background-white-ter">
+        <div class="section">
+            <form asp-controller="Email" asp-action="SendProductEmail" method="post">
+                <input type="hidden" name="productId" value="" id="product-share-modal-id" />
+                <div class="field">
+                    <label class="label">Share via email</label>
+                    <div class="control">
+                        <input class="input" type="email" name="email" value="" placeholder="Enter recipient email" />
+                    </div>
+                </div>
+                <div class="field">
+                    <button class="button secondary">Send</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <button class="modal-close is-large" aria-label="close" onclick="closeProductModal()"></button>
+</div>

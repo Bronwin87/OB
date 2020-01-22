@@ -1,0 +1,52 @@
+﻿@page
+@model Shop.UI.Pages.Admin.OrderModel
+@{
+    ViewData["Title"] = "Order";
+}
+
+<style>
+    .orders .column {
+        padding: 12px !important;
+        font-size: 12px;
+        background-color: #F4F8F5;
+    }
+
+    .orders a {
+        font-size: 12px;
+    }
+
+    .padit {
+        padding: 0.2rem;
+    }
+
+    .details {
+        margin: 4px 0px !important;
+    }
+</style>
+
+<div>
+    <div class="columns">
+        <div class="column is-2 has-text-weight-semibold is-uppercase">Created Date</div>
+        <div class="column is-2 has-text-weight-semibold is-uppercase">Order #</div>
+        <div class="column is-2 has-text-weight-semibold is-uppercase">Order Reference</div>
+        <div class="column is-2 has-text-weight-semibold is-uppercase">Created By</div>
+        <div class="column is-2 has-text-weight-semibold is-uppercase">Location</div>
+        <div class="column is-2 has-text-weight-semibold is-uppercase">Order Total</div>
+        <div class="column">View</div>
+    </div>
+
+    @foreach (var order in Model.Orders)
+    {
+    <div class="columns">
+        <div class="column is-2">@order.Created.ToString("dd/MM/yyyy")</div>
+        <div class="column is-2">@order.OrderNumber</div>
+        <div class="column is-2">@order.OrderRef</div>
+        <div class="column is-2">@order.User.FirstName @order.User.LastName</div>
+        <div class="column is-2">@order.Address.City</div>
+        <div class="column is-2">@order.OrderProducts.Sum(x => x.Product.Price * x.Qty)</div>
+        <a class="button is-block secondary" asp-page="/Admin/SingleOrder" asp-route-OrderId="@order.OrderNumber">View</a>
+    </div>
+    }
+</div>
+
+

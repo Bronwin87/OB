@@ -1,0 +1,36 @@
+﻿@model Shop.Application.Services.Products.Entities.QuoteProductViewModel
+<div id="Row_@(Model.ProductId)" class="columns is-1 not-faded quote-line">
+    <input name="QuoteModel.QuoteProducts[@(Model.Index)].ProductId" type="hidden" value="@Model.ProductId">
+    <input name="QuoteModel.QuoteProducts[@(Model.Index)].Deleted" id="ProductDeleted_@(Model.ProductId)" type="hidden" value="@Model.Deleted">
+    <input name="QuoteModel.QuoteProducts[@(Model.Index)].Price" id="ProductPrice_@(Model.ProductId)" type="hidden" value="@Model.Price">
+    <div class="column is-1"><img src="@Model.ImageUrl" style="max-height: 55px; margin: auto" /></div>
+    <div class="column is-3">@Model.ProductName</div>
+    <div class="column is-2">@Model.ProductCode</div>
+    <div class="column is-1">@Model.Uom</div>
+    <div class="column is-1">R&nbsp;@Model.Price</div>
+    <div class="column is-1 has-text-centered">
+        <div class="input-group spinner">
+            <input id="Qty_@Model.ProductId" class="input small form-control product-qty" type="number" min="1" name="QuoteModel.QuoteProducts[@(Model.Index)].Qty" value="@Model.Qty" data-product-id="@Model.ProductId" />
+            <div class="input-group-btn-vertical">
+                <button class="btn btn-default" type="button"><i class="fa fa-caret-up"></i></button>
+                <button class="btn btn-default" type="button"><i class="fa fa-caret-down"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="column is-2" style="padding: 1rem !important;">R&nbsp;<span id="ProductTotal_@Model.ProductId">@Model.TotalPrice</span></div>
+    <div class="column is-1 ex-faded">
+        <div class="columns is-gapless ex-faded">
+            @*<div class="column is-10">
+                    <a data-product-id="@Model.ProductId" class="secondary button is-block add-to-cart-action" style="font-size: 11px; color: #ffffff;">Add To Cart</a>
+                </div>*@
+            <div class="ex-faded">
+                <a id="DeleteBtn_@(Model.ProductId)" class="delete-row" data-product-id="@Model.ProductId">
+                    <i class="fa fa-fw fa-times has-background-grey has-text-white"></i>
+                </a>
+                <a id="UndeleteBtn_@(Model.ProductId)" class="undelete-row" data-product-id="@Model.ProductId">
+                    <i class="fa fa-fw fa-check secondary"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

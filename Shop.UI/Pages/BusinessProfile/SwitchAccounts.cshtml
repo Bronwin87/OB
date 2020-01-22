@@ -1,0 +1,31 @@
+﻿@page
+@model Shop.UI.Pages.BusinessProfile.SwitchAccountsModel
+@{
+}
+
+
+<div>
+
+    <p class="title primary--text">Switch Account</p>
+    <div class="columns">
+        <div class="column is-3">
+            Account Name
+        </div>
+        <div class="column is-1 has-text-right">
+            <span>
+                Default
+            </span>
+        </div>
+    </div>
+    @foreach (var acc in Model.Accounts)
+    {
+        <div class="columns is-marginless is-gapless">
+            <div class="column is-3">
+                <a class="button is-block" asp-page="/BusinessProfile/SwitchAccounts" asp-page-handler="UpdateAccount" asp-route-accountId="@acc.AccountId">@acc.Account.CompanyName</a>
+            </div>
+            <div class="column is-1 has-text-right">
+                <input disabled @(acc.Active ? "checked" : "") type="checkbox" />
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,10 @@
+.shop-nav {
+    background-color: #CBCBCB;
+}
+.shop-nav a {
+    font-size: 17px;
+    text-transform: uppercase;
+    color: #000;
+    font-weight: bold;
+    height:90px;
+}

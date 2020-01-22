@@ -1,0 +1,31 @@
+﻿@page
+@model Shop.UI.Pages.Admin.SingleOrderCin7Model
+
+<div class="container">
+    <p>
+        The order has been uploaded to Cin7.
+    </p>
+    <p>
+        <a class="primary button" style="background-color: #0cdd6b" href="@Model.ViewModel.Cin7Url" target="_blank">Please click here</a> to open the order on Cin7 to proceed
+    </p>
+    <br />
+    <br />
+    <p>
+        <a class="primary button" style="background-color: #ee8534;" asp-controller="Admin" asp-action="SingleOrder" asp-route-id="@Model.ViewModel.OrderNumber">Please click here</a> to return to the order
+    </p>
+    <p>
+        or
+    </p>
+    <p>
+        <a class="primary button" style="background-color: #ee8534;" asp-controller="Admin" asp-action="Orders">Please click here</a> to return to all orders
+    </p>
+</div>
+
+@section scripts {
+    <script src="/public/assets/js/jquery-3.1.0.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            window.open('@(Model.ViewModel.Cin7Url)', "_blank");
+        });
+    </script>
+}

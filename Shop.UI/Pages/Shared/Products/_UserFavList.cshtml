@@ -1,0 +1,27 @@
+﻿@model IEnumerable<Shop.Application.Services.FavouriteLists.GetLists.Response>
+
+<div class="dropdown-content has-background-white">
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <div class="dropdown-item"><i>Sign in to start creating lists!</i></div>
+    }
+    else if (Model.Count() <= 0)
+    {
+        <div class="dropdown-item"><i>You have no favourites yet</i></div>
+    }
+    else
+    {
+        <strong class="dropdown-item has-text-weight-semibold">Add to Favourites </strong>
+        <hr class="dropdown-divider">
+        @foreach (var u in Model)
+        {
+            <a data-list-id="@u.Id" class="dropdown-item add-to-list-link">
+                @u.Name
+            </a>
+        }
+        <hr class="dropdown-divider">
+        <a asp-page="/Profile/FavouriteList/Index" class="dropdown-item is-orange has-text-weight-semibold">
+            <i>Go to favourites >></i>
+        </a>
+    }
+</div>

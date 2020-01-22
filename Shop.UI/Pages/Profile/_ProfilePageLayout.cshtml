@@ -1,0 +1,58 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+<style>
+    p.menu-label:not(:last-child) {
+        background: #aaa;
+        color: black;
+        margin: 0;
+        padding: 0.5rem;
+    }
+</style>
+
+<div class="container">
+    <div class="columns">
+        <div class="column is-3">
+            <div class="menu">
+                <p class="menu-label">
+                    <span class="icon">
+                        <i class="fas fa-user-circle" aria-hidden="true"></i>
+                    </span>
+                    My Account
+                </p>
+                <ul class="menu-list">
+                    <li><a asp-page="/Profile/MyDetails">My Details</a></li>
+                    <li><a asp-page="/Profile/ChangePassword">Password</a></li>
+                </ul>
+                <p class="menu-label">
+                    <span class="icon">
+                        <i class="fas fa-clipboard-list" aria-hidden="true"></i>
+                    </span>
+                    Orders
+                </p>
+                <ul class="menu-list">
+                    <li><a asp-page="/Profile/OrderHistory">Order History</a></li>
+                    <li><a asp-page="/Profile/Exchanges/Index">Exchanges & Returns</a></li>
+                </ul>
+                <p class="menu-label">
+                    <span class="icon">
+                        <i class="fas fa-star" aria-hidden="true"></i>
+                    </span>
+                    Favourites List
+                </p>
+                <partial name="Forms/_AddFavouriteList" model='new Shop.UI.Pages.AddFavouriteListModel() { ProfileView = "Profile" }' />
+                <ul class="menu-list">
+                    <li><a asp-page="/Profile/FavouriteList/Index">My Lists</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="column is-9">
+            @RenderBody()
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    @RenderSection("Scripts", required: false)
+}

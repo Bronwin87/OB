@@ -1,0 +1,131 @@
+@page
+@model Shop.UI.Pages.Contact.IndexModel
+@{
+}
+<style>
+    .label {
+        font-size 14px;
+        color: #858585;
+        margin-left: 20px;
+        font-weight: 400;
+        margin-bottom: 0px;
+    }
+
+    .input {
+        width: 100%;
+    }
+</style>
+<div class="container">
+	<form method="post" class="container">
+        
+			<div class="column is-4 is-offset-4">
+				<div class="field">
+					<label class="label">First Name</label>
+					<div class="control">
+						<input class="input"  />
+					</div>
+					<span class="help is-danger" ></span>
+				</div>
+				<div class="field">
+					<label class="label">Last Name</label>
+					<div class="control">
+						<input class="input" />
+					</div>
+					<span class="help is-danger" ></span>
+				</div>
+				<div class="field">
+					<label class="label">Email</label>
+					<div class="control">
+						<input class="input" />
+					</div>
+					<span class="help is-danger" ></span>
+				</div>
+				<div class="field">
+					<label class="label">Password</label>
+					<div class="control">
+						<input class="input" />
+					</div>
+					<span class="help is-danger" ></span>
+				</div>
+				<div class="field">
+					<label class="label">Confirm Password</label>
+					<div class="control">
+						<input class="input" />
+					</div>
+					<span class="help is-danger"></span>
+				</div>
+				<div class="columns">
+					<div class="field column is-6">
+						<button type="submit" class="button is-primary">Sign Up</button>
+					</div>
+					<div class="column is-6" style="width:100%">
+						<p style="font-size:14px">ALREADY REGISTERED?</p>
+						<p style="color:#0bdd6f;font-size:14px;font-weight:300">SIGN IN</p>
+
+					</div>
+				</div>
+
+			</div>
+		
+	</form>
+						
+
+
+
+<!-- <div class="container">
+    <div style="color:#0bdd6f;font-size:30px;font-weight:400;" class="has-text-centered">
+        Individual Registration
+
+    </div>
+    <form method="post" class="container">
+        <div class="column is-4 is-offset-4">
+            <div class="field">
+                <label class="label">First Name</label>
+                <div class="control">
+                    <input class="input" asp-for="Input.FirstName" />
+                </div>
+                <span class="help is-danger" asp-validation-for="Input.FirstName"></span>
+            </div>
+            <div class="field">
+                <label class="label">Last Name</label>
+                <div class="control">
+                    <input class="input" asp-for="Input.LastName" />
+                </div>
+                <span class="help is-danger" asp-validation-for="Input.LastName"></span>
+            </div>
+            <div class="field">
+                <label class="label">Email</label>
+                <div class="control">
+                    <input class="input" asp-for="Input.Email" />
+                </div>
+                <span class="help is-danger" asp-validation-for="Input.Email"></span>
+            </div>
+            <div class="field">
+                <label class="label">Password</label>
+                <div class="control">
+                    <input class="input" asp-for="Input.Password" />
+                </div>
+                <span class="help is-danger" asp-validation-for="Input.Password"></span>
+            </div>
+            <div class="field">
+                <label class="label">Confirm Password</label>
+                <div class="control">
+                    <input class="input" asp-for="Input.ConfirmPassword" />
+                </div>
+                <span class="help is-danger" asp-validation-for="Input.ConfirmPassword"></span>
+            </div>
+            <div class="columns">
+                <div class="field column is-6">
+                    <button type="submit" class="button" style="background:#ee8534;color:#fff;width:100%">Sign Up</button>
+                </div>
+                <div class="column is-6" style="width:100%">
+                    <p style="font-size:14px">ALREADY REGISTERED?</p>
+                    <p style="color:#0bdd6f;font-size:14px;font-weight:300">SIGN IN</p>
+
+                </div>
+            </div>
+
+        </div>
+    </form>
+
+</div> -->

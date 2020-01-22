@@ -1,0 +1,320 @@
+﻿@page
+@model Shop.UI.Pages.Admin.IndexModel
+@{
+}
+
+<div id="app">
+    <div v-if="!editing">
+        <div class="columns">
+            <div class="column is-6">
+                <button class="button" @@click="newProduct">Add New Product</button>
+            </div>
+            <div class="column is-4">
+                <input class="input" type="text" placeholder="Filter" v-model="search.text" />
+            </div>
+        </div>
+        <section>
+            <b-table :data="products"
+                     :loading="table.loading"
+                     hoverable
+                     paginated
+                     backend-pagination
+                     :total="table.total"
+                     :per-page="table.perPage"
+                     aria-next-label="Next page"
+                     aria-previous-label="Previous page"
+                     aria-page-label="Page"
+                     aria-current-label="Current page"
+                     @@page-change="onPageChange"
+                     @@click="editProduct">
+                <template slot-scope="props">
+                    <b-table-column field="id" label="External Id" numeric>
+                        {{ props.row.externalId }}
+                    </b-table-column>
+
+                    <b-table-column field="name" label="Name">
+                        {{ props.row.name }}
+                    </b-table-column>
+
+                    <b-table-column field="unit" label="Unit">
+                        {{ props.row.unit }}
+                    </b-table-column>
+
+                    <b-table-column field="colour" label="Colour">
+                        {{ props.row.colour }}
+                    </b-table-column>
+                    <b-table-column field="value" label="Price">
+                        {{ props.row.value }}
+                    </b-table-column>
+                    <b-table-column field="published" label="Published">
+                        {{ props.row.published }}
+                    </b-table-column>
+                </template>
+            </b-table>
+        </section>
+
+    </div>
+
+    <div v-else>
+        <div v-if="!loading">
+            <div class="columns">
+                <div class="column is-6">
+                    <div>
+                        <img :src="productModel.imageUrl" alt="NO IMG FOUND" v-if="tempImg === ''" />
+                        <img :src="tempImg" v-else />
+                    </div>
+                    <div class="field">
+                        <div class="file has-name">
+                            <label class="file-label">
+                                <input class="file-input" type="file" name="resume" @@change="selectFile">
+                                <span class="file-cta">
+                                    <span class="file-icon">
+                                        <i class="fas fa-upload"></i>
+                                    </span>
+                                    <span class="file-label">
+                                        Choose a file…
+                                    </span>
+                                </span>
+                                <span class="file-name" v-if="tempFile !== null">
+                                    {{tempFile.name}}
+                                </span>
+                            </label>
+                        </div>
+                        <button v-if="tempFile !== null" @@click="clearFile" class="button">Clear Image</button>
+                    </div>
+                    <div class="field">
+                        <label class="checkbox">
+                            <input type="checkbox" v-model="productModel.published">
+                            Published
+                        </label>
+                        <label class="checkbox">
+                            <input type="checkbox" v-model="productModel.outOfStock">
+                            Out Of Stock
+                        </label>
+                        <label class="checkbox">
+                            <input type="checkbox" v-model="productModel.noDiscount">
+                            No Discount
+                        </label>
+                        <label class="checkbox">
+                            <input type="checkbox" v-model="productModel.valueAdd">
+                            Value Added
+                        </label>
+                    </div>
+                    <div class="field">
+                        <label class="label">Category</label>
+                        <div class="control">
+                            <div class="select">
+                                <select v-model="productModel.main">
+                                    <option v-for="c in categories" :value="c.id">{{c.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Sub Category</label>
+                        <div class="control">
+                            <div class="select">
+                                <select v-model="productModel.sub">
+                                    <option v-for="c in subCat" :value="c.id">{{c.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Tertiary Category</label>
+                        <div class="control">
+                            <div class="select">
+                                <select v-model="productModel.tri">
+                                    <option v-for="c in triCat" :value="c.id">{{c.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-6">
+                    <div class="field">
+                        <label class="label">Product Name</label>
+                        <div class="control">
+                            <input class="input" v-model="productModel.name" />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Code</label>
+                        <div class="control">
+                            <input class="input" v-model="productModel.externalId" />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">UOM</label>
+                        <div class="control">
+                            <input class="input" v-model="productModel.unit" />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Colour</label>
+                        <div class="control">
+                            <input class="input" v-model="productModel.colour" />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Price</label>
+                        <div class="control">
+                            <input class="input" v-model="productModel.value" />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Cost Price</label>
+                        <div class="control">
+                            <input class="input" v-model="productModel.costPrice" />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <button class="button" @@click="cancel">Cancel</button>
+                        <button class="button is-warning" v-if="productModel.id" @@click="updateProduct">Update Product</button>
+                        <button class="button is-warning" v-else @@click="createProduct">Create Product</button>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <div class="control">
+                    <textarea class="textarea" v-model="productModel.description"></textarea>
+                </div>
+            </div>
+            <div class="field" v-if="productModel.id">
+                <p class="subtitle">Linked Products</p>
+                <table class="table is-fullwidth is-hoverable is-bordered">
+                    <thead>
+                        <tr>
+                            <th>External Id</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Colour</th>
+                            <th>Brand</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="p in productModel.linked">
+                            <td>{{p.externalId}}</td>
+                            <td style="text-overflow: ellipsis; max-width: 200px">{{p.name}}</td>
+                            <td>{{p.value}}</td>
+                            <td>{{p.colour}}</td>
+                            <td>{{p.brand}}</td>
+                            <td><button class="secondary button" @@click="removeLink(p.id)">REMOVE PRODUCT</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <a class="secondary button" @@click="openModal('link')">ADD LINKED PRODUCT</a>
+            </div>
+            <div class="field" v-if="productModel.id">
+                <p class="subtitle">Alternative Products</p>
+                <table class="table is-fullwidth is-hoverable is-bordered">
+                    <thead>
+                        <tr>
+                            <th>External Id</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Colour</th>
+                            <th>Brand</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="p in productModel.alternative">
+                            <td>{{p.externalId}}</td>
+                            <td style="text-overflow: ellipsis; max-width: 200px">{{p.name}}</td>
+                            <td>{{p.value}}</td>
+                            <td>{{p.colour}}</td>
+                            <td>{{p.brand}}</td>
+                            <td><button class="secondary button" @@click="removeLink(p.id)">REMOVE PRODUCT</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <a class="secondary button" @@click="openModal('alt')">ADD ALT PRODUCTS</a>
+            </div>
+            <div class="field" v-if="productModel.id">
+                <p class="subtitle">Value Added Products</p>
+                <table class="table is-fullwidth is-hoverable is-bordered">
+                    <thead>
+                        <tr>
+                            <th>External Id</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Colour</th>
+                            <th>Brand</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="p in productModel.valueAdded">
+                            <td>{{p.externalId}}</td>
+                            <td style="text-overflow: ellipsis; max-width: 200px">{{p.name}}</td>
+                            <td>{{p.value}}</td>
+                            <td>{{p.colour}}</td>
+                            <td>{{p.brand}}</td>
+                            <td><button class="secondary button" @@click="removeLink(p.id)">REMOVE PRODUCT</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <a class="secondary button" @@click="openModal('valueAdded')">ADD VALUE ADDED PRODUCTS</a>
+            </div>
+        </div>
+    </div>
+    <b-modal :active.sync="addProductModal.active">
+        <div class="card">
+            <div class="modal-card-head">
+                <span v-if="addProductModal.link">Related </span>
+                <span v-if="addProductModal.alt">Alternative </span>
+                <span v-else>Value Added </span>
+                Product Information
+            </div>
+            <div class="card-content">
+                <b-field>
+                    <b-input placeholder="Search..."
+                             type="search" v-model="addProductModal.search">
+                    </b-input>
+                    <p class="control">
+                        <button class="button is-primary">Search</button>
+                    </p>
+                </b-field>
+                <b-table :data="addProductModal.products"
+                         :loading="addProductModal.loading"
+                         narrowed>
+                    <template slot-scope="props">
+                        <b-table-column field="check">
+                            <b-checkbox v-model="props.row.selected"></b-checkbox>
+                        </b-table-column>
+                        <b-table-column field="id" label="External Id" numeric>
+                            {{ props.row.externalId }}
+                        </b-table-column>
+                        <b-table-column field="name" label="Name">
+                            {{ props.row.name }}
+                        </b-table-column>
+                        <b-table-column field="unit" label="Unit">
+                            {{ props.row.unit }}
+                        </b-table-column>
+                        <b-table-column field="colour" label="Colour">
+                            {{ props.row.colour }}
+                        </b-table-column>
+                        <b-table-column field="value" label="Price">
+                            {{ props.row.value }}
+                        </b-table-column>
+                        <b-table-column field="published" label="Published">
+                            {{ props.row.published }}
+                        </b-table-column>
+                    </template>
+                </b-table>
+            </div>
+            <div class="card-footer-item">
+                <button @@click="attachProducts">Add</button>
+            </div>
+        </div>
+    </b-modal>
+    <b-loading is-full-page :active.sync="loading"></b-loading>
+</div>
+
+
+
+@section scripts{
+    <script src="~/js/admin/products.js"></script>
+}

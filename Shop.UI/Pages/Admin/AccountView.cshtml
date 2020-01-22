@@ -1,0 +1,230 @@
+﻿@page
+@model Shop.UI.Pages.Admin.AccountViewModel
+@{
+    ViewData["Title"] = "View Account";
+}
+
+<p class="subtitle is-size-3">@Model.Account.CompanyName</p>
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(model => Model.Account.Id)
+    <div class="columns is-multiline">
+        <div class="column is-6">
+            <table class="table is-fullwidth">
+                <tr>
+                    <th>Id</th>
+                    <td>@Model.Account.Id</td>
+                </tr>
+                <tr>
+                    <th>Company Name</th>
+                    <td>@Html.TextBoxFor(model => model.Account.CompanyName, new { @class = "input" })</td>
+                </tr>
+                <tr>
+                    <th>Vat Number</th>
+                    <td>@Html.TextBoxFor(model => model.Account.VatNumber, new { @class = "input" })</td>
+                </tr>
+                <tr>
+                    <th>Phone Number</th>
+                    <td>@Html.TextBoxFor(model => model.Account.PhoneNumber, new { @class = "input" })</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>@Html.TextBoxFor(model => model.Account.Email, new { @class = "input" }) * Please note that this is merely the contact email address for the company, not the email address of any of its users.</td>
+                </tr>
+                <tr>
+                    <th>Term Account</th>
+                    <td>@Html.CheckBoxFor(model => model.Account.TermAccount, new { @class = "checkbox" })</td>
+                </tr>
+                <tr>
+                    <th>Term Account Approved</th>
+                    <td>@Html.CheckBoxFor(model => model.Account.ThirtyDayTermApproved, new { @class = "checkbox" })</td>
+                </tr>
+                <tr>
+                    <th>Limit</th>
+                    <td>@Html.TextBoxFor(model => model.Account.Limit, new { @class = "input" })</td>
+                </tr>
+            </table>
+        </div>
+        <div class="column is-6">
+            <table class="table is-fullwidth">
+                <tr>
+                    <th colspan="2">Company Address</th>
+                </tr>
+                <tr>
+                    <th>Id</th>
+                    <td>@Model.Account.Address.Id</td>
+                </tr>
+                <tr>
+                    <th>Address 1</th>
+                    <td>@Model.Account.Address.Address1</td>
+                </tr>
+                <tr>
+                    <th>Address 2</th>
+                    <td>@Model.Account.Address.Address2</td>
+                </tr>
+                <tr>
+                    <th>City</th>
+                    <td>@Model.Account.Address.City</td>
+                </tr>
+                <tr>
+                    <th>Country</th>
+                    <td>@Model.Account.Address.Country</td>
+                </tr>
+                <tr>
+                    <th>Postal Code</th>
+                    <td>@Model.Account.Address.PostCode</td>
+                </tr>
+            </table>
+        </div>
+
+        <button type="submit" class="button formsubmit">Submit</button>
+
+        <div class="column is-12">
+            <p class="subtitle is-size-4">Users</p>
+            <table class="table is-fullwidth">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Surname</th>
+                        <th>Email</th>
+                        <th>Username</th>
+                        <th>Phone Number</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Account.AccountUsers)
+                    {
+                        <tr>
+                            <td>@item.User.Id</td>
+                            <td>@item.User.FirstName</td>
+                            <td>@item.User.LastName</td>
+                            <td>@item.User.Email</td>
+                            <td>@item.User.UserName</td>
+                            <td>@item.User.PhoneNumber</td>
+                            <td>@item.User.Type</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="column is-12">
+            <p class="subtitle is-size-4">Locations</p>
+            <table class="table is-fullwidth">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Phone Number</th>
+                        <th>Address</th>
+                        <th>Authoriser</th>
+                        <th>Users</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Account.Locations)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.Name</td>
+                            <td>@item.PhoneNumber</td>
+                            <td>
+                                @item.Address.Address1 @item.Address.Address2<br />
+                                @item.Address.City<br />
+                                @item.Address.PostCode
+                            </td>
+                            <td>
+                                @if (item.Authorizer != null)
+                                {
+                                    @item.Authorizer.FirstName @item.Authorizer.LastName
+                                }
+                            </td>
+                            <td>
+                                <ul class="list">
+                                    @foreach (var auth in item.LocationAuths)
+                                    {
+                                        if (auth.User != null)
+                                        {
+                                            <li class="list-item">@auth?.User.FirstName @auth?.User.LastName</li>
+                                        }
+                                        else
+                                        {
+                                            <li class="list-item">@auth.Userid</li>
+                                        }
+                                    }
+                                </ul>
+                            </td>
+                        </tr>
+                        @if (item.CostCenters.Any())
+                        {
+                            <tr style="background-color: #0cdd6b;">
+                                <th rowspan="@(item.CostCenters.Count + 2)"></th>
+                                <th rowspan="@(item.CostCenters.Count + 2)">Cost Centers</th>
+                                <th>Id</th>
+                                <th>Name</th>
+                                <th>Authoriser</th>
+                                <th>Users</th>
+                            </tr>
+                            @foreach (var costCenter in item.CostCenters)
+                            {
+                                <tr>
+                                    <td>@costCenter.Id</td>
+                                    <td>@costCenter.Name</td>
+                                    <td>@costCenter.Authorizer.FirstName @costCenter.Authorizer.LastName</td>
+                                    <td>
+                                        <ul class="list">
+                                            @foreach (var auth in costCenter.CostCenterAuth)
+                                            {
+                                                if (auth.User != null)
+                                                {
+                                                    <li class="list-item">@auth?.User.FirstName @auth?.User.LastName</li>
+                                                }
+                                                else
+                                                {
+                                                    <li class="list-item">@auth.Userid</li>
+                                                }
+                                            }
+                                        </ul>
+                                    </td>
+                                </tr>
+                            }
+                            <tr style="background-color: #0cdd6b;">
+                                <td colspan="6"></td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="column is-12">
+            <p class="subtitle is-size-4">References</p>
+            <table class="table is-fullwidth">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Company Name</th>
+                        <th>Contact Name</th>
+                        <th>Email</th>
+                        <th>Telephone</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Account.References)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.CompanyName</td>
+                            <td>@item.ContactName</td>
+                            <td>@item.Email</td>
+                            <td>@item.Telephone</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

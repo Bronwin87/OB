@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Shop.Application.Cart.GetCart.Response>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            <form method="POST">
+                <input type="hidden" name="Input.ProductId" value="@item.Id" />
+                <div class="field">
+                    <a asp-controller="Shop" asp-action="DeleteFromCart" asp-route-ProductId="@item.Id">
+                        <span class="icon" style="opacity:0.4;">
+                            <i aria-hidden="true" class="fas fa-times"></i>
+                        </span>
+                    </a>
+                </div>
+            </form>
+        </td>
+        <td class="col-6"><a class="has-text-black" asp-page="/Shop/Product" asp-route-id="@item.Id.Replace(" ", "- ")">@item.Name</a></td>
+        <td>@item.Code</td>
+        <td>@item.Unit</td>
+        <td><strong>@item.Price</strong></td>
+        <td width="100">
+            <div class="input-group spinner">
+                <input class="input small form-control qty-input" onchange="updateCart(event, '@item.Id')" type="number" min="1" name="Input.Qty" value="@item.Qty" asp-action="AddToCart" />
+                <div class="input-group-btn-vertical">
+                    <button class="btn btn-default" type="button"><i class="fa fa-caret-up"></i></button>
+                    <button class="btn btn-default" type="button"><i class="fa fa-caret-down"></i></button>
+                </div>
+            </div>
+        </td>
+        <td class="has-text-success"><b>@item.Total</b></td>
+    </tr>
+}

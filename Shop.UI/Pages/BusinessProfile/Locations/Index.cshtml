@@ -1,0 +1,95 @@
+﻿@page
+@model Shop.UI.Pages.BusinessProfile.Locations.IndexModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+@if (!string.IsNullOrEmpty(Model.Message))
+{
+    <div class="notification is-success">
+        <p>@Model.Message</p>
+    </div>
+}
+<form method="post">
+    <div id="app">
+        <p class="title secondary--text">Locations</p>
+        <table class="table is-fullwidth locations-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>City</th>
+                    <th>Post Code</th>
+                    <th>Phone</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Locations)
+                {
+                    <tr>
+                        <td>@item.CompanyName</td>
+                        <td>@(item.Address1), @item.Address2</td>
+                        <td>@item.City</td>
+                        <td>@item.PostCode</td>
+                        <td>@item.PhoneNumber</td>
+                        <td>
+                            @if (Model.CanEdit)
+                            {
+                                <a class="button is-block primary" style="color: #ffffff;" asp-page="/BusinessProfile/Locations/LocationEdit" asp-route-locationid="@item.Id">EDIT</a>
+                                <button type="submit" name="submitAction" value="@item.Id" class="button is-block secondary">DELETE</button>
+                            }
+                        </td>
+                    </tr>
+                    @*
+                        <tr>
+                            <td colspan="6" style="text-align: center; background-color: #aaaaaa; padding: 3px; cursor: pointer;" onclick="ShowCostCenters('@item.Id')">
+                                <span style="font-size: larger; color: #363636; font-weight: 600;">COST CENTERS</span>
+                                <i class="fa fa-angle-down"></i>
+                            </td>
+                        </tr>
+                        <tr style="display: none;" id="cost-centers-@(item.Id)">
+                            <td style="background-color: #aaaaaa;"></td>
+                            <td colspan="5">
+                                <table class="table is-fullwidth">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>User</th>
+                                            <th>Authoriser</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    @foreach (var costCenter in item.CostCenters)
+                                    {
+                                    <tr>
+                                        <td>@costCenter.Name</td>
+                                        <td>@costCenter.UserEmail</td>
+                                        <td>@costCenter.AuthorizerEmail</td>
+                                        <td>
+                                            <a class="button is-block secondary" style="width: 60px; float: right;" asp-page="/BusinessProfile/Locations/CosteCenterEdit" asp-route-locationid="@item.Id" asp-route-costCenterID="@costCenter.Id">EDIT</a>
+                                        </td>
+                                    </tr>
+                                    }
+                                </table>
+                                <a class="button is-block secondary" style="float: right;" asp-page="/BusinessProfile/Locations/CosteCenterEdit" asp-route-locationid="@item.Id" asp-route-costCenterID="0">ADD COST CENTER</a>
+                            </td>
+                        </tr>
+                        <tr><td style="background-color: #fff; height: 50px;"></td></tr>*@
+                }
+            </tbody>
+        </table>
+        @if (Model.CanEdit)
+        {
+            <a class="button is-block secondary" style="width: 180px; float:right;" asp-page="/BusinessProfile/Locations/LocationEdit" asp-route-locationid="0">ADD LOCATION</a>
+        }
+    </div>
+</form>
+
+@section scripts {
+    <script type="text/javascript">
+        function ShowCostCenters(locationId) {
+            $("#cost-centers-" + locationId).toggle(300);
+        }
+    </script>
+}

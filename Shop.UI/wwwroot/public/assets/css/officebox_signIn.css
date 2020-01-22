@@ -1,0 +1,341 @@
+#forgotPasswordContainer{
+	display: none;
+}
+
+#displayForgotPassword, #hideForgotPassword{
+	cursor: pointer;
+}
+.material-progress-indicator {
+  margin: auto;
+  font-size: 1px;
+  position: relative;
+  border-top: 3px solid rgba(16, 16, 16, 0.2);
+  border-right: 3px solid rgba(16, 16, 16, 0.2);
+  border-bottom: 3px solid rgba(16, 16, 16, 0.2);
+  border-left: 3px solid #A8A8A8;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-animation: load8 1.1s infinite linear;
+  animation: load8 1.1s infinite linear;
+}
+
+.loader, .loader:after {
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+}
+
+@-webkit-keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+.template-button-green {
+	width:auto !important;
+	height:auto !important;
+}
+
+.forgot-password-label{
+    margin-left: 20px;
+    margin-top: 5px;
+    padding-top: 5px;
+}
+
+.officebox-sign-controls{
+	display: inline-flex;
+}
+.officebox-step2reg{
+	width: 300px;
+	border-width: 3px;
+	border-color: #0BDD6F;
+	border-radius: 0px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+.officebox-step2reg-small{
+	width: 150px;
+	border-width: 3px;
+	border-color: #0BDD6F;
+	border-radius: 0px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+.officebox-inputcontrols{
+
+	border-width: 3px;
+	border-color: #0BDD6F;
+	border-radius: 0px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+.office-box-sign-header{
+	position: relative;
+	top:20px;
+	margin-top: 20px;
+	text-align: center;
+
+}
+.officebox-business-inputcontrols{
+	border-width: 3px;
+	border-color: #0BDD6F;
+	border-radius: 0px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    margin-left: 5px;
+ /*   margin-right: 5px;*/
+}
+.officebox-header{
+	color: #0BDD6F;
+}
+h1 {
+	font-weight: 250;
+}
+h2 {
+	font-weight: 150;
+}
+.forgot-password-label-green{
+	margin-top: 10px;
+	margin-left: 5px;
+	color: #0BDD6F;
+	cursor: pointer;
+}
+.officebox-orange_button{
+	background-color: #EE8534 !important;
+	color:#FFFFFF !important;
+    border: 0;
+    width: 160px;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+.officebox-grey_button{
+	background-color: #E9E9E9 !important;
+	color:#FFFFFF !important;
+    border: 0;
+    width: 160px;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+.officebox-coal_button{
+	background-color: #898989 !important;
+	padding: 5px;
+	color:#FFFFFF !important;
+    border: 0;
+    width: 160px;
+    cursor: pointer;
+    height: 35px;
+    text-transform: uppercase;
+}
+.officebox-orange_button-large{
+	background-color: #EE8534 !important;
+	color:#FFFFFF !important;
+    border: 0;
+    padding-left: 5px;
+    padding-right: 5px;
+    width: 160px;
+    cursor: pointer;
+    height: 40px;
+    text-transform: uppercase;
+    font-weight: 105;
+}
+.officebox-grey_button-large{
+	background-color: #E9E9E9 !important;
+	color:#FFFFFF !important;
+    border: 0;
+    padding-left: 5px;
+    padding-right: 5px;
+    width: 160px;
+    cursor: pointer;
+    height: 40px;
+    text-transform: uppercase;
+    font-weight: 105;
+}
+.officebox-inputcontainer{	
+}
+.office-box-businessHeader{
+color:#A8A8A8 !important;
+}
+.office-box-ForgotHeader{
+color:#000 !important;
+}
+.main-header{
+	padding: 10px;
+	margin: 10px;
+}
+vr { 
+	height: 200px;
+    width:2px;
+    background-color:#E0E0E0;
+    position:absolute;
+    top:0;
+    bottom:0;
+    left:30px;
+}
+
+.office-box-label{
+	font-weight: 100;
+	font-size: 9pt;
+	text-transform: uppercase;
+	color:#A8A8A8 !important;
+}
+.position_block_left{
+	left: 50px;
+}
+.position_block_right{
+	right: 40px;
+}
+.office-box-label-button{
+	font-weight: 130;
+	font-size: 9pt;
+	text-transform: uppercase;
+	color:#A8A8A8 !important;
+	margin-top: 2px;
+	margin-left: 3px; 
+}
+.office-box-no-account-copy{
+	width: 250px
+	padding: 16px;
+	text-align: center;
+	font-size: 24px;
+	color: black;
+	margin-top: 4px;
+	margin-bottom: 4px;
+	font-weight: 500;
+	font-family: Open Sans, "Source Sans Pro", Arial, sans-serif;
+
+}
+.office-box-create-account-link{
+	width: 250px;
+	text-align: center;
+	font-size: 28px;
+	color: black;
+	margin-top: 4px;
+	margin-bottom: 4px;
+	font-weight: 600;
+	font-family: Open Sans, "Source Sans Pro", Arial, sans-serif;
+	text-decoration: none!important;
+	color: #0BDD6F;
+	cursor: pointer;
+
+} 
+a.nohover:hover { color: none!important;  }
+
+.office-box-no-guest-copy{
+	width: 250px
+	padding: 16px;
+	text-align: center;
+	font-size: 28px;
+	color: black;
+	margin-top: 4px;
+	margin-bottom: 4px;
+	font-weight: 500;
+	font-family: Open Sans, "Source Sans Pro", Arial, sans-serif;
+}
+.office-box-linked-label{
+	text-decoration: none;
+	color: #0BDD6F;
+	cursor: pointer;
+}
+.office-box-create-account-subheader{
+	padding: 2px;
+	font-size: 18px;
+	font-family: Open Sans, "Source Sans Pro", Arial, sans-serif;
+	color: #ADB5B8;
+	text-align: center;
+}
+.office-box-create-account-text{
+	color: #ADB5B8;
+	text-align: left;
+	font-size: 14pt;
+	margin-right: 25px;
+	/*padding-left: 13px;*/
+}
+.office-box-standard-container{
+	margin-top: 10px;
+}
+.office-box-welcome-text{
+	color: #ADB5B8;
+	text-align: left;
+	font-size: 12pt;
+	/*margin-left: 20px;
+	padding-left: 13px;*/
+}
+.officebox-step-container {
+	margin-top:15px
+	width: 400px;
+	height: 40px;
+	margin-left: 10px;
+	margin-right: 5px;
+	padding: 10px;
+	background: #EFEEEC;
+	text-align: center;
+}
+.office-box-header{
+	color: #0BDD6F;
+	margin-bottom: 20px;
+	font-weight: 101;
+}
+.officebox-step-container-active {
+	margin-top:15px
+	width: 400px;
+	height: 40px;
+	margin-left: 10px;
+	margin-right: 5px;
+	padding: 10px;
+	background: #0BDD6F;
+	color:#000;
+	text-align: center;
+}
+.step-label{
+	text-transform: uppercase;
+	margin-left: 5px;
+}
+.step-checkbox{
+}
+.officebox-blue-container{	
+	position: relative;
+	padding: 10px ;
+	margin-top: 65px;
+	margin-bottom: 10px;
+	background-color: #F4F9F5;
+}
+.officebox-coal-checkboxcontrol {	
+	margin-bottom: 30px;
+	border-color: #898989;
+	border-width: 2px;
+}
+
+::-webkit-input-placeholder {
+	text-transform: uppercase;
+}
+
+::-moz-placeholder {
+  
+}
+
+::-moz-placeholder { 
+   
+}
+
+::-ms-input-placeholder {  
+
+
+}
+l

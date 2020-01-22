@@ -1,0 +1,204 @@
+/*topnavbar*/
+.navbar{
+    background: #FFF;
+    top: 0;
+    position: fixed;
+    width: 100%;
+    border: none;
+}
+
+.navbar-header{
+    background: #0BDD6F;
+}
+
+#logo{
+    width: auto;
+    max-height: 45px;
+}
+
+#logoutImg{
+    height: 18px;
+    margin-left: 10px;
+    margin-bottom: 5px;
+}
+
+/*sidebar*/
+.sidebar{
+    padding-top: 75px;
+    background: #fff;
+    padding-left: 0px;
+    padding-right: 0px;
+    position: fixed;
+}
+
+.activeSideTab{
+    background: #0BDD6F;
+    color: white;
+}
+
+.activeSideTab > a{
+    color: white!important;
+    font-weight: bold;
+}
+
+.nav > li > a{
+    font-weight: 400;
+}
+
+.nav > li > a:hover,
+.nav > li > a:focus {
+    background-color: transparent;
+}
+
+.nav > li > a:hover{
+    background: transparent;
+}
+
+
+#adminProfileContainer{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#adminProfileText{
+    margin-top: 15px;
+}
+
+#adminProfileImage{
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    border: 1px solid #0BDD6F;
+    padding: 4px;
+}
+
+.sidebarImages{
+    height: 25px;
+    width: 25px;
+    float: left;
+    margin-top: 8px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+/*states*/
+
+.redBorder{
+    border: 1px solid red!important;
+}
+
+/*inputs*/
+.standardTextInput{
+    width: 100%;
+    border: none;
+    background-color: #fff;
+    color: #555555;
+    padding-left: 10px;
+    height: 30px;
+    margin-bottom: 10px;
+}
+
+/*BUTTONS*/
+
+.btn-default{
+    border: none;
+    background-color: transparent;
+}
+
+.fullWhiteBorderButton{
+    width: 100%;
+    border-radius: 0px;
+    border: 1px solid white;
+    color: white;
+    background: #0BDD6F;
+}
+
+.rightButtonGreen{
+    border: 1px solid #0BDD6F;
+    color: #0BDD6F;
+    background: transparent;
+    float: right;
+    margin-top: 10px;
+    padding: 10px;
+    cursor: pointer;
+    width: 100px;
+    text-align: center;
+}
+
+.leftButtonRed{
+    border: 1px solid red;
+    color: red;
+    background: transparent;
+    float: left;
+    margin-top: 10px;
+    padding: 10px;
+    width: 100px;
+}
+
+.buttonBlue{
+    border: 1px solid #0BDD6F;
+    color: #0BDD6F;
+    background: transparent;
+    margin-top: 10px;
+    padding: 10px;
+    width: 100px;
+}
+
+.buttonBlueFilled{
+    border: 1px solid #0BDD6F;
+    color: #fff;
+    background: #0BDD6F;
+    margin-top: 10px;
+    padding: 10px;
+    width: 100px;
+}
+
+/*misc*/
+.noPadding{
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+body{
+    background-color: #f5f5f5;
+}
+
+.input-small{
+    display: none;
+}
+
+.glyphicon{
+    color: #0BDD6F;
+}
+
+#logoutLink{
+    color: #0BDD6F;
+    float: right;
+    font-weight: bold;
+    margin-right: 25px;
+    margin-top: 25px;
+}
+
+/*standard spinner*/
+.spinner {
+    margin: 10px;
+    height: 28px;
+    width: 28px;
+    animation: rotate 0.8s infinite linear;
+    border: 8px solid #0BDD6F;
+    border-right-color: transparent;
+    border-radius: 50%;
+    display: none;
+}
+
+@keyframes rotate {
+    0%    { transform: rotate(0deg); }
+    100%  { transform: rotate(360deg); }
+}
+
+.formHeader{
+    margin-bottom: 0px;
+    height: 30px;
+    vertical-align: middle;
+    display: table-cell;
+}

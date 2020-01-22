@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Orders</title>
+		<link rel='stylesheet' href='assets/css/bootstrap.min.css' />
+		<link rel='stylesheet' href='assets/css/bootstrap-theme.css' />
+		<!--<link rel='StyleSheet' href="./OfficeboxCSSnew.css" type="text/css" media=screen />-->
+		<!-- LIB SCRIPTS -->
+		<script type="text/javascript" src='js/jquery-3.1.0.min.js'></script>
+		<script type="text/javascript" src='js/bootstrap.js'></script>
+		<!-- CUSTOM CSS HERE -->
+		<link rel='stylesheet' href='assets/css/officebox_signIn.css' />
+
+		<style>
+			@media all and (max-width: 958px) { /* screen size until 500px */
+			    .zeroPadding{
+			        padding-left: 20px!important;
+			        padding-right: 20px!important;
+			    }
+			}
+			body {
+			    font-family: "Lato", sans-serif;
+			    transition: background-color .5s;
+			}
+
+			.sidenav {
+			    height: 100%;
+			    width: 0;
+			    position: fixed;
+			    z-index: 1;
+			    top: 0;
+			    left: 0;
+			    background-color: #ccc;
+			    overflow-x: hidden;
+			    transition: 0.5s;
+			    padding-top: 60px;
+			}
+
+			.sidenav a {
+			    padding: 20px 8px 8px 8px;
+			    text-decoration: none;
+			    font-size: 20px;
+			    color: #818181;
+			    display: block;
+			    transition: 0.3s
+			}
+
+			.sidenav a:hover, .offcanvas a:focus{
+			    color: #f1f1f1;
+			}
+
+			.sidenav .closebtn {
+			    position: absolute;
+			    top: 0;
+			    right: 25px;
+			    font-size: 36px;
+			    margin-left: 50px;
+			}
+
+			#main {
+			    transition: margin-left .5s;
+			    padding: 16px;
+			}
+
+			@media screen and (max-height: 450px) {
+			  .sidenav {padding-top: 15px;}
+			  .sidenav a {font-size: 18px;}
+			}
+			.img-circle {
+			    border-radius: 50%;
+			}
+
+			.side-menu-a-link{
+				padding-top: 10px;
+			}
+
+			.top-nav-menu-button{
+				font-size:35px;
+				cursor:pointer;
+				margin-left:-20px;
+				color:#EE8534;
+			}
+
+			.top-nav-logo{
+				cursor:pointer;
+				max-width:250px;
+				margin-top:-40px;
+			}
+
+			.pager-container{
+				background:#efeeec;
+				width:100%;
+				height:100%;
+				padding-left:120px;
+				padding-right:120px;
+			}
+
+			.pager-previous-button{
+				max-height:34px;
+				margin-right:10px;
+				background: #cccccc;
+				color: white;
+				font-weight: 600;
+			}
+
+			.pager-next-button{
+				max-height:34px;
+				margin-left:10px;
+				background: #cccccc;
+				color: white;
+				font-weight: 600;
+			}
+
+			.pager-page-button{
+				background: #cccccc;
+				color: white;
+				font-weight: 600;
+			}
+
+			.table-row-cell{
+				background-color:#EFEEEC;
+				vertical-align:middle;
+				padding-left:10px;
+			}
+
+			.table-row{
+				outline: 4px solid white
+			}
+
+		</style>
+	</head>
+	<body>
+	<div id="mySidenav" class="sidenav">
+		<div id="adminProfileContainer"> 
+	        <div id="profileImageContainer" class="col-xs-4"> 
+	            <img id="adminProfileImage" src="logo.png"> 
+	        </div> 
+	        <div class="col-xs-8"> 
+	            <p id="adminProfileText">ADMIN</p> 
+	        </div> 
+	        <div class="clearfix"></div> 
+	    </div>
+	  	<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+	  	<a href="#"><span class="glyphicon glyphicon-user side-menu-a-link" aria-hidden="true"></span>&nbsp;&nbsp;Account</a>
+	  	<a href="#"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp;&nbsp;Orders</a>
+	  	<a href="#"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>&nbsp;&nbsp;Products</a>
+	  	<a href="#"><span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp;&nbsp;Logout</a>
+	</div>
+
+	<div id="main" style="padding-bottom:0px;">
+		<div id="main" class="row">
+			<div class="col-sm-12">
+				<div class="col-sm-6">
+					<span class="top-nav-menu-button" onclick="openNav();">&#9776;</span><img src="logo.png" class="top-nav-logo">
+				</div>
+				<div class="col-sm-6">
+					<!-- <div  style="background:grey;border-radius:50em;">
+						<span class="glyphicon glyphicon-user" aria-hidden="true" style="padding-top:10px;"></span>
+					</div> -->
+				</div>
+			</div>	
+		</div>
+
+		<div class="row">
+			<div class="col-sm-12 zeroPadding pager-container">
+				<div align="center" class="row">
+	                <ul class="pagination">
+	                    <li><a href="#" onclick="redirect(&#39;/cmsbackendlonglinkorders/0&#39;)" class="officebox-form-submit-button button-orange pager-previous-button">< Previous</a></li>
+	                    <li><a href="#" class="pager-page-button">1</a></li>
+	                    <li><a href="#" class="pager-page-button">2</a></li>
+	                    <li><a href="#" class="pager-page-button">3</a></li>
+	                    <li><a href="#" class="pager-page-button">4</a></li>
+	                    <li><a href="#" class="pager-page-button">5</a></li>
+	                    <li><a href="#" class="pager-page-button">6</a></li>
+	                    <li><a href="#" class="pager-page-button" onclick="redirect(&#39;/cmsbackendlonglinkorders/200&#39;)" class="officebox-form-submit-button button-orange pager-next-button">Next ></a></li>
+	                </ul>
+	            </div>
+	            <div class="row">
+		            <div class="col-sm-6 col-xs-12">
+		                <button onclick="location.reload();" class="officebox-form-submit-button button-orange pull-right" style="font-size:14px;font-weight: normal;float:left!important;background:#EE8534;border:0;color:white;width:180px;height:38px;">Refresh</button>
+		            </div>
+<!-- 
+		            <div class="dropdown">
+					    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
+					    <span class="caret"></span></button>
+					    <ul class="dropdown-menu">
+					      <li><a href="#">HTML</a></li>
+					      <li><a href="#">CSS</a></li>
+					      <li><a href="#">JavaScript</a></li>
+					    </ul>
+					 </div> -->
+
+		            <div class="input-group col-sm-6" style="max-width:860px;margin-top:5px;margin-bottom:5px;float:right;padding-right:15px;">
+		                <input type="text" class="form-control" placeholder="Search Orders..." style="max-width:315px;float:right;margin-right:1px;">
+		                <span class="input-group-btn">
+		                    <button class="btn btn-default" type="button" style="color:white;background:#EE8534;border:#EE8534;padding:7px;">Go!</button>
+		                </span>
+		            </div>
+		        </div>
+
+	            <table class="table table-hover" style="border-spacing:0;background:#757575;"> 
+	                <thead style="color:white;"> 
+	                    <tr> 
+	                        <th style="padding-left:10px;"> 
+	                            <label>Order Reference</label> 
+	                        </th> 
+	                        <th style="padding-left:10px;"> 
+	                            <label>Account</label> 
+	                        </th> 
+	                        <th style="padding-left:10px;"> 
+	                            <label>State</label> 
+	                        </th> 
+	                        <th style="padding-left:10px;"> 
+	                            <label>Gross Total</label> 
+	                        </th> 
+	                        <th style="padding-left:10px;"> 
+	                            <label>Customer</label> 
+	                        </th> 
+	                        <th style="padding-left:10px;"> 
+	                            <label>Create Date</label> 
+	                        </th> 
+	                    </tr> 
+	                </thead>    
+	                <tbody id="tableBody"> 	                        	                     
+	                        <tr id="NsFMAJo0jB" class="tableRow table-row"> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>NsFMAJo0jB</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>nLighten</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="CODE"> 
+	                                <label>COMPLETED</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="UOM"> 
+	                                <label>R506</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRICE"> 
+	                                <label>Belinda Gabriels</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="QTY"> 
+	                                <label>Thu Nov 17 2016</label> 
+	                            </td> 
+	                        </tr> 
+	                     
+	                        <tr id="ySdTi4IlRh" class="tableRow table-row"> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>ySdTi4IlRh</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>Novagroup (PTY) Ltd T/A United Container Depot (Cape Town)</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="CODE"> 
+	                                <label>COMPLETED</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="UOM"> 
+	                                <label>R3258</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRICE"> 
+	                                <label>United container depots novagroup</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="QTY"> 
+	                                <label>Thu Nov 17 2016</label> 
+	                            </td> 
+	                        </tr> 
+	                     
+	                        <tr id="XAFlF90oUU" class="tableRow table-row"> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>XAFlF90oUU</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>Southern Destinations</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="CODE"> 
+	                                <label>COMPLETED</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="UOM"> 
+	                                <label>R1181</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRICE"> 
+	                                <label>Southern Destinations</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="QTY"> 
+	                                <label>Thu Nov 17 2016</label> 
+	                            </td> 
+	                        </tr> 
+	                     
+	                        <tr id="E5gbi5aX28" class="tableRow table-row"> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>E5gbi5aX28</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>ProQuartz</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="CODE"> 
+	                                <label>COMPLETED</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="UOM"> 
+	                                <label>R182</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRICE"> 
+	                                <label>Nadia Murphy</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="QTY"> 
+	                                <label>Thu Nov 17 2016</label> 
+	                            </td> 
+	                        </tr> 
+	                     
+	                        <tr id="6oLeMhkegr" class="tableRow table-row"> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>6oLeMhkegr</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>Damelin Cape Town City</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="CODE"> 
+	                                <label>PENDING</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="UOM"> 
+	                                <label>R2633</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRICE"> 
+	                                <label>Stacy Scullard</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="QTY"> 
+	                                <label>Thu Nov 17 2016</label> 
+	                            </td> 
+	                        </tr> 
+	                     
+	                        <tr id="IfUxywWt29" class="tableRow table-row"> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>IfUxywWt29</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>Click N Compare</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="CODE"> 
+	                                <label>COMPLETED</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="UOM"> 
+	                                <label>R174</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRICE"> 
+	                                <label>Ryan Marx</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="QTY"> 
+	                                <label>Thu Nov 17 2016</label> 
+	                            </td> 
+	                        </tr> 
+	                     
+	                        <tr id="P488CjTQW2" class="tableRow table-row"> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>P488CjTQW2</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>Damelin Cape Town City</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="CODE"> 
+	                                <label>PENDING</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="UOM"> 
+	                                <label>R3345</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRICE"> 
+	                                <label>Stacy Scullard</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="QTY"> 
+	                                <label>Thu Nov 17 2016</label> 
+	                            </td> 
+	                        </tr> 
+	                     
+	                        <tr id="BNd7iMsLwd" class="tableRow table-row"> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>BNd7iMsLwd</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>Hymax SA (Pty) Ltd</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="CODE"> 
+	                                <label>COMPLETED</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="UOM"> 
+	                                <label>R783</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRICE"> 
+	                                <label>BERTUS DE WAAL</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="QTY"> 
+	                                <label>Thu Nov 17 2016</label> 
+	                            </td> 
+	                        </tr> 
+	                     
+	                        <tr id="kFDhgPbiKw" class="tableRow table-row"> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>kFDhgPbiKw</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>EPDR Holdings</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="CODE"> 
+	                                <label>COMPLETED</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="UOM"> 
+	                                <label>R729</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRICE"> 
+	                                <label>Amber Kraft</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="QTY"> 
+	                                <label>Thu Nov 17 2016</label> 
+	                            </td> 
+	                        </tr> 
+	                     
+	                        <tr id="SF9J69Voyd" class="tableRow table-row"> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>SF9J69Voyd</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>CAPE SEWIN</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="CODE"> 
+	                                <label>COMPLETED</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="UOM"> 
+	                                <label>R433</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRICE"> 
+	                                <label>LEZANNE MARAIS</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="QTY"> 
+	                                <label>Thu Nov 17 2016</label> 
+	                            </td> 
+	                        </tr> 
+	                     
+	                        <tr id="0Z5WjNGkSt" class="tableRow table-row"> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>0Z5WjNGkSt</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>CBC St Johns Parklands</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="CODE"> 
+	                                <label>PENDING</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="UOM"> 
+	                                <label>R192</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRICE"> 
+	                                <label>Yolande Smith</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="QTY"> 
+	                                <label>Thu Nov 17 2016</label> 
+	                            </td> 
+	                        </tr> 
+	                     
+	                        <tr id="XvCZ0jT8DE" class="tableRow table-row"> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>XvCZ0jT8DE</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>Anything Goes</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="CODE"> 
+	                                <label>COMPLETED</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="UOM"> 
+	                                <label>R573</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRICE"> 
+	                                <label>Nazlie Cloete</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="QTY"> 
+	                                <label>Thu Nov 17 2016</label> 
+	                            </td> 
+	                        </tr> 
+	                     
+	                        <tr id="IIA8WclNHE" class="tableRow table-row"> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>IIA8WclNHE</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>CCI Technology Solutions (Pty) Ltd Cape Town</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="CODE"> 
+	                                <label>COMPLETED</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="UOM"> 
+	                                <label>R810</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRICE"> 
+	                                <label>Taryn Lasker</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="QTY"> 
+	                                <label>Thu Nov 17 2016</label> 
+	                            </td> 
+	                        </tr> 
+	                     
+	                        <tr id="MdaGWeKhmP" class="tableRow table-row"> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>MdaGWeKhmP</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>Prescient Investment Management Pty LTD</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="CODE"> 
+	                                <label>COMPLETED</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="UOM"> 
+	                                <label>R2125</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRICE"> 
+	                                <label>Julie Nell</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="QTY"> 
+	                                <label>Thu Nov 17 2016</label> 
+	                            </td> 
+	                        </tr> 
+	                     
+	                        <tr id="6PE6Cxc6I4" class="tableRow table-row"> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>6PE6Cxc6I4</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>Eaglestone Capital Advisory (PTY) Ltd</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="CODE"> 
+	                                <label>COMPLETED</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="UOM"> 
+	                                <label>R1862</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRICE"> 
+	                                <label>Tania Wyngaard</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="QTY"> 
+	                                <label>Thu Nov 17 2016</label> 
+	                            </td> 
+	                        </tr> 
+	                     
+	                        <tr id="pNhGED1rmX" class="tableRow table-row"> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>pNhGED1rmX</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>Renlaw Sharpening &amp; Engineering (Pty) Ltd</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="CODE"> 
+	                                <label>COMPLETED</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="UOM"> 
+	                                <label>R1106</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRICE"> 
+	                                <label>Jane Renaud</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="QTY"> 
+	                                <label>Thu Nov 17 2016</label> 
+	                            </td> 
+	                        </tr> 
+	                     
+	                        <tr id="KWPhD0LFx0" class="tableRow table-row"> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>KWPhD0LFx0</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>Deslee Mattex</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="CODE"> 
+	                                <label>COMPLETED</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="UOM"> 
+	                                <label>R776</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRICE"> 
+	                                <label>Yusrah Gamieldien</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="QTY"> 
+	                                <label>Thu Nov 17 2016</label> 
+	                            </td> 
+	                        </tr> 
+	                     
+	                        <tr id="gbmNvwelvE" class="tableRow table-row"> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>gbmNvwelvE</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>Nejeni Construction &amp; Project Management cc</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="CODE"> 
+	                                <label>COMPLETED</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="UOM"> 
+	                                <label>R1357</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRICE"> 
+	                                <label>Lizinda Cronje</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="QTY"> 
+	                                <label>Thu Nov 17 2016</label> 
+	                            </td> 
+	                        </tr> 
+	                     
+	                        <tr id="qHyhxCeHQx" class="tableRow table-row"> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>qHyhxCeHQx</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>Table View International Real Estate (PTY) Ltd T/A Seeff Blouberg</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="CODE"> 
+	                                <label>COMPLETED</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="UOM"> 
+	                                <label>R1636</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRICE"> 
+	                                <label>Michelle Beirowski</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="QTY"> 
+	                                <label>Thu Nov 17 2016</label> 
+	                            </td> 
+	                        </tr> 
+	                     
+	                        <tr id="6g4AxjhA0w" class="tableRow table-row"> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>6g4AxjhA0w</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>Fairsure Administration</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="CODE"> 
+	                                <label>COMPLETED</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="UOM"> 
+	                                <label>R642</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRICE"> 
+	                                <label>Candice Le Roux</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="QTY"> 
+	                                <label>Thu Nov 17 2016</label> 
+	                            </td> 
+	                        </tr> 
+	                     
+	                        <tr id="kznlwjAgY3" class="tableRow table-row"> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>kznlwjAgY3</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>Kazang a division of Paycorp VAS (Pty) Ltd</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="CODE"> 
+	                                <label>COMPLETED</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="UOM"> 
+	                                <label>R4906</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRICE"> 
+	                                <label>Karin Wilson</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="QTY"> 
+	                                <label>Thu Nov 17 2016</label> 
+	                            </td> 
+	                        </tr> 
+	                     
+	                        <tr id="qsCNNa2Ohj" class="tableRow table-row"> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>qsCNNa2Ohj</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>Nedsteel (PTY) Ltd</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="CODE"> 
+	                                <label>COMPLETED</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="UOM"> 
+	                                <label>R3770</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRICE"> 
+	                                <label>Tanya Schoeman</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="QTY"> 
+	                                <label>Wed Nov 16 2016</label> 
+	                            </td> 
+	                        </tr> 
+	                     
+	                        <tr id="DKYab8sgNY" class="tableRow table-row"> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>DKYab8sgNY</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>OfficeBox</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="CODE"> 
+	                                <label>COMPLETED</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="UOM"> 
+	                                <label>R2090.9900000000002</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRICE"> 
+	                                <label>Jon-Paul Akal</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="QTY"> 
+	                                <label>Wed Nov 16 2016</label> 
+	                            </td> 
+	                        </tr> 
+	                     
+	                        <tr id="zqG4Kqb0vA" class="tableRow table-row"> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>zqG4Kqb0vA</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>Independent Newspapers (PTY) Ltd</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="CODE"> 
+	                                <label>COMPLETED</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="UOM"> 
+	                                <label>R3094</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRICE"> 
+	                                <label>Ayanda Mandindi</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="QTY"> 
+	                                <label>Wed Nov 16 2016</label> 
+	                            </td> 
+	                        </tr> 
+	                     
+	                        <tr id="9gzcwzHf6j" class="tableRow table-row"> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>9gzcwzHf6j</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>Sanders South Africa</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="CODE"> 
+	                                <label>COMPLETED</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="UOM"> 
+	                                <label>R547</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRICE"> 
+	                                <label>Lizelle Julius-Africa</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="QTY"> 
+	                                <label>Wed Nov 16 2016</label> 
+	                            </td> 
+	                        </tr> 
+	                     
+	                        <tr id="Un5eMyYM3G" class="tableRow table-row"> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>Un5eMyYM3G</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>MLT Drives (PTY) Ltd</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="CODE"> 
+	                                <label>COMPLETED</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="UOM"> 
+	                                <label>R2642</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRICE"> 
+	                                <label>Antonia Edwards</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="QTY"> 
+	                                <label>Wed Nov 16 2016</label> 
+	                            </td> 
+	                        </tr> 
+	                     
+	                        <tr id="Tmqm0DBBfJ" class="tableRow table-row"> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>Tmqm0DBBfJ</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>Toprope CC</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="CODE"> 
+	                                <label>COMPLETED</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="UOM"> 
+	                                <label>R834</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRICE"> 
+	                                <label>Toprope Fara</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="QTY"> 
+	                                <label>Wed Nov 16 2016</label> 
+	                            </td> 
+	                        </tr> 
+	                     
+	                        <tr id="qLtA4TcHeo" class="tableRow table-row"> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>qLtA4TcHeo</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>CCW Property Investments T/A Map Studio</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="CODE"> 
+	                                <label>COMPLETED</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="UOM"> 
+	                                <label>R778</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRICE"> 
+	                                <label>T/A MAP STUDIO Vat no: 4470126121</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="QTY"> 
+	                                <label>Wed Nov 16 2016</label> 
+	                            </td> 
+	                        </tr> 
+	                     
+	                        <tr id="ToQGeUTXj5" class="tableRow table-row"> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>ToQGeUTXj5</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>Herbex (PTY) Ltd</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="CODE"> 
+	                                <label>PENDING</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="UOM"> 
+	                                <label>R569</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRICE"> 
+	                                <label>Marica  Njozela </label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="QTY"> 
+	                                <label>Wed Nov 16 2016</label> 
+	                            </td> 
+	                        </tr> 
+	                     
+	                        <tr id="LG3vjaBdEL" class="tableRow table-row"> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>LG3vjaBdEL</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>Thermo Fires</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="CODE"> 
+	                                <label>COMPLETED</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="UOM"> 
+	                                <label>R2907</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRICE"> 
+	                                <label>Alicia Steyn</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="QTY"> 
+	                                <label>Wed Nov 16 2016</label> 
+	                            </td> 
+	                        </tr> 
+	                     
+	                        <tr id="IDaUsSD04O" class="tableRow table-row"> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>IDaUsSD04O</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>Victorian Bathrooms</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="CODE"> 
+	                                <label>COMPLETED</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="UOM"> 
+	                                <label>R1065</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRICE"> 
+	                                <label>Marcelle Raikes</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="QTY"> 
+	                                <label>Wed Nov 16 2016</label> 
+	                            </td> 
+	                        </tr> 
+	                     
+	                        <tr id="7FKyuCgosy" class="tableRow table-row"> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>7FKyuCgosy</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>Recall Africa Pty Ltd (Cape) </label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="CODE"> 
+	                                <label>COMPLETED</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="UOM"> 
+	                                <label>R906</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRICE"> 
+	                                <label>jamilla Safri</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="QTY"> 
+	                                <label>Wed Nov 16 2016</label> 
+	                            </td> 
+	                        </tr> 
+	                     
+	                        <tr id="cgpGbCQhcp" class="tableRow table-row"> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>cgpGbCQhcp</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRODUCT #"> 
+	                                <label>Recall Africa Pty Ltd (Cape) </label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="CODE"> 
+	                                <label>COMPLETED</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="UOM"> 
+	                                <label>R3223</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="PRICE"> 
+	                                <label>jamilla Safri</label> 
+	                            </td> 
+	                            <td class="table-row-cell" data-title="QTY"> 
+	                                <label>Wed Nov 16 2016</label> 
+	                            </td> 
+	                        </tr>   
+	                </tbody> 
+	            </table>
+	            <div class="row">
+	            	<div align="center" class="row">
+	                <ul class="pagination">
+	                    <li><a href="#" onclick="redirect(&#39;/cmsbackendlonglinkorders/0&#39;)" class="officebox-form-submit-button button-orange" style="max-height:34px;margin-right:10px;background: #cccccc;color: white;font-weight: 600;">< Previous</a></li>
+	                    <li><a href="#" style="background: #cccccc;color: white;font-weight: 600;">1</a></li>
+	                    <li><a class="active" href="#" style="background: #cccccc;color: white;font-weight: 600;">2</a></li>
+	                    <li><a href="#" style="background: #cccccc;color: white;font-weight: 600;">3</a></li>
+	                    <li><a href="#" style="background: #cccccc;color: white;font-weight: 600;">4</a></li>
+	                    <li><a href="#" style="background: #cccccc;color: white;font-weight: 600;">5</a></li>
+	                    <li><a href="#" style="background: #cccccc;color: white;font-weight: 600;">6</a></li>
+	                    <li><a href="#" onclick="redirect(&#39;/cmsbackendlonglinkorders/200&#39;)" class="officebox-form-submit-button button-orange" style="max-height:34px;margin-left:10px;background: #cccccc;color: white;font-weight: 600;">Next ></a></li>
+	                </ul>
+	            </div>
+	            </div>
+			</div>
+		</div>
+	</div>
+	<script>
+		function openNav() {
+		    document.getElementById("mySidenav").style.width = "250px";
+		    document.getElementById("main").style.marginLeft = "250px";
+		    document.body.style.backgroundColor = "white";
+		}
+
+		function closeNav() {
+		    document.getElementById("mySidenav").style.width = "0";
+		    document.getElementById("main").style.marginLeft= "0";
+		    document.body.style.backgroundColor = "white";
+		}
+	</script>
+	</body>
+</html>

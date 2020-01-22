@@ -1,0 +1,67 @@
+﻿@page
+@model Shop.UI.Pages.Accounts.LoginModel
+
+<div class="container">
+    <form method="post" style="margin-top:40px;margin-bottom:20px">
+        @Html.HiddenFor(model => Model.Input.ReturnUrl)
+        <div class="column is-4 is-offset-4">
+            <h1>
+                <p style="color: #0BDD6F" class="title">Sign In</p>
+            </h1>
+            <div class="field">
+                <div class="control has-icons-left has-icon-right">
+                    <input class="input is-success" type="email" placeholder="EMAIL ADDRESS" asp-for="Input.Username" />
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-envelope"></i>
+                    </span>
+                    <span class="icon is-small is-right">
+                        <i class="fas fa-check"></i>
+                    </span>
+                </div>
+                <span class="help is-danger" asp-validation-for="Input.Username"></span>
+            </div>
+            <div class="field">
+                <div class="control has-icons-left">
+                    <input class="input is-success" type="password" placeholder="PASSWORD" asp-for="Input.Password" />
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-key"></i>
+                    </span>
+                </div>
+                <span class="help is-danger" asp-validation-for="Input.Password"></span>
+            </div>
+            <label class="checkbox" style="font-weight:bolder;margin-bottom:10px;margin-top:10px">
+                <input type="checkbox">
+                Remember me
+            </label>
+            <div class="field">
+                <div class="columns">
+                    <div class="column is-6">
+                        <button type="submit" class="button is-marginless is-primary is-block">Sign In</button>
+                    </div>
+                    <div class="column is-6">
+                        <a asp-page="/Accounts/ForgotPassword" class="button is-block is-text" style="text-decoration:none">Forgot <span style="color:#0BDD6F;font-weight:bolder;">Password?</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <section class="hero is-bold" style="margin-bottom:30px;background:#f4f9f5">
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <p class="subtitle is-5">Don't have a Profile or Account? <span class="title" style="font-weight:bold">Create an Account</span> now.</p>
+                <p style="font-weight:200;color:lightslategrey" class="subtitle is-4">Individual or a Business? We take care of your needs.</p>
+                <a asp-page="/Accounts/Index" class="button is-primary">Create</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="hero is-bold">
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <p class="title has-text-centered">Or continue as a <span style="color:#0BDD6F;font-weight:bold">GUEST</span> .</p>
+                <p class="subtitle has-text-centered" style="color:lightslategrey;font-weight:400">As a guest you can purchase anything off the site without having to save your credentials.</p>
+                <button class="button has-background-grey" style="color:#fff">I'm a Guest</button>
+            </div>
+        </div>
+    </section>
+</div>

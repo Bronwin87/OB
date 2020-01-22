@@ -1,0 +1,14 @@
+﻿@page
+@model Shop.UI.Pages.Shop.VAIndexModel
+@{
+    ViewData["Title"] = "Value Added Products";
+}
+
+<div class="container section">
+    <div class="columns tile is-ancestor my-1 is-multiline is-mobile" id="valueAddedItems">
+        @foreach (var p in Model.Products)
+        {
+            <partial name="Products/_ProductCard" model="p" />
+        }
+    </div>
+</div>

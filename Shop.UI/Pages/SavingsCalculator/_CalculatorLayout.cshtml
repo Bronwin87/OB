@@ -1,0 +1,275 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Shop.UI</title>
+
+    @*<script defer src="https://use.fontawesome.com/releases/v5.8.1/js/all.js" integrity="sha384-g5uSoOSBd7KkhAMlnQILrecXvzst9TdC09/VM+pjDTCM+1il8RHz5fKANTFFb+gQ" crossorigin="anonymous"></script>*@
+
+    <environment include="Development">
+        <link href="~/lib/bulma-0.7.2/css/bulma.css" rel="stylesheet" />
+        <link rel="stylesheet" href="~/css/site.css" />
+        <link href="https://use.fontawesome.com/releases/v5.0.7/css/all.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="@Url.Content("~/css/spinner.css")">
+
+    </environment>
+    <environment include="Production">
+        <link href="~/lib/bulma-0.7.2/css/bulma.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/officebox_form_stylings.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/officebox_signIn.css" asp-append-version="true" />
+        <link href="https://use.fontawesome.com/releases/v5.0.7/css/all.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="@Url.Content("~/css/spinner.css")">
+
+    </environment>
+
+    <style type="text/css">
+        .card .card-img {
+            min-height: 150px;
+            max-height: 150px;
+        }
+
+            .card .card-img img {
+                max-height: 150px;
+                margin: auto;
+            }
+    </style>
+</head>
+<body>
+    <div id="calculator">
+        <nav class="level equal">
+            <div class="level-item">
+                <a asp-page="/Shop/Index" class="button is-primary"><i class="fa fa-angle-double-left"></i>&nbsp; Exit Calculator</a>
+            </div>
+            <div class="level-item">
+                <div>
+                    <div class="field has-text-centered">
+                        <p class="title">Savings Calculator</p>
+                    </div>
+                    <div class="field has-text-centered">
+                        <div class="control has-icons-right">
+                            <input class="input" v-model="search" placeholder="SEARCH PRODUCTS">
+                            <span class="icon is-small is-right">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="#ddd" d="M23.822 20.88l-6.353-6.354c.93-1.465 1.467-3.2 1.467-5.059.001-5.219-4.247-9.467-9.468-9.467s-9.468 4.248-9.468 9.468c0 5.221 4.247 9.469 9.468 9.469 1.768 0 3.421-.487 4.839-1.333l6.396 6.396 3.119-3.12zm-20.294-11.412c0-3.273 2.665-5.938 5.939-5.938 3.275 0 5.94 2.664 5.94 5.938 0 3.275-2.665 5.939-5.94 5.939-3.274 0-5.939-2.664-5.939-5.939z" /></svg>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="sc--search-result" v-if="Object.keys(searchResult).length > 0">
+                            <div class="level">
+                                <div class="level-left">
+                                    <img class="header-logo" style="height:50px" src="/public/logo.png">
+                                </div>
+                                <div class="level-right">
+                                    <div class="navbar-end is-inline-flex search-link" v-on:click="searchResult = []">X Close Search</div>
+                                </div>
+                            </div>
+
+                            <div v-for="(items, categoryIndex, arrIndex) in searchResult">
+                                <div class="search-heading">
+                                    {{items.key}}
+                                    <div v-if="items.searchResult.length > 2" class="navbar-end is-inline-flex search-link" style="color: #ee8534;font-weight: 400;text-transform: capitalize;font-style: italic;font-size:8px">
+                                        <a @@click="loadProducts('tri', items.searchResult[0].tertiaryCategoryId)" class="search-link is-orange">See more >></a>
+                                    </div>
+                                </div>
+                                <div v-for="p in items.searchResult" class="navbar-item">
+                                    <a @@click="selectProduct(p)" class="search-link">
+                                        <span style="width: 50px; min-width: 50px; text-align: center; margin-right: 15px;">
+                                            <img :src="p.imageUrl" style="max-height: 50px" />
+                                        </span>
+                                        <span>
+                                            <strong>{{p.name}}</strong>
+                                            <br />
+                                            {{p.code}}
+                                            <br />
+                                            {{p.price}}
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="level-item has-text-centered subtitle-text">
+                Use the Search Or Menu to find items and Add them to the calculator grid.<br />
+            </div>
+        </nav>
+
+        <div class="navbar navbar-menu-categories">
+            <div class="container navbar-menu">
+                <div class="navbar-start">
+                    <div class="navbar-item has-dropdown is-hoverable" v-for="c in categories">
+                        <a class="navbar-link" @@click="loadProducts('main', c.id)">{{c.name}}</a>
+
+                        <div class="navbar-dropdown">
+                            <div class="nested navbar-item dropdown" v-for="subC in c.subCategories" v-if="subC.tertiaryCategories.length > 0">
+                                <div class="dropdown-trigger">
+                                    <a @@click="loadProducts('sub', subC.id)">
+                                        <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                                            <span>{{subC.name}}</span>
+                                            <span class="icon is-small">
+                                                <i class="fa fa-angle-right"></i>
+                                            </span>
+                                        </button>
+                                    </a>
+                                </div>
+                                <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                                    <div class="dropdown-content" v-for="triC in subC.tertiaryCategories">
+                                        <a @@click="loadProducts('tri', triC.id)" class="dropdown-item">{{triC.name}}</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <a v-else class="navbar-item" @@click="loadProducts('sub', subC.id)">{{subC.name}}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="body-content">
+            @RenderBody()
+        </div>
+    </div>
+    <footer class="footer">
+        <style>
+            .footer {
+                background: #fff !important;
+            }
+
+                .footer a {
+                    color: #757575 !important;
+                    text-decoration: none;
+                    font-weight: 500;
+                }
+
+                    .footer a:visited {
+                        text-decoration: none !important;
+                    }
+
+                    .footer a:hover {
+                        color: #0bdd6f !important;
+                    }
+
+            .footerCSS {
+                list-style: none !important;
+            }
+        </style>
+        <div class="container">
+            <div class="columns">
+                <img src="https://s3.us-east-2.amazonaws.com/officeboxnew/whatsinit/business/Logo+-+Grey.png" alt="" class="image" style="padding-left:10px;padding-bottom:25px">
+            </div>
+            <div class="columns">
+                <div class="column"> <p style="color:#A7A8A7;text-align: left">©OfficeBox 2019</p></div>
+                <div class="column">
+                    <h4 class="footer-widget-title" style="color:#757575; font-weight:600; font-size:17px;  margin-bottom:0px;">SHOP</h4>
+                    <ul style="padding-left:0px;">
+                        <li class="footerCSS">
+                            <a href="https://www.officebox.co.za/storecat/t7hn4VVSsS" class="sub-nav" style=" color: #757575 !important;text-decoration: none;font-weight: 300;" target="_blank">Office Supplies</a>
+                        </li>
+                        <li class="footerCSS">
+                            <a href="https://www.officebox.co.za/storecat/wQMi50cmyU" class="sub-nav" style=" color: #757575 !important;text-decoration: none;font-weight: 300;" target="_blank">Electronics & Accessories</a>
+                        </li>
+                        <li class="footerCSS">
+                            <a href="https://www.officebox.co.za/storecat/gobLTfv1S4" class="sub-nav" style=" color: #757575 !important;text-decoration: none;font-weight: 300;" target="_blank">School Stationery</a>
+                        </li>
+                        <li class="footerCSS">
+                            <a href="https://www.officebox.co.za/storecat/m5dyoUcQJZ" class="sub-nav" style=" color: #757575 !important;text-decoration: none;font-weight: 300;" target="_blank">Inks & Toners</a>
+                        </li>
+                        <li class="footerCSS">
+                            <a href="https://www.officebox.co.za/storecat/KC6HdFoE3x" class="sub-nav" style=" color: #757575 !important;text-decoration: none;font-weight: 300;" target="_blank">Canteen & Janitorial</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <h4 class="footer-widget-title" style="color:#757575; font-weight:600; font-size:17px;  margin-bottom:0px;">ABOUT</h4>
+                    <ul style="padding-left:0px;">
+                        <li class="footerCSS">
+                            <a href="/Index" class="sub-nav" style=" color: #757575 !important;text-decoration: none;font-weight: 300;" target="_blank">About OfficeBox</a>
+                        </li>
+                        <li class="footerCSS">
+                            <a href="/TermsAndConditions" class="sub-nav" style=" color: #757575 !important;text-decoration: none;font-weight: 300;" target="_blank">T's &amp; C's</a>
+                        </li>
+                        <li class="footerCSS">
+                            <a href="https://www.officebox.co.za/privacy" class="sub-nav" style=" color: #757575 !important;text-decoration: none;font-weight: 300;" target="_blank">Privacy</a>
+                        </li>
+                        <li class="footerCSS">
+                            <a href="https://www.officebox.co.za/BBBEE" class="sub-nav" style=" color: #757575 !important;text-decoration: none;font-weight: 300;" target="_blank">B-BBEE</a>
+                        </li>
+                        <li class="footerCSS">
+                            <a href="http://blog.officebox.co.za/" class="sub-nav" style=" color: #757575 !important;text-decoration: none;font-weight: 300;" target="_blank">Blog</a>
+                        </li>
+                        <li class="footerCSS">
+                            <a href="https://www.officebox.co.za/Home#section-testimonials" class="sub-nav" style=" color: #757575 !important;text-decoration: none; font-weight: 300;" target="_blank">Testimonials</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <h4 class="footer-widget-title" style="color:#757575; font-weight:600; font-size:17px;  margin-bottom:0px;">FEATURES</h4>
+                    <ul style="padding-left:0px;">
+                        <!--<li class="footerCSS"><a href="/cartDiscountDevelopment" class="sub-nav" style="font-weight:300;">Savings Calculator</a></li>-->
+                        <li class="footerCSS">
+                            <a href="https://www.officebox.co.za/home/nationaldelivery" class="sub-nav" style=" color: #757575 !important;text-decoration: none;font-weight: 300;" target="_blank">National Delivery</a>
+                        </li>
+                        <li class="footerCSS">
+                            <a href="https://www.officebox.co.za/home/ordering" class="sub-nav" style=" color: #757575 !important;text-decoration: none;font-weight: 300;" target="_blank">Online Ordering</a>
+                        </li>
+                        <li class="footerCSS">
+                            <a href="https://www.officebox.co.za/home/relationshipmanager" class="sub-nav" style=" color: #757575 !important; text-decoration: none; font-weight: 300;" target="_blank">Relationship Manager</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <h4 class="footer-widget-title" style="color:#757575; font-weight:600; font-size:17px;  margin-bottom:0px;">SUPPORT</h4>
+                    <ul style="padding-left:0px;">
+                        <li class="footerCSS">
+                            <a href="/Contact" class="sub-nav" style=" color: #757575 !important;
+		  text-decoration: none;
+		  font-weight: 300;" target="_blank">Help Desk</a>
+                        </li>
+                        <li class="footerCSS">
+                            <a href="/Faq" class="sub-nav" style=" color: #757575 !important;
+		  text-decoration: none;
+		  font-weight: 300;" target="_blank">FAQ's</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <h4 class="footer-widget-title" style="color:#757575; font-weight:600; font-size:17px;  margin-bottom:0px;">CONTACT</h4>
+                    <a href="https://web.facebook.com/OfficeboxSA/" target="_blank">
+                        <img src="https://s3.us-east-2.amazonaws.com/officeboxnew/whatsinit/business/Facebook.png" style="margin-right: 5px; margin-top: 5px; margin-bottom: 5px">
+                    </a>
+                    <a href="https://twitter.com/OfficeBox_SA" target="_blank">
+                        <img src="https://s3.us-east-2.amazonaws.com/officeboxnew/whatsinit/me/Twitter.png" style="margin-right: 5px; margin-top: 5px; margin-bottom: 5px">
+                    </a>
+                    <a href="https://www.linkedin.com/company-beta/5099206/" target="_blank">
+                        <img src="https://s3.us-east-2.amazonaws.com/officeboxnew/whatsinit/business/LinkedIn.png" style="margin-right: 5px; margin-top: 5px; margin-bottom: 5px">
+                    </a>
+                    <p>
+                        <a href="mailto:info@officebox.co.za" style=" color: #757575 !important;
+		  text-decoration: none;
+		  font-weight: 300;" target="_blank">info@officebox.co.za</a>
+                        <br>
+                        <a href="tel:027872855845" style=" color: #757575 !important;
+		  text-decoration: none;
+		  font-weight: 300;" target="_blank">+27 87 285 5845</a>
+                    </p>
+                </div>
+
+            </div>
+
+
+        </div>
+    </footer>
+    <script src="~/js/linq.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/public/assets/js/jquery-3.1.0.min.js"></script>
+    <script src="@Url.Content("~/js/calculator.js")"></script>
+    <script src="@Url.Content("~/js/spinner.js")"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

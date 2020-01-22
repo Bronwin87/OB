@@ -1,0 +1,185 @@
+﻿@page
+@model Shop.UI.Pages.Profile.OrderHistoryModel
+
+<style type="text/css">
+    .order-history .column {
+        padding: 12px !important;
+        font-size: 12px;
+        /*background-color: #F4F8F5;*/
+    }
+
+    .order-history a {
+        font-size: 12px;
+    }
+
+    .padit {
+        padding: 0.2rem;
+    }
+
+    .details {
+        margin: 4px 0px !important;
+    }
+
+    .orders-container {
+        font-size: 12px;
+    }
+
+    .table-head {
+        background-color: #dbdbdb;
+    }
+
+    .table-row {
+        background-color: #efeeec;
+    }
+
+        .table-row a {
+            width: 100%;
+        }
+
+    .orders-container .columns:not(:last-child) {
+        margin-bottom: 1rem;
+    }
+</style>
+
+<div class="padit order-history">
+    @if (Model.Orders.Count() > 0)
+    {
+        <p class="title">Order History</p>
+
+        <div class="orders-container">
+            <div class="columns table-head">
+                <div class="column is-2 has-text-weight-semibold is-uppercase">Created Date</div>
+                <div class="column is-2 has-text-weight-semibold is-uppercase">Order #</div>
+                @*<div class="column is-2 has-text-weight-semibold is-uppercase">Order Reference</div>*@
+                <div class="column is-2 has-text-weight-semibold is-uppercase">Created By</div>
+                <div class="column is-2 has-text-weight-semibold is-uppercase">Location</div>
+                <div class="column is-1 has-text-weight-semibold is-uppercase">Order Total</div>
+                <div class="column has-text-weight-semibold is-uppercase"></div>
+            </div>
+
+            @foreach (var order in Model.Orders)
+            {
+                <div class="columns table-row">
+                    <div class="column is-2">@order.Created.ToString("dd/MM/yyyy hh:mm tt", System.Globalization.CultureInfo.InvariantCulture)</div>
+                    <div class="column is-2">@order.OrderNumber</div>
+                    @*<div class="column is-2">@order.OrderRef</div>*@
+                    <div class="column is-2">@order.User.FirstName @order.User.LastName</div>
+                    <div class="column is-2">@order.Address.City</div>
+                    <div class="column is-1">R @order.SubTotal.ToString("N2")</div>
+                    <div class="column is-3">
+                        <a class="button secondary" onclick="toggleOrder(@order.Id)">View</a>
+                        @*<a class="button secondary is-bg-green">Add To Cart</a>*@
+                        @if (order.Status == Shop.Domain.Enums.OrderStatus.Placed)
+                        {
+                            <span class='is-green has-text-weight-semibold' style="font-style:italic">
+                                Placed
+                            </span>
+                        }
+                        else if (order.Status == Shop.Domain.Enums.OrderStatus.PendingPayment)
+                        {
+                            <br />
+                            <a class="button secondary" asp-page="/Checkout/Payment" asp-route-orderNumber="@order.OrderNumber">
+                                Proceed to Payment
+                            </a>
+                            <span class='is-orange has-text-weight-semibold' style="font-style:italic">
+                                Pending Payment
+                            </span>
+                        }
+                        else if (order.Status == Shop.Domain.Enums.OrderStatus.Complete)
+                        {
+                            <span class="is-green has-text-weight-semibold" style="font-style:italic">
+                                Complete
+                            </span>
+                        }
+                        else if (order.Status == Shop.Domain.Enums.OrderStatus.Declined)
+                        {
+                            <span class="is-orange has-text-weight-semibold" style="font-style:italic">
+                                Declined
+                            </span>
+                        }
+                        else if (order.Status == Shop.Domain.Enums.OrderStatus.PendingApproval)
+                        {
+                            <span class="is-orange has-text-weight-semibold" style="font-style:italic">
+                                Pending Approval
+                            </span>
+                        }
+                    </div>
+
+                </div>
+                <div class="columns is-hidden" id="order-p-@order.Id">
+                    <div class="column is-9">
+                        <div class="columns">
+                            <div class="column is-1"></div>
+                            <div class="column is-3 has-text-weight-semibold is-uppercase">Product</div>
+                            <div class="column is-2 has-text-weight-semibold is-uppercase">Code</div>
+                            <div class="column is-2 has-text-weight-semibold is-uppercase">UOM</div>
+                            <div class="column is-2 has-text-weight-semibold is-uppercase">Price</div>
+                            <div class="column is-1 has-text-weight-semibold is-uppercase">QTY</div>
+                            <div class="column is-1 has-text-weight-semibold is-uppercase">Total</div>
+                        </div>
+
+                        @foreach (var product in order.OrderProducts)
+                        {
+                            <div class="columns">
+                                <div class="column is-1">
+                                    <img src="@product.Product.ImageUrl" />
+                                </div>
+                                <div class="column is-3">@product.Product.Name</div>
+                                <div class="column is-2">@product.Product.ExternalId</div>
+                                <div class="column is-2">@product.Product.Unit</div>
+                                <div class="column is-2">R @product.Product.Price?.ToString("N2")</div>
+                                <div class="column is-1">@product.Qty</div>
+                                <div class="column is-1">R @(product.Qty * product.Product.Price)</div>
+                            </div>
+                        }
+                    </div>
+                    <div class="column is-3">
+                        <div class="box">
+                            <p class="subtitle">ORDER SUMMARY</p>
+                            <p>Order Subtotal: <span class="primary--text has-text-weight-semibold">R @order.OriginalSubtotal.ToString("N2")</span></p>
+                            <p>Order Delivery: <span class="primary--text has-text-weight-semibold">R @order.Delivery.ToString("N2")</span></p>
+                            <p>Order Disctount: <span class="primary--text has-text-weight-semibold">R @order.Discount.ToString("N2")</span></p>
+                            <p>Order VAT: <span class="primary--text has-text-weight-semibold">R @order.Vat.ToString("N2")</span></p>
+                            <p>Order total (inc vat)</p>
+                            <p class="primary--text has-text-weight-semibold">R @order.SubTotal.ToString("N2")</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="column is-6">
+
+            <div class="field">
+
+                <div class="notification">
+                    <p class="primary--text is-size-5" style="color:#0BDD6F">
+                        No orders to display
+                    </p>
+                </div>
+            </div>
+            <div class="field">
+                <a class="button secondary" asp-page="/Shop/Index">START SHOPPING</a>
+            </div>
+        </div>
+    }
+</div>
+
+
+@section scripts {
+    <script>
+
+        var toggleOrder = function (orderId) {
+            var el = document.getElementById('order-p-' + orderId);
+
+            var hidden = el.classList.contains('is-hidden');
+            if (hidden)
+                el.classList.remove('is-hidden');
+            else
+                el.classList.add('is-hidden');
+        }
+
+    </script>
+}

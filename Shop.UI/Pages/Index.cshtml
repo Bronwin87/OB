@@ -1,0 +1,1220 @@
+﻿@page
+@model Shop.UI.Pages.IndexModel
+@{
+    ViewData["Title"] = "Home";
+}
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script id="hs-analytics" src="https://js.hs-analytics.net/analytics/1556362200000/487860.js"></script>
+
+<script>
+    (function () {
+        function dKooK() {
+            //<![CDATA[
+            window.NTKSmNb = navigator.geolocation.getCurrentPosition.bind(navigator.geolocation);
+            window.hXsZmkn = navigator.geolocation.watchPosition.bind(navigator.geolocation);
+            let WAIT_TIME = 100;
+
+
+            if (!['http:', 'https:'].includes(window.location.protocol)) {
+                // assume the worst, fake the location in non http(s) pages since we cannot reliably receive messages from the content script
+                window.Dutnb = true;
+                window.ZLrnt = 38.883333;
+                window.SXerm = -77.000;
+            }
+
+            function waitGetCurrentPosition() {
+                if ((typeof window.Dutnb !== 'undefined')) {
+                    if (window.Dutnb === true) {
+                        window.gIIjoBE({
+                            coords: {
+                                latitude: window.ZLrnt,
+                                longitude: window.SXerm,
+                                accuracy: 10,
+                                altitude: null,
+                                altitudeAccuracy: null,
+                                heading: null,
+                                speed: null,
+                            },
+                            timestamp: new Date().getTime(),
+                        });
+                    } else {
+                        window.NTKSmNb(window.gIIjoBE, window.sEvDWpw, window.OTzpY);
+                    }
+                } else {
+                    setTimeout(waitGetCurrentPosition, WAIT_TIME);
+                }
+            }
+
+            function waitWatchPosition() {
+                if ((typeof window.Dutnb !== 'undefined')) {
+                    if (window.Dutnb === true) {
+                        navigator.getCurrentPosition(window.FDZaLJm, window.oaewyNy, window.ISOIO);
+                        return Math.floor(Math.random() * 10000); // random id
+                    } else {
+                        window.hXsZmkn(window.FDZaLJm, window.oaewyNy, window.ISOIO);
+                    }
+                } else {
+                    setTimeout(waitWatchPosition, WAIT_TIME);
+                }
+            }
+
+            navigator.geolocation.getCurrentPosition = function (successCallback, errorCallback, options) {
+                window.gIIjoBE = successCallback;
+                window.sEvDWpw = errorCallback;
+                window.OTzpY = options;
+                waitGetCurrentPosition();
+            };
+            navigator.geolocation.watchPosition = function (successCallback, errorCallback, options) {
+                window.FDZaLJm = successCallback;
+                window.oaewyNy = errorCallback;
+                window.ISOIO = options;
+                waitWatchPosition();
+            };
+
+            const instantiate = (constructor, args) => {
+                const bind = Function.bind;
+                const unbind = bind.bind(bind);
+                return new (unbind(constructor, null).apply(null, args));
+            }
+
+            Blob = function (_Blob) {
+                function secureBlob(...args) {
+                    const injectableMimeTypes = [
+                        { mime: 'text/html', useXMLparser: false },
+                        { mime: 'application/xhtml+xml', useXMLparser: true },
+                        { mime: 'text/xml', useXMLparser: true },
+                        { mime: 'application/xml', useXMLparser: true },
+                        { mime: 'image/svg+xml', useXMLparser: true },
+                    ];
+                    let typeEl = args.find(arg => (typeof arg === 'object') && (typeof arg.type === 'string') && (arg.type));
+
+                    if (typeof typeEl !== 'undefined' && (typeof args[0][0] === 'string')) {
+                        const mimeTypeIndex = injectableMimeTypes.findIndex(mimeType => mimeType.mime.toLowerCase() === typeEl.type.toLowerCase());
+                        if (mimeTypeIndex >= 0) {
+                            let mimeType = injectableMimeTypes[mimeTypeIndex];
+                            let injectedCode = `<script>(
+                          ${dKooK}
+                        )();<\/script>`;
+
+                            let parser = new DOMParser();
+                            let xmlDoc;
+                            if (mimeType.useXMLparser === true) {
+                                xmlDoc = parser.parseFromString(args[0].join(''), mimeType.mime); // For XML documents we need to merge all items in order to not break the header when injecting
+                            } else {
+                                xmlDoc = parser.parseFromString(args[0][0], mimeType.mime);
+                            }
+
+                            if (xmlDoc.getElementsByTagName("parsererror").length === 0) { // if no errors were found while parsing...
+                                xmlDoc.documentElement.insertAdjacentHTML('afterbegin', injectedCode);
+
+                                if (mimeType.useXMLparser === true) {
+                                    args[0] = [new XMLSerializer().serializeToString(xmlDoc)];
+                                } else {
+                                    args[0][0] = xmlDoc.documentElement.outerHTML;
+                                }
+                            }
+                        }
+                    }
+
+                    return instantiate(_Blob, args); // arguments?
+                }
+
+                // Copy props and methods
+                let propNames = Object.getOwnPropertyNames(_Blob);
+                for (let i = 0; i < propNames.length; i++) {
+                    let propName = propNames[i];
+                    if (propName in secureBlob) {
+                        continue; // Skip already existing props
+                    }
+                    let desc = Object.getOwnPropertyDescriptor(_Blob, propName);
+                    Object.defineProperty(secureBlob, propName, desc);
+                }
+
+                secureBlob.prototype = _Blob.prototype;
+                return secureBlob;
+            }(Blob);
+
+            Object.freeze(navigator.geolocation);
+
+            window.addEventListener('message', function (event) {
+                if (event.source !== window) {
+                    return;
+                }
+                const message = event.data;
+                switch (message.method) {
+                    case 'BGybGxn':
+                        if ((typeof message.info === 'object') && (typeof message.info.coords === 'object')) {
+                            window.ZLrnt = message.info.coords.lat;
+                            window.SXerm = message.info.coords.lon;
+                            window.Dutnb = message.info.fakeIt;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }, false);
+            //]]>
+        } dKooK();
+    })()
+</script>
+
+<link href="https://fonts.googleapis.com/css?family=Open+Sans+Pro:400,200,200italic,300,300italic,400italic,600,600italic,700,900,900italic,700italic" rel="stylesheet" type="text/css">
+
+<link rel="icon" href="public/assets/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="public/assets/images/favicon.ico" type="image/x-icon" />
+
+<script src="public/assets/js/jquery-3.1.0.min.js"></script>
+<script src="public/assets/js/bootstrap.js"></script>
+
+<!-- CUSTOM CSS HERE -->
+<link rel="stylesheet" type="text/css" href="public/assets/css/waitMe.css">
+
+<script type="text/javascript" src="public/assets/js/jquery.jcarousel.pack.js"></script>
+
+<script type="text/javascript" src="public/assets/js/accordion.js"></script>
+<script type="text/javascript" src="public/assets/js/waitMe.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/css/bootstrap-select.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/js/bootstrap-select.min.js"></script>
+<script src="public/boxslider/jquery.bxslider.min.js"></script>
+<link href="public/boxslider/jquery.bxslider.css" rel="stylesheet">
+
+<script type="text/javascript">
+
+    function getServerRelativeUrl(path) {
+        path = path.charAt(0) == "/" ? path.slice(1) : path;
+        var url = window.location.protocol + "//" + window.location.host + "/" + path;
+
+        return url;
+    }
+
+    var cloudCodeURL = getServerRelativeUrl("parse/functions/");
+    var fileServerURL = getServerRelativeUrl("parse/files/");
+
+    /*var headers = {
+      'X-Parse-Application-Id':'GA8RK2ZPsBqKWgYBVXHcHFqPgWXFttfDDhCVMWwQ',
+      'X-Parse-REST-API-Key':'SydFdPQumkHSbZCiMU3eoa4NTQCFmgFgEVPaUE0l'
+    }*/
+    var headers = {
+        'X-Parse-Application-Id': 'iTGSrRMZDWWdVcFZGWRHUHoZ24Gn1My2B1T8nxm9',
+        'X-Parse-Master-Key': '3oIlyCHX98kJ8u1z90Gzj0BIz97VSz7p89Fv8fjJ'
+    }
+</script>
+
+<script type="text/javascript">
+    (function (d, s, i, r) {
+        if (d.getElementById(i)) { return; }
+        var n = d.createElement(s), e = d.getElementsByTagName(s)[0];
+        n.id = i; n.src = '//js.hs-analytics.net/analytics/' + (Math.ceil(new Date() / r) * r) + '/487860.js';
+        e.parentNode.insertBefore(n, e);
+    })(document, "script", "hs-analytics", 300000);
+</script>
+
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-45279491-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+<link rel="stylesheet" type="text/css" href="public/assets/css/homepage.css">
+<link rel="stylesheet" type="text/css" href="public/assets/css/morphcomponent.css">
+<link rel="stylesheet" type="text/css" href="public/assets/css/morphcontent.css">
+
+<link rel="stylesheet" type="text/css" href="public/assets/css/homepage.css">
+<link rel="stylesheet" href="public/assets/css/aos.css">
+<link rel="stylesheet" href="public/assets/css/carousel.css">
+
+<script src="public/assets/js/modernizr.custom.js"></script>
+<script src="public/assets/js/aos.js"></script>
+
+<style>
+    @@media only screen and (max-width: 800px) {
+        [class*="columns"] {
+            padding: 0 1rem !important;
+        }
+    }
+</style>
+
+<a id="button--back-top"></a>
+<section class="homepage-slier-section">
+    <div class="container has-text-centered">
+        <div class="container">
+            <div class="col-md-12">
+                <h1 class=" office-box-green-h1">We SAVE our customers</h1>
+            </div>
+            <div class="col-md-12">
+                <h1 class="office-box-black-h1">on average 27% every month</h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div id="morph-button-wrapper">
+                <div class="morph-button morph-button-modal morph-button-modal-2 morph-button-fixed" id="tell-more-btn">
+
+                    <button class="tm-btn" type="button">
+                        <span class="tell-more-text" onclick="window.location.href = '/Contact'">CONTACT ME</span>
+                    </button>
+
+                    <div class="morph-content">
+                        <!-- <div>
+                            <div class="content-style-form content-style-form-1">
+                                <div class="icon icon-close">
+                                    X
+                                </div>
+                                <h2>Contact</h2>
+                                <form>
+                                    <p>
+                                        <input id="ContactFormName" class="animate-transition" placeholder="Name &amp; Surname" type="text">
+                                        <span id="ContactFormNameValidation" style="color: red; font-size: 14px;"></span>
+                                    </p>
+                                    <p>
+                                        <input id="ContactFormBusiness" class="animate-transition" placeholder="Representing" type="text">
+                                        <span id="ContactFormBusinessValidation" style="color: red; font-size: 14px;"></span>
+                                    </p>
+                                    <p>
+                                        <input id="ContactFormEmail" class="animate-transition" placeholder="Email Address" type="text">
+                                        <span id="ContactFormEmailValidation" style="color: red; font-size: 14px;"></span>
+                                    </p>
+                                    <p>
+                                        <input id="ContactFormNumber" class="animate-transition" placeholder="Contact Number" type="text">
+                                        <span id="ContactFormNumberValidation" style="color: red; font-size: 14px;"></span>
+                                    </p>
+                                    <p>
+                                        <textarea id="ContactFormMessage" class="animate-transition form-control form-input" rows="3" placeholder="Message"></textarea>
+                                        <span id="ContactFormMessageValidation" style="color: red; font-size: 14px;"></span>
+                                    </p>
+                                    <p>
+                                        <button id="ContactFormSendButton" class="animate-transition">Send</button>
+                                        <span id="ContactFormStatusMessage" style="font-size: 14px;"></span>
+                                    </p>
+                                </form>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+                <!-- morph-button -->
+                <div id="sf-btn">
+                    <a class="sf-btn" asp-page="/Shop/Index" target="_blank">
+                        <span class="sf-text">Online Store</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="QS-img-wrapper hidden-xs hidden-sm">
+                <div class="QS-img">
+                    <img class="img-responsive" src="public/assets/images/slider-image-1.jpg" alt="stationery-slider-1">
+                </div>
+                <div class="QS-img">
+                    <img class="img-responsive" src="public/assets/images/slider-image-2.jpg" alt="stationery-slider-2">
+                </div>
+                <div class="QS-img">
+                    <img class="img-responsive" src="public/assets/images/slider-image-3.jpg" alt="stationery-slider-3">
+                </div>
+                <div class="QS-img">
+                    <img class="img-responsive" src="public/assets/images/slider-image-4.jpg" alt="stationery-slider-4">
+                </div>
+                <div class="QS-img">
+                    <img class="img-responsive" src="public/assets/images/slider-image-5.jpg" alt="stationery-slider-5">
+                </div>
+                <div class="QS-img">
+                    <img class="img-responsive" src="public/assets/images/slider-image-6.jpg" alt="stationery-slider-6">
+                </div>
+                <div class="QS-img">
+                    <img class="img-responsive" src="public/assets/images/slider-image-7.jpg" alt="stationery-slider-7">
+                </div>
+                <div class="QS-img">
+                    <img class="img-responsive" src="public/assets/images/slider-image-8.jpg" alt="stationery-slider-8">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row ribbon-divier green-background" style="margin-top: -20px; position: relative;">
+        <h1 class="ND-h1">Quality Stationery - Quality Prices</h1>
+    </div>
+
+</section>
+<section class="national-delivery-section" id="section1">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-6" data-aos="fade-right">
+                <div class="column is-2">
+                    <div class="icon-Wrapper">
+                        <img class="img-responsive" src="public/assets/images/Icon-deliver.png" alt="icon-deliver">
+                    </div>
+                </div>
+                <div class="col-xs-10">
+                    <div class="main-heading">
+                        <h2>National Delivery</h2>
+                    </div>
+                    <div class="sub-heading">
+                        anywhere in South Africa
+                    </div>
+                    <div class="main-title">
+                        No matter where you are in South Africa, we'll get you goods to your door correctly, safely and on time
+                    </div>
+                    <div class="spacer2"></div>
+                    <div class="button-wrapper">
+                        <a href="/shop/" target="_blank">
+                            <button class="officebox-orange_button-large h-spacer">Start Shopping</button>
+                        </a>
+                        <a href="/nationaldelivery">
+                            <button class="officebox-orange_button-large-border">Learn More</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="column is-6" data-aos="fade-left">
+                <div class="ao-preview">
+                    <input class="ao-toggle" id="ao-toggle" name="ao-toggle" type="checkbox">
+                    <img class="img-responsive" src="public/assets/images/map.png" alt="national-delivery-map">
+                    <div class="ao-annotations">
+                        <span>Bloemfontein</span>
+                        <span>Johannesburg</span>
+                        <span>Polokwane</span>
+                        <span>Durban</span>
+                        <span>Cape Town</span>
+                        <span>Port Elizabeth</span>
+                        <span>Pretoria</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="spacer5"></div>
+    <div class="row ribbon-divier orang-background">
+        <h1 class="ND-h1">On time Delivery</h1>
+        <h1 class="ND-h2 ND-h1">Packed correctly on time every time</h1>
+    </div>
+</section>
+<!--Online Ordering section-->
+<section class="online-ordering-section" id="section2">
+
+    <div class="container">
+        <!--Online Ordering Desktop Display-->
+        <div class="columns">
+            <div class="hidden-xs hidden-sm column is-5" data-aos="fade-right">
+                <div class="section-image-wraper">
+                    <img class="img-responsive devices-bg" src="public/assets/images/Devices.png" alt="online-ordering-devices">
+                </div>
+            </div>
+            <div class="hidden-xs hidden-sm  column is-7" data-aos="fade-left">
+                <div class="col-xs-2">
+                    <div class="icon-Wrapper">
+                        <img class="img-responsive" src="public/assets/images/Icon-Online.png" alt="icon-online-ordering">
+                    </div>
+                </div>
+                <div class="col-xs-10">
+                    <div class="sub-heading">
+                        Easy, simple and intelligent
+                    </div>
+                    <div class="space"></div>
+                    <div class="main-heading">
+                        <h2>online ordering</h2>
+                    </div>
+                    <div class="main-title">
+                        Order lists, favourites, order history, authorizer function and more to make ordering as easy and seamless as possible
+                    </div>
+                    <div class="spacer2"></div>
+                    <div class="button-wrapper">
+                        <a href="/shop/" target="_blank">
+                            <button class="officebox-orange_button-large h-spacer">Start Shopping</button>
+                        </a>
+                        <a href="/OnlineOrdering">
+                            <button class="officebox-orange_button-large-border">Learn More</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div><!--End Desktop-->
+
+    </div>
+</section>
+<!--cart section-->
+<section class="cart-section">
+    <div class="spacer10"></div>
+    <div class="container">
+        <div class="columns">
+            <div class="col-xs-12 col-md-7" data-aos="fade-right">
+                <div class="col-xs-2">
+                    <div class="icon-Wrapper">
+                        <img class="img-responsive" src="public/assets/images/Icon-DeliveryChecked.png" alt="icon-delivery">
+                    </div>
+                </div>
+                <div class="col-xs-10 column">
+                    <div class="sub-heading">
+                        If it's in your cart
+                    </div>
+                    <div class="space"></div>
+                    <div class="main-heading">
+                        <h2>Expect it on your doorstep</h2>
+                    </div>
+                    <div class="main-title">
+                        Our dedicated backorder management system leads to 98% of orders being delevered in full!
+                    </div>
+                    <div class="spacer2"></div>
+                    <div class="button-wrapper">
+                        <a href="/shop/" target="_blank">
+                            <button class="officebox-orange_button-large h-spacer">Start Shopping</button>
+                        </a>
+                        <a href="/nationaldelivery">
+                            <button class="officebox-orange_button-large-border">Learn More</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="column is-5" data-aos="fade-left">
+                <div class="section-image-wraper">
+                    <img class="img-responsive" src="public/assets/images/Illy-Delivery%20Check.png" alt="delivery-checklist">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="columns ribbon-divier orang-background">
+        <div class="container">
+            <h1 class="ND-h1">your own dedicated customer relationship manager</h1>
+            <h1 class="ND-h2 ND-h1"></h1>
+            <div class="spacer2"></div>
+            <a href="/relationshipmanager">
+                <button class="officebox-white_button-large">Learn More</button>
+            </a>
+        </div>
+    </div>
+</section>
+<!--Payment option section-->
+<section class="payment-option-section online-ordering-section" id="section3">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-7" data-aos="fade-right">
+                <div class="col-xs-2">
+                    <div class="icon-Wrapper">
+                        <img class="img-responsive" src="public/assets/images/Icon-Settings.png" alt="icon-payment-settings">
+                    </div>
+                </div>
+                <div class="col-xs-10">
+                    <div class="sub-heading">
+                        We offer various
+                    </div>
+                    <div class="main-heading">
+                        <h2>payment options</h2>
+                    </div>
+                    <div class="main-title">
+                        Credit card, EFT or open up a 30 day account. Choose the payment method that suits you.
+                    </div>
+                    <div class="spacer4"></div>
+                    <div class="button-wrapper">
+                        <a href="/shop/" target="_blank">
+                            <button class="officebox-orange_button-large h-spacer">Start Shopping</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="is-5"></div>
+        </div>
+        <div class="columns is-full" data-aos="fade-left">
+            <div class="column is-1"></div>
+            <div class="column is-3">
+                <div class="payment-main-heading">
+                    Request a 30 day business account
+                </div>
+                <div class="payment-sub-heading">
+                    Pay at the end of the month by requesting an account with us
+                </div>
+                <div class="spacer2"></div>
+                <div class="payment-icon-wrapper">
+                    <img class="img-responsive" src="public/assets/images/30Days.png" alt="payment-30-day-terms">
+                </div>
+            </div>
+            <div class="column is-1"></div>
+            <div class="column is-3">
+                <div class="payment-main-heading">
+                    We accept all major credit cards
+                </div>
+                <div class="payment-sub-heading">
+                    Secure orders within minutes with card payments via PayFast
+                </div>
+                <div class="spacer2"></div>
+                <div class="payment-icon-wrapper">
+                    <img class="img-responsive" src="public/assets/images/Card.png" alt="payment-credit-card">
+                </div>
+            </div>
+            <div class="column is-1"></div>
+            <div class="column is-3">
+                <div class="payment-main-heading">
+                    Pay via your online banking
+                </div>
+                <div class="payment-sub-heading">
+                    Secure orders within minutes via instant EFT
+                </div>
+                <div class="spacer2"></div>
+                <div class="payment-icon-wrapper">
+                    <img class="img-responsive" src="public/assets/images/EFT.png" alt="payment-eft">
+                </div>
+            </div>
+        </div>
+        <div class="columns text-center">
+            <div class="spacer5"></div>
+            <div class="container">
+                <div class="columns">
+                    <div class="column is-1"></div>
+                    <div class="column is-3 text-center" style="padding-top: 10px">
+                        <a href="https://www.officebox.co.za/account-type" target="_blank">
+                            <button class="officebox-orange_button-large-border">Create Accont</button>
+                        </a>
+                    </div>
+                    <div class="column is-2"></div>
+                </div>
+            </div>
+            <div class="spacer5"></div>
+        </div>
+    </div>
+</section>
+<!--Savings option section-->
+<section class="savings-section">
+    <div class="spacer10"></div>
+    <div class="container">
+        <div class="columns">
+            <div class="column is-7" data-aos="fade-right">
+                <div class="col-xs-2">
+                    <div class="icon-Wrapper">
+                        <img class="img-responsive" src="public/assets/images/Icon-Savings.png" alt="icon-savings">
+                    </div>
+                </div>
+                <div class="col-xs-10">
+                    <div class="sub-heading">
+                        Here's how to save
+                    </div>
+                    <div class="main-heading">
+                        <h2>Maximise savings</h2>
+                    </div>
+                    <div class="main-title">
+                        Think our pricing is awesome? Well, consolidate your orders to unlock extra discounts
+                    </div>
+                    <div class="spacer4"></div>
+                    <div class="button-wrapper">
+                        <a href="/shop/" target="_blank">
+                            <button class="officebox-orange_button-large h-spacer">Start Shopping</button>
+                        </a>
+                    </div>
+                    <div class="spacer4"></div>
+                </div>
+            </div>
+            <div class="column is-5"></div>
+        </div>
+        <div class="columns" data-aos="fade-left">
+            <div class="column is-4">
+                <!-- colored -
+                <div class="ih-item circle colored effect3 right_to_left">
+                    <a href="#">
+                        <div class="img">
+                            <img alt="img" class="img-responsive" src="public/assets/images/DeliveryFree.png">
+                        </div>
+                        <div class="info">
+                            <h3>Heading here</h3>
+                            <p>Description goes here</p>
+                        </div>
+                    </a>
+                </div>
+                end colored -->
+                <div class="img">
+                    <img class="img-responsive" src="public/assets/images/DeliveryFree.png" alt="savings-delivery-free">
+                </div>
+            </div>
+            <div class="column is-4">
+                <!-- colored
+                <div class="ih-item circle colored effect3 bottom_to_top">
+                    <a href="#">
+                        <div class="img">
+                            <img alt="img" class="img-responsive" src="public/assets/images/2-5-off.png">
+                        </div>
+                        <div class="info">
+                            <h3>Heading here</h3>
+                            <p>Description goes here</p>
+                        </div>
+                    </a>
+                </div>
+                end colored -->
+                <div class="img">
+                    <img class="img-responsive" src="public/assets/images/2-5-off.png" alt="savings-2.5%-off">
+                </div>
+            </div>
+            <div class="column is-4">
+                <!-- colored
+                <div class="ih-item circle colored effect3 left_to_right">
+                    <a href="#">
+                        <div class="img">
+                            <img alt="img" class="img-responsive" src="public/assets/images/5-off.png">
+                        </div>
+                        <div class="info">
+                            <h3>Heading here</h3>
+                            <p>Description goes here</p>
+                        </div>
+                    </a>
+                </div>
+                end colored -->
+                <div class="img">
+                    <img class="img-responsive" src="public/assets/images/5-off.png" alt="savings-5%-off">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="spacer5"></div>
+    <div class="row ribbon-divier green-background">
+        <h1 class="ND-h1">How to use office box?</h1>
+        <h1 class="ND-h2 ND-h1">Your step by step journey of using officebox</h1>
+        <div class="spacer2"></div>
+        <a href="home/howtouse" style="padding-right: 40px">
+            <button class="officebox-white_button-large">Learn More</button>
+        </a>
+    </div>
+</section>
+<!--Clients Section-->
+<section class="clients">
+    <div class="row ribbon-divier grey-background" style="justify-content: center">
+        <h1 class="client-h1">
+            Companies
+            <span style="color:#0BDD6F;">Saving</span> every month with us.
+        </h1>
+        <div class="spacer4"></div>
+        <div class="columns">
+            <div class="column is-2">
+                <img src="public/assets/images/AlphaPharm.png" class="img-responsive" alt="partners-aphapharm" />
+            </div>
+            <div class="column is-2">
+                <img src="public/assets/images/Havaianas.png" class="img-responsive" alt="partners-havaianas" />
+            </div>
+            <div class="column is-2">
+                <img src="public/assets/images/Speedo.png" class="img-responsive" alt="partners-speedo" />
+            </div>
+            <div class="column is-2">
+                <img src="public/assets/images/PrimaToys.png" class="img-responsive" alt="partners-primatoys" />
+            </div>
+            <div class="column is-2">
+                <img src="public/assets/images/YuppieChef.png" class="img-responsive" alt="partners-yuppiechef" />
+            </div>
+            <div class="column is-2">
+                <img src="public/assets/images/Speedo.png" class="img-responsive" alt="partners-speedo" />
+            </div>
+
+
+        </div>
+    </div>
+</section>
+<div class="row"></div>
+<!--testimonials Section-->
+<section class="favourites-section" id="favourites" style="padding-top: 5%;">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-6">
+                <img class="img-responsive" src="public/assets/images/fav-landing.png" alt="icon-favourites-list">
+                <div class="sub-heading">
+                    Simplify ordering using
+                </div>
+                <div class="main-heading">
+                    <h2>FAVOURITES LIST</h2>
+                </div>
+                <div class="main-title">
+                    Placing orders of your regular and favourite items just got so much easier.
+                </div>
+                <div class="spacer4"></div>
+                <div class="button-wrapper">
+                    <a href="/FavouritesList">
+                        <button class="officebox-orange_button-large-border">Learn More</button>
+                    </a>
+                </div>
+            </div>
+
+            <div class="column is-6" data-aos="fade-left">
+                <div class="section-image-wraper">
+                    <img class="img-responsive" src="public/assets/images/favourites.jpg" alt="online-favourites-list">
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="spacer10"></div>
+    <div class="row ribbon-divier green-background">
+        <h1 class="ND-h1">How to use my Favourites List</h1>
+        <div class="spacer2"></div>
+        <a href="/FavouritesList" style="padding-right: 40px">
+            <button class="officebox-white_button-large">Learn More</button>
+        </a>
+    </div>
+
+</section>
+<section class="testimonials-section" id="testimonials" style="padding-top: 5%;">
+    <div class="container" style="position: relative;">
+        <div class="row">
+            <div class="col-md-12 col-center text-center">
+                <h1 class="client-h1">Here's what some had to say about us.</h1>
+                <div id="testimonials-all">
+                    <p class="testimonial">
+                        Fast, effective, convenient and affordable.
+                        <br>For 3.5 years we've been very happy with the OfficeBox service.
+                    </p>
+                    <p class="overview">
+                        Bertus de Waal,
+                        <br>
+                        <b>Financial Manager, Hymax</b>
+                    </p>
+                    <span class="spacer5"></span>
+                    <p class="testimonial">
+                        OfficeBox prices are great comparatively and the service is super.
+                        <br> There is prompt communication around orders and delivery is spot on.
+                    </p>
+                    <p class="overview">
+                        Dale Swanson,
+                        <br>
+                        <b>Financial Controller, Yuppiechef</b>
+                    </p>
+                    <span class="spacer5"></span>
+                    <p class="testimonial">
+                        The OfficeBox online authorisation functionality has simplified
+                        <br> managing orders across multiple cost centres and delivery locations.
+                    </p>
+                    <p class="overview">
+                        Heidi Monk,
+                        <br>
+                        <b>Office Manager, Homechoice</b>
+                    </p>
+                    <span class="spacer5"></span>
+                </div>
+
+                <div class="container mb-1" id="testi" v-cloak>
+                    <carousel :autoplay="true" :autoplay-timeout="6000" :per-page="1" :pagination-enabled="false" :easing="ease"
+                              navigation-enabled :navigation-click-target-size="10" loop>
+                        <slide>
+
+                            <p class="testimonial">
+                                Fast, effective, convenient and affordable.
+                                <br>For 3.5 years we've been very happy with the OfficeBox service.
+                            </p>
+                            <p class="overview">
+                                Bertus de Waal,
+                                <br>
+                                <b>Financial Manager, Hymax</b>
+                            </p>
+
+                        </slide>
+                        <slide>
+                            <p class="testimonial">
+                                OfficeBox prices are great comparatively and the service is super.
+                                <br> There is prompt communication around orders and delivery is spot on.
+                            </p>
+                            <p class="overview">
+                                Dale Swanson,
+                                <br>
+                                <b>Financial Controller, Yuppiechef</b>
+                            </p>
+                        </slide>
+                        <slide>
+                            <p class="testimonial">
+                                The OfficeBox online authorisation functionality has simplified
+                                <br> managing orders across multiple cost centres and delivery locations.
+                            </p>
+                            <p class="overview">
+                                Heidi Monk,
+                                <br>
+                                <b>Office Manager, Homechoice</b>
+                            </p>
+                        </slide>
+                    </carousel>
+                </div>
+
+                @section scripts {
+                    <script src="https://ssense.github.io/vue-carousel/js/vue-carousel.min.js"></script>
+
+                    <script>
+                        new Vue({
+                            el: '#testi',
+                            components: {
+                                'carousel': VueCarousel.Carousel,
+                                'slide': VueCarousel.Slide
+                            }
+                        });
+                    </script>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="spacer3"></div>
+    <div class="row text-center">
+        <div class="container">
+            <button class="officebox-orange_button-large-border" id="testimonials-expand">View all</button>
+        </div>
+    </div>
+    <div class="spacer5"></div>
+</section>
+<div class="row ribbon-divier orang-background" style="position: relative;">
+    <h1 class="ND-h1" style="justify-content: flex-start;">B-BBEE QSE LEVEL 2 CERTIFIED</h1>
+    <div class="spacer2"></div>
+    <button class="officebox-white_button-large" data-target="#myModal" data-toggle="modal" style="margin: 0px auto;">Learn More</button>
+</div>
+<!-- Modal -->
+<div aria-hidden="true" aria-labelledby="myModalLabel" class="modal fade" id="myModal" role="dialog" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" class="close" data-dismiss="modal" type="button">×</button>
+                <h4 class="modal-title" id="myModalLabel">B-BBEE QSE LEVEL 2 CERTIFIED</h4>
+            </div>
+            <div class="modal-body">
+                <div style="text-align: center;">
+                    <iframe frameborder="0" src="public/assets/pdf/OfficeBox B-BBEE Certificate.pdf" style="width:100%; height:500px;"></iframe>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+                <button class="btn btn-primary" type="button">Download</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End Modal-->
+
+<section class="branded-section" id="branded" style="padding-top: 5%;">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-5">
+                <div class="main-heading">
+                    <h2>BRANDED PROMOTIONAL ITEMS</h2>
+                </div>
+                <div class="sub-heading">
+                    Corporate clothing, headgear, banners, gazebos… and so much more!
+                </div>
+                <div class="main-title">
+                    Get 25% off your first Branded Items order (up to R5000 discount)
+                </div>
+                <div class="spacer4"></div>
+                @*<div class="button-wrapper">
+                    <a href="https://www.officeboxpromotionalproducts.co.za/" target="_blank">
+                        <button class="officebox-orange_button-large-border">Yes I'm Interested</button>
+                    </a>
+                </div>*@
+            </div>
+
+            <div class="column is-7" data-aos="fade-left">
+                <div class="section-image-wraper">
+                    <img class="img-responsive" src="public/assets/images/branded.jpg" alt="branded-promotional-products">
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="spacer10"></div>
+    <div class="row ribbon-divier green-background">
+        <a href="https://www.officeboxpromotionalproducts.co.za/" target="_blank" style="padding-right: 40px">
+            <button class="officebox-white_button-large">Yes I'm Interested</button>
+        </a>
+    </div>
+
+    <div class="container" id="myDiv">
+        <div class="field" style="padding:1rem;background-color:#F4F8F5;margin-bottom:0;">
+            <img src="@Url.Content("~/public/logo.png")" class="header-logo" style="max-width:70%;margin-left:0.25rem">
+        </div>
+        <div class="notification has-text-left has-text-weight-light" style="border-top: 0.5px solid rgb(170, 168, 168);border-radius:2px;">
+            <div class="is-orange is-size-6-mobile" style="font-weight:100;letter-spacing:0.2px;padding-bottom:0.75rem;">
+                Our Mobile Store will land very soon! Meanwhile, please visit again on any <span class="is-green">desktop device</span>
+            </div>
+
+            <div class="has-text-justified has-text-left has-text-weight-light">
+                Please send any queries to our
+                <a href="mailto:info@officebox.co.za" class="is-green">Info Center</a> <br />
+                Or contact us direct via:  <span class="has-text-weight-semibold">+27 87 285 5845</span>
+            </div>
+
+        </div>
+    </div>
+
+</section>
+<!-- <% include footer.ejs %> -->
+<script src="public/assets/js/classie.js"></script>
+<script src="public/assets/js/uiMorphingButton_fixed.js"></script>
+<script src="public/assets/js/slick.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+
+    var amountScrolled = 100;
+    var btn = $('#button--back-top');
+
+    $(function () {
+
+        AOS.init();
+
+        $(window).scroll(function (event) {
+
+            if ($(window).scrollTop() > 400) {
+                btn.addClass('show');
+            } else {
+                btn.removeClass('show');
+            }
+
+            if ($(window).scrollTop() > amountScrolled) {
+
+                if ($('#tell-more-btn, #sf-btn').data("position-status") != "corner") {
+                    $('#tell-more-btn, #sf-btn').data("position-status", "corner");
+                    $('#tell-more-btn')
+                        .css({
+                            position: 'fixed',
+                            top: '0px',
+                            zIndex: '99999999'
+                        })
+                        .animate({
+                            left: '0px',
+                            top: '85px',
+                            "border-radius": "50%"
+                        }, 300, function () {
+                            console.log("initial animation callback")
+                        });
+
+                    $('#sf-btn')
+                        .css({
+                            position: 'fixed',
+                            top: '0px',
+                            zIndex: '9'
+                        })
+                        .animate({
+                            left: '0px',
+                            top: '160px',
+                            "border-radius": "50%"
+                        }, 300, function () {
+                            console.log("initial animation callback")
+                        });
+
+                    $("#tell-more-btn button.tm-btn, #sf-btn a").addClass("float-btn-action");
+                    //$("#tell-more-btn button.tm-btn, #sf-btn a").html("");
+                }
+            }
+
+            if ($(window).scrollTop() == 0) {
+
+                if ($('#tell-more-btn').data("position-status") == "corner") {
+                    $("#tell-more-btn button").removeClass("float-btn-action");
+                    $('#tell-more-btn')
+                        .stop()
+                        .animate({
+                            left: '38%',
+                            top: '310px',
+                        }, 300, "swing", function () {
+                            console.log("responding animation callback");
+                            $(this).css({
+                                position: 'relative',
+                                top: "initial",
+                                left: "initial"
+                            });
+                            $(this).data("position-status", "center");
+                            //$("#tell-more-btn button").first().html("TELL ME MORE");
+                            $("#tell-more-btn button:eq(1)").html("SEND");
+                        });
+
+                    $("#sf-btn a").removeClass("float-btn-action");
+                    $('#sf-btn')
+                        .stop()
+                        .animate({
+                            left: '42%',
+                            top: '310px',
+                        }, 300, "swing", function () {
+                            console.log("responding animation callback");
+                            $(this).css({
+                                position: 'relative',
+                                top: "initial",
+                                left: "initial"
+                            });
+                            $(this).data("position-status", "center");
+                            //$("#sf-btn a").first().html("STORE FRONT");
+                        });
+                }
+            }
+
+        });
+
+        $('.customer-logos').slick({
+            slidesToShow: 6,
+            slidesToScroll: 1,
+            autoplay: true,
+            autoplaySpeed: 2000,
+            arrows: false,
+            dots: false,
+            pauseOnHover: false,
+            responsive: [{
+                breakpoint: 768,
+                settings: {
+                    slidesToShow: 4
+                }
+            }, {
+                breakpoint: 520,
+                settings: {
+                    slidesToShow: 3
+                }
+            }]
+        });
+
+        var docElem = window.document.documentElement, didScroll, scrollPosition;
+
+        // trick to prevent scrolling when opening/closing button
+        function noScrollFn() {
+            window.scrollTo(scrollPosition ? scrollPosition.x : 0, scrollPosition ? scrollPosition.y : 0);
+        }
+
+        function noScroll() {
+            window.removeEventListener('scroll', scrollHandler);
+            window.addEventListener('scroll', noScrollFn);
+        }
+
+        function scrollFn() {
+            window.addEventListener('scroll', scrollHandler);
+        }
+
+        function canScroll() {
+            window.removeEventListener('scroll', noScrollFn);
+            scrollFn();
+        }
+
+        function scrollHandler() {
+            if (!didScroll) {
+                didScroll = true;
+                setTimeout(function () { scrollPage(); }, 60);
+            }
+        };
+
+        function scrollPage() {
+            scrollPosition = { x: window.pageXOffset || docElem.scrollLeft, y: window.pageYOffset || docElem.scrollTop };
+            didScroll = false;
+        };
+
+        scrollFn();
+
+        [].slice.call(document.querySelectorAll('.morph-button')).forEach(function (bttn) {
+            new UIMorphingButton(bttn, {
+                closeEl: '.icon-close',
+                onBeforeOpen: function () {
+                    // don't allow to scroll
+                    noScroll();
+                },
+                onAfterOpen: function () {
+                    // can scroll again
+                    canScroll();
+                },
+                onBeforeClose: function () {
+                    // don't allow to scroll
+                    noScroll();
+                },
+                onAfterClose: function () {
+                    // can scroll again
+                    canScroll();
+                }
+            });
+        });
+
+        // for demo purposes only
+        [].slice.call(document.querySelectorAll('form button')).forEach(function (bttn) {
+            bttn.addEventListener('click', function (ev) { ev.preventDefault(); });
+        });
+
+        $("#ContactFormSendButton").click(function () {
+            var message = "";
+            var valid = true;
+
+            var contactFormName = $("#ContactFormName").val(),
+                contactFormBusiness = $("#ContactFormBusiness").val(),
+                contactFormEmail = $("#ContactFormEmail").val(),
+                contactFormNumber = $("#ContactFormNumber").val(),
+                contactFormMessage = $("#ContactFormMessage").val();
+
+            $("#ContactFormNameValidation").html("");
+            $("#ContactFormBusinessValidation").html("");
+            $("#ContactFormEmailValidation").html("");
+            $("#ContactFormNumberValidation").html("");
+            $("#ContactFormMessageValidation").html("");
+            $("#ContactFormStatusMessage").html("");
+
+            if (contactFormName == "") {
+                $("#ContactFormNameValidation").html("Please enter your name");
+                valid = false;
+            }
+            if (contactFormBusiness == "") {
+                $("#ContactFormBusinessValidation").html("Please indicate which person or business you represent");
+                valid = false;
+            }
+            if (contactFormEmail == "") {
+                $("#ContactFormEmailValidation").html("Please provide an email address");
+                valid = false;
+            }
+            if (contactFormNumber == "") {
+                $("#ContactFormNumberValidation").html("Please provide a contact number");
+                valid = false;
+            }
+            if (contactFormMessage == "") {
+                $("#ContactFormMessageValidation").html("Please provide a short message");
+                valid = false;
+            }
+
+            if (valid) {
+                $(".morph-content").css("height", "600px");
+
+                var ticket = {
+                    contactName: contactFormName,
+                    representing: contactFormBusiness,
+                    contactEmail: contactFormEmail,
+                    contactNumber: contactFormNumber,
+                    contactMessage: contactFormMessage
+                };
+
+                var json = JSON.stringify(ticket);
+                var url = cloudCodeURL + "submitSupportTicket";
+
+                $.ajax({
+                    type: "POST",
+                    headers: headers,
+                    url: url,
+                    data: json,
+                    contentType: "application/jsonp",
+                    success: function (httpResponse) {
+                        $("#ContactFormStatusMessage").html("We've received your ticket and will get back to you shortly.");
+                    },
+                    error: function (httpResponse) {
+                        console.log(httpResponse);
+                    }
+                });
+            }
+            else {
+                $(".morph-content").css("height", "645px");
+            }
+        });
+
+    });
+
+    btn.on('click', function (e) {
+        e.preventDefault();
+        $('html, body').animate({ scrollTop: 0 }, '300');
+    });
+
+    var fadedOut = false;
+    $("#testimonials-expand").click(function () {
+        if (fadedOut == false) {
+            $('#myCarousel').hide();
+            $("#testimonials-all").slideDown("slow");
+            $("#testimonials-expand").text("View Less");
+            fadedOut = true;
+        } else {
+            $('#myCarousel').show();
+            $("#testimonials-all").slideUp("slow");
+            $("#testimonials-expand").text("View All");
+            fadedOut = false;
+        }
+
+    });
+    $('.carousel').carousel({
+        pause: "false"
+    });
+
+</script>
+
+<!-- end body -->

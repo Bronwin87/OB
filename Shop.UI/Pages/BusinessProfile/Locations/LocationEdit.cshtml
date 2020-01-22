@@ -1,0 +1,128 @@
+﻿@page "{locationId}"
+@model Shop.UI.Pages.BusinessProfile.Locations.LocationEditModel
+
+<nav class="breadcrumb" aria-label="breadcrumbs">
+    <ul>
+        <li><a href="@Url.Action("Locations", "BusinessProfile")">Locations</a></li>
+        <li class="is-active"><a href="#" aria-current="page">@Model.Location.CompanyName</a></li>
+    </ul>
+</nav>
+
+<div class="columns is-multiline">
+    <div class="column is-5">
+        <form method="post">
+            <input type="hidden" asp-for="Input.AccountId" value="@Model.Account.Id" />
+            <input type="hidden" asp-for="Input.Id" value="@Model.LocId" />
+            <div class="field">
+                <label class="label">Location Name</label>
+                <div class="control">
+                    <input class="input" asp-for="Input.CompanyName" value="@Model.Location.CompanyName" />
+                </div>
+                <span class="help is-danger" asp-validation-for="Input.CompanyName"></span>
+            </div>
+            <div class="field">
+                <label class="label">Address 1</label>
+                <div class="control">
+                    <input class="input" asp-for="Input.Address1" value="@Model.Location.Address1" />
+                </div>
+                <span class="help is-danger" asp-validation-for="Input.Address1"></span>
+            </div>
+            <div class="field">
+                <label class="label">Address 2</label>
+                <div class="control">
+                    <input class="input" asp-for="Input.Address2" value="@Model.Location.Address2" />
+                </div>
+                <span class="help is-danger" asp-validation-for="Input.Address2"></span>
+            </div>
+            <div class="field">
+                <label class="label">City</label>
+                <div class="control">
+                    <input class="input" asp-for="Input.City" value="@Model.Location.City" />
+                </div>
+                <span class="help is-danger" asp-validation-for="Input.City"></span>
+            </div>
+            <div class="field">
+                <label class="label">Post Code</label>
+                <div class="control">
+                    <input class="input" asp-for="Input.PostCode" value="@Model.Location.PostCode" />
+                </div>
+                <span class="help is-danger" asp-validation-for="Input.PostCode"></span>
+            </div>
+            <div class="field">
+                <label class="label">Phone Number</label>
+                <div class="control">
+                    <input class="input" asp-for="Input.PhoneNumber" value="@Model.Location.PhoneNumber" />
+                </div>
+                <span class="help is-danger" asp-validation-for="Input.PhoneNumber"></span>
+            </div>
+            @if (!Model.Location.CostCenters.Any())
+            {
+                <div class="field">
+                    <label class="label">Authorizer</label>
+                    <div class="control">
+                        <div class="select" style="width: 100%;">
+                            <select style="width: 100%;" asp-for="Input.AuthorizerId" asp-items="@(new SelectList(Model.Authorizers, "Id", "DisplayName", Model.Location.AuthorizerId))">
+                                <option value="">Select User</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Users</label>
+                </div>
+                @for (int i = 0; i < Model.Input.Users.Count(); i++)
+                {
+                    <div class="field">
+                        @Html.HiddenFor(model => model.Input.Users[i].Id)
+                        <label class="checkbox store-tiles animate-transition" style="width: 100%; padding: 6px; border-radius: 4px; background-color: #efeeec;">
+                            @Model.Input.Users[i].DisplayName
+                            @Html.CheckBoxFor(model => Model.Input.Users[i].IsChecked, new { @class = "checkbox is-pulled-right", style = "margin-top: 4px;" })
+                        </label>
+                    </div>
+                }
+            }
+            <div class="is-clearfix"></div>
+            <div class="field has-text-centered">
+                <button type="submit" class="button secondary">Submit</button>
+            </div>
+        </form>
+    </div>
+    <div class="column is-7">
+        <p class="title secondary--text">Cost Centers</p>
+        <table class="table is-fullwidth">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Athorizer</th>
+                    <th>Users</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var costCenter in Model.Location.CostCenters)
+                {
+                    <tr>
+                        <td>@costCenter.Name</td>
+                        <td>@costCenter.AuthorizerDisplayname</td>
+                        <td>
+                            <ul>
+                                @foreach (var user in costCenter.Users)
+                                {
+                                    <li>@user.DisplayName</li>
+                                }
+                            </ul>
+                        </td>
+                        <td>
+                            <a class="button is-block secondary" style="width: 60px; float: right;" asp-page="/BusinessProfile/Locations/CosteCenterEdit" asp-route-locationid="@Model.LocId" asp-route-costCenterID="@costCenter.Id">EDIT</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @if (Model.LocId != 0)
+        {
+            <a class="button is-block secondary" style="float: right;" asp-page="/BusinessProfile/Locations/CosteCenterEdit" asp-route-locationid="@Model.LocId" asp-route-costCenterID="0">ADD COST CENTER</a>
+        }
+    </div>
+</div>

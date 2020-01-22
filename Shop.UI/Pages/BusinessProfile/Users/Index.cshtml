@@ -1,0 +1,156 @@
+﻿@page
+@model Shop.UI.Pages.BusinessProfile.Users.IndexModel
+@{
+}
+
+<div id="app">
+    <p class="title secondary--text">Users</p>
+    @if (!String.IsNullOrEmpty(Model.Message))
+    {
+        <div class="notification is-success">
+            <p>@Model.Message</p>
+        </div>
+    }
+    <table class="table is-fullwidth">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Type of User</th>
+                <th>Email</th>
+                @if (Model.CanEdit)
+                {
+                    <th></th>
+                    <th></th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model.Users)
+            {
+                <tr>
+                    <td>@user.FirstName @user.LastName</td>
+                    <td>@user.Type.GetUser()</td>
+                    <td>@user.Email</td>
+                    @if (Model.CanEdit)
+                    {
+                        <td>
+                            <a class="button is-block primary" style="color: #ffffff;" asp-page="/BusinessProfile/Users/Edit" asp-route-id="@user.Id">EDIT</a>
+                        </td>
+                        <td>
+                            <button class="button is-block secondary" @@click="target='@user.Id'">DELETE</button>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (Model.CanEdit)
+    {
+        <div class="column is-6">
+            <p class="title secondary--text">Add New User</p>
+            <form method="post">
+                <div class="field">
+                    <label class="label">First Name</label>
+                    <div class="control">
+                        <input class="input" asp-for="Input.FirstName" />
+                    </div>
+                    <span class="help is-danger" asp-validation-for="Input.FirstName"></span>
+                </div>
+                <div class="field">
+                    <label class="label">Last Name</label>
+                    <div class="control">
+                        <input class="input" asp-for="Input.LastName" />
+                    </div>
+                    <span class="help is-danger" asp-validation-for="Input.LastName"></span>
+                </div>
+                <div class="field">
+                    <label class="label">Email</label>
+                    <div class="control">
+                        <input class="input" asp-for="Input.Email" />
+                    </div>
+                    <span class="help is-danger" asp-validation-for="Input.Email"></span>
+                </div>
+                <div class="field">
+                    <label class="label">Password</label>
+                    <div class="control">
+                        <input class="input" asp-for="Input.Password" />
+                    </div>
+                    <span class="help is-danger" asp-validation-for="Input.Password"></span>
+                </div>
+                <div class="field">
+                    <label class="label">Confirm Password</label>
+                    <div class="control">
+                        <input class="input" asp-for="Input.ConfirmPassword" />
+                    </div>
+                    <span class="help is-danger" asp-validation-for="Input.ConfirmPassword"></span>
+                </div>
+                <div class="field">
+                    <label class="label">User Type</label>
+                    <div class="field  has-addons">
+
+                        <div class="control">
+                            <div class="select">
+                                <select asp-for="Input.Type">
+                                    <option value="3">User</option>
+                                    <option value="2">Authorizer</option>
+                                    <option value="1">Super User</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control">
+                            <div class="dropdown is-hoverable is-left">
+                                <div class="dropdown-trigger">
+                                    <a aria-haspopup="true" aria-controls="dropdown-menu">
+                                        <span class="icon is-small">
+                                            <i class="fas fa-question-circle" aria-hidden="true"></i>
+                                        </span>
+                                    </a>
+                                </div>
+                                <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                                    <div class="dropdown-content" style="padding-left:0.5rem;padding-right:0.5rem">
+                                        <p><span class="subtitle-text"><br />User</span> - <br /><br />someone that can place orders on the website but will have to have the order approved by an authorisor</p>
+                                        <p><span class="subtitle-text"><br />Authorizer</span> - <br /><br />someone that can approve orders placed by users as well as place order themself</p>
+                                        <p><span class="subtitle-text"><br />Super User</span> - <br /><br />someone that can place order without having the need to get it approved</p>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <button type="submit" class="button secondary">Add New User</button>
+                </div>
+            </form>
+        </div>
+    }
+    <div class="modal" :class="{'is-active': target.length > 0}">
+        <div class="modal-background" @@click="target=''"></div>
+        <form class="modal-card" method="post" asp-page-handler="DeleteUser">
+            <header class="modal-card-head">
+                <input type="hidden" name="id" v-model="target" />
+                <p class="modal-card-title">Delete User?</p>
+                <button class="delete" aria-label="close" @@click="target=''"></button>
+            </header>
+            <footer class="modal-card-foot">
+                <button type="submit" class="button is-block is-danger">Delete</button>
+                <a class="button is-block" @@click="target=''">Cancel</a>
+            </footer>
+        </form>
+        <div class="modal-content">
+
+        </div>
+        <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                target: ""
+            }
+        })
+    </script>
+}

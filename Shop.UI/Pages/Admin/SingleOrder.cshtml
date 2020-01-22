@@ -1,0 +1,157 @@
+﻿@page "{OrderId}"
+@model Shop.UI.Pages.Admin.SingleOrderModel
+@{
+    ViewData["Title"] = "SingleOrder";
+}
+
+<div class="columns is-multiline">
+    <div class="column is-6">
+        <p class="subtitle is-size-5">Order Reference: @Model.Order.OrderNumber </p>
+
+        <table class="table is-fullwidth">
+            <tr>
+                <th>Sales Order</th>
+                <td>@Model.Order.OrderNumber</td>
+            </tr>
+            <tr>
+                <th>Purchase Order Number</th>
+                <td>@Model.Order.OrderRef</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>@Model.Order.Status</td>
+            </tr>
+            <tr>
+                <th>Create Date</th>
+                <td>@Model.Order.Created</td>
+            </tr>
+            <tr>
+                <th>Gross Total</th>
+                <td>@Model.Order.TotalValue</td>
+            </tr>
+        </table>
+    </div>
+    <div class="column is-6">
+        <p class="subtitle is-size-5">Order Pricing</p>
+        <table class="table is-fullwidth">
+            <tr>
+                <th>Sub Total</th>
+                <td>@Model.Order.OriginalSubtotal</td>
+            </tr>
+            <tr>
+                <th>Delivery</th>
+                <td>@Model.Order.Delivery</td>
+            </tr>
+            <tr>
+                <th>Discount</th>
+                <td>@Model.Order.Discount</td>
+            </tr>
+            <tr>
+                <th>Discounted Subtotal</th>
+                <td>@Model.Order.Subtotal</td>
+            </tr>
+            <tr>
+                <th>Vat</th>
+                <td>@Model.Order.VAT</td>
+            </tr>
+            <tr>
+                <th>Total Incl Vat</th>
+                <td> @Model.Order.TotalValue</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="column is-6 box">
+        <p class="subtitle is-size-5">Customer Details</p>
+        <div class="columns tight is-multiline is-1">
+            <div class="column is-6 has-text-weight-bold">First Name(s)</div>
+            <div class="column is-6 has-text-right">@Model.Order.FirstName</div>
+            <div class="column is-6 has-text-weight-bold">Last Name</div>
+            <div class="column is-6 has-text-right">@Model.Order.LastName</div>
+            <div class="column is-6 has-text-weight-bold">Username</div>
+            <div class="column is-6 has-text-right">@Model.Order.Email</div>
+        </div>
+        <hr />
+        <p class="subtitle is-size-5">Contact Information Details</p>
+        <div class="columns tight is-multiline is-1">
+            <div class="column is-6 has-text-weight-bold">Mobile</div>
+            <div class="column is-6 has-text-right">@Model.Order.PhoneNumber</div>
+            <div class="column is-6 has-text-weight-bold">Email</div>
+            <div class="column is-6 has-text-right">@Model.Order.Email</div>
+        </div>
+        <hr />
+        <p class="subtitle is-size-5">Address Details</p>
+        <div class="columns tight is-multiline is-1">
+            <div class="column is-6 has-text-weight-bold">Address Line 1</div>
+            <div class="column is-6 has-text-right">@Model.Order.Address1</div>
+            <div class="column is-6 has-text-weight-bold">Address Line 2</div>
+            <div class="column is-6 has-text-right">@Model.Order.Address2</div>
+            <div class="column is-6 has-text-weight-bold">City</div>
+            <div class="column is-6 has-text-right">@Model.Order.City</div>
+            <div class="column is-6 has-text-weight-bold">Postal Code</div>
+            <div class="column is-6 has-text-right">@Model.Order.PostCode</div>
+            <div class="column is-6 has-text-weight-bold">Address Name</div>
+        </div>
+    </div>
+    <div class="column is-6 box">
+        @if (Model.Location != null)
+        {
+            <p class="subtitle is-size-5">Location Details</p>
+            <div class="columns tight is-multiline is-1">
+                <div class="column is-6 has-text-weight-bold">Location Name</div>
+                <div class="column is-6 has-text-right">@Model.Location.Name</div>
+            </div>
+        }
+
+
+        @if (Model.CostCenter != null)
+        {
+            <p class="subtitle is-size-5">Cost Center Details</p>
+            <div class="columns tight is-multiline is-1">
+
+                <div class="column is-6 has-text-weight-bold">CostCenter Name</div>
+                <div class="column is-6 has-text-right">@Model.CostCenter.Name</div>
+            </div>
+        }
+
+    </div>
+</div>
+<p class="subtitle is-size-5">PRODUCTS</p>
+<div>
+    <div class="columns">
+        <div class="column is-1 has-text-weight-semibold is-uppercase"></div>
+        <div class="column is-3 has-text-weight-semibold is-uppercase">Name</div>
+        <div class="column is-2 has-text-weight-semibold is-uppercase">UOM</div>
+        <div class="column is-2 has-text-weight-semibold is-uppercase">QTY</div>
+        <div class="column is-2 has-text-weight-semibold is-uppercase">Colour</div>
+        <div class="column is-2 has-text-weight-semibold is-uppercase">Price</div>
+        @*@foreach (var p in Model.ProductList)
+            {
+
+                    <div class="column is-2 has-text-weight-semibold is-uppercase">@p.Name</div>
+                    <div class="column is-2 has-text-weight-semibold is-uppercase">@p.Unit</div>
+                    <div class="column is-2 has-text-weight-semibold is-uppercase">@p.Colour</div>
+                    <div class="column is-2 has-text-weight-semibold is-uppercase">@p.Price</div>
+
+            }*@
+    </div>
+
+    @foreach (var p in Model.ProductList)
+    {
+        <div class="columns">
+            <div class="column is-1" style="padding:0">
+                <img src="@p.ImageUrl" />
+            </div>
+            <div class="column is-3 has-text-weight-semibold is-uppercase">@p.Name</div>
+            <div class="column is-2 has-text-weight-semibold is-uppercase">@p.Unit</div>
+            <div class="column is-2 has-text-weight-semibold is-uppercase">@p.QTY</div>
+            <div class="column is-2 has-text-weight-semibold is-uppercase">@p.Colour</div>
+            <div class="column is-2 has-text-weight-semibold is-uppercase">@p.Price</div>
+        </div>
+    }
+</div>
+<div class="field">
+    @*@if(Model.Order.Cin7Id)*@
+    <a class="primary button" style="background-color: #ee8534;" asp-route-id=@Model.Order.OrderNumber asp-controller="Shop" asp-action="PushToCin7">Upload To Cin7</a>
+    @*<button id="UploadCin7Button" class="primary button is-block">Upload To Cin7</button>*@
+</div>

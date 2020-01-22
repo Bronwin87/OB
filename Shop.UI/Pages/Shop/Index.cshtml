@@ -1,0 +1,158 @@
+﻿@page
+@model Shop.UI.Pages.Shop.IndexModel
+@{
+    ViewData["Title"] = "Online Shop";
+}
+<div class="container mb-1" id="rotatingbanner" v-cloak>
+    <carousel :autoplay="true" :autoplay-timeout="6000" :per-page="1" :pagination-enabled="false"
+              navigation-enabled :navigation-click-target-size="10" loop>
+        <slide>
+            <img src="/images/promo.jpg" alt="office-box-new-website" />
+        </slide>
+        @*<slide>
+            <img src="/images/banner1.jpg" alt="office-box-new-website" />
+        </slide>
+        <slide>
+            <a href="/PromotionBanner/Promotions" title="Promo Items">
+                <img src="/images/banner2.jpg" alt="branded-promotional-products" />
+            </a>
+        </slide>
+        <slide>
+            <a href="/FavouritesList" title="Favourites">
+                <img src="/images/banner3.jpg" alt="favourites-lists" />
+            </a>
+        </slide>*@
+    </carousel>
+</div>
+
+@*value added section*@
+<div class="container">
+    <nav class="level is-mobile  my-1" style="background-color:lightgray;padding-left:20px;padding-right:20px;font-weight:bold">
+        <div class="level-left"><h2 style="font-weight: bold;">Value Add Products</h2></div>
+        <div class="level-right"><a asp-page="/Shop/VAIndex" class="button is-radiusless secondary is-block" style="color:#ee8534;background:#fff;border-color:#ee8534;box-sizing:border-box;border-width:3px">View All Value Add</a></div>
+    </nav>
+</div>
+
+<div class="container">
+    <div class="columns tile is-ancestor my-1 is-multiline is-mobile" id="valueAddedItems">
+        @foreach (var p in Model.Products)
+        {
+            <partial name="Products/_ProductCard" model="p" />
+        }
+    </div>
+</div>
+
+<div class="container my-1 ">
+    <section class="cards">
+        <div class="columns">
+            <div class="column is-half">
+                <a class="is-paddingless" asp-page="/CategoryTiles" asp-route-category="main" asp-route-sortValue="AZ"
+                   asp-route-id="t7hn4VVSsS" asp-route-topname="Office Supplies">
+                    <figure class="image columnCard">
+                        <img src="/public/assets/images/tile-office-supplies.jpg" alt="office supplies">
+                    </figure>
+                </a>
+            </div>
+            <div class="column is-half">
+                <a class="is-paddingless" asp-page="/CategoryTiles" asp-route-category="main" asp-route-sortValue="AZ"
+                   asp-route-id="wQMi50cmyU" asp-route-topname="Electronic & Accessories">
+                    <figure class="image columnCard">
+                        <img src="/public/assets/images/tile-electronics.jpg" alt="electronics and accessories">
+                    </figure>
+                </a>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column is-half">
+                <a class="is-paddingless" asp-page="/CategoryTiles" asp-route-category="main" asp-route-sortValue="AZ"
+                   asp-route-id="gobLTfv1S4" asp-route-topname="School Stationery">
+                    <figure class="image columnCard">
+                        <img src="/public/assets/images/tile-school-stationery.jpg" alt="school stationery">
+                    </figure>
+                </a>
+            </div>
+            <div class="column is-half">
+                <a class="is-paddingless" asp-page="/CategoryTiles" asp-route-category="main" asp-route-sortValue="AZ"
+                   asp-route-id="m5dyoUcQJZ" asp-route-topname="Inks & Toners">
+                    <figure class="image columnCard">
+                        <img src="/public/assets/images/tile-inks-toners.jpg" alt="inks and toners">
+                    </figure>
+                </a>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column is-half">
+                <a class="is-paddingless" asp-page="/CategoryTiles" asp-route-category="main" asp-route-sortValue="AZ"
+                   asp-route-id="KC6HdFoE3x" asp-route-topname="Canteen & Janitorial">
+                    <figure class="image columnCard">
+                        <img src="/public/assets/images/tile-canteen.jpg" alt="canteen and janitorial">
+                    </figure>
+                </a>
+            </div>
+            <div class="column is-half">
+                <a class="is-paddingless" asp-page="/CategoryTiles" asp-route-category="sub" asp-route-sortValue="AZ"
+                   asp-route-id="7fPMzEZLMP" asp-route-topname="Office Furniture">
+                    <figure class="image columnCard">
+                        <img src="/public/assets/images/tile-office-furniture.jpg" alt="office furniture">
+                    </figure>
+                </a>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div class="container section">
+    <a href="https://www.officeboxpromotionalproducts.co.za/" target="_blank" title="Promo Items">
+        <img src="/images/promo-banner.jpg" class="promo-banner" alt="branded-promotional-products" />
+    </a>
+</div>
+
+<div class="container" id="myDiv">
+    <div class="field" style="padding:1rem;background-color:#F4F8F5;margin-bottom:0;">
+        <img src="@Url.Content("~/public/logo.png")" class="header-logo" style="max-width:70%;margin-left:0.25rem">
+    </div>
+    <div class="notification has-text-left has-text-weight-light" style="border-top: 0.5px solid rgb(170, 168, 168);border-radius:2px;">
+        <div class="is-orange is-size-6-mobile" style="font-weight:100;letter-spacing:0.2px;padding-bottom:0.75rem;">
+            Our Mobile Store will land very soon! Meanwhile, please visit again on any <span class="is-green">desktop device</span>
+        </div>
+
+        <div class="has-text-justified has-text-left has-text-weight-light">
+            Please send any queries to our
+            <a href="mailto:info@officebox.co.za" class="is-green">Info Center</a> <br />
+            Or contact us direct via:  <span class="has-text-weight-semibold">+27 87 285 5845</span>
+        </div>
+
+    </div>
+</div>
+@section scripts {
+    <script src="https://ssense.github.io/vue-carousel/js/vue-carousel.min.js"></script>
+
+    <script>
+        new Vue({
+            el: '#rotatingbanner',
+            components: {
+                'carousel': VueCarousel.Carousel,
+                'slide': VueCarousel.Slide
+            }
+        });
+    </script>
+
+    <script>
+    @{ var deviceType = Model.device?.Type.ToString();  }
+    $(document).ready(function () {
+     var test1 = '@deviceType';
+    if ((test1 == "Tablet") || (test1 == "Mobile"))
+    /*(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))*/
+    {
+
+            $('body > *').hide();
+            $('#myDiv').appendTo('body');
+        } else {
+            $('#myDiv').hide();
+        }
+    });
+
+    </script>
+
+
+}

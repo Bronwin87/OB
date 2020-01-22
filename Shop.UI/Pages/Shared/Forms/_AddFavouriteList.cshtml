@@ -1,0 +1,15 @@
+﻿@model Shop.UI.Pages.AddFavouriteListModel
+<form asp-page="/AddFavouriteList" asp-page-handler="Create" method="post">
+    @Html.HiddenFor(model => model.ProfileView)
+    <span class="help is-danger" asp-validation-for="ListName"></span>
+    <div class="field has-addons">
+        <div class="control">
+            <button type="submit" class="button primary" style="border: 1px solid #0bdd6f;">
+                <i class="fa fa-plus"></i>
+            </button>
+        </div>
+        <div class="control is-expanded">
+            <input class="input" asp-for="ListName" placeholder="Create List" type="text">
+        </div>
+    </div>
+</form>

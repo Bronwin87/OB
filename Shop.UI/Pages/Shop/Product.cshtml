@@ -1,0 +1,137 @@
+﻿@page "{Id}"
+@model Shop.UI.Pages.Shop.ProductModel
+@{
+    ViewData["Title"] = Model.Product.Name;
+}
+@section MetaTags {
+    <meta name="description" content="@(Model.Product.Name)" />
+    <meta name="keywords" content="@(Model.Product.Keywords)" />
+}
+
+<div class="container section">
+    <div class="columns is-multiline">
+        <div class="column is-full">
+            <nav class="breadcrumb" aria-label="breadcrumbs">
+                <ul>
+                    <li><a href="/Shop">Shop</a></li>
+                    <li>
+                        <a asp-page="/CategoryTiles" asp-route-category="main" asp-route-id="@Model.Product.MainCategoryId" asp-route-topName="@Model.Product.MainCategory" asp-route-sortValue="AZ">@Model.Product.MainCategory</a>
+                    </li>
+                    <li>
+                        <a asp-page="/CategoryTiles" asp-route-category="sub" asp-route-id="@Model.Product.SubCategoryId" asp-route-topName="@Model.Product.SubCategory" asp-route-sortValue="AZ">@Model.Product.SubCategory</a>
+                    </li>
+                    <li>
+                        <a asp-page="/CategoryTiles" asp-route-category="tri" asp-route-id="@Model.Product.TertiaryCategoryId" asp-route-topName="@Model.Product.TertiaryCategory" asp-route-sortValue="AZ">@Model.Product.TertiaryCategory</a>
+                    </li>
+                    <li class="is-active"><a href="#" aria-current="page">@Model.Product.Name</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <div class="columns">
+        <div class="column is-6 has-text-centered">
+            <img src="@Model.Product.ImageUrl" alt="@Model.Product.Name" style="object-fit: contain;" />
+        </div>
+        <div class="card column is-6">
+            <section class="content">
+                <p class="title is-primary">@Model.Product.Brand</p>
+                <p class="subtitle">@Model.Product.Name</p>
+                <p class="Code" style="color: #8d8d8d;font-size: 18px;font-weight: 300;margin-bottom: 0px;">Code:<span style="font-weight:bold">&nbsp;@Model.Product.ExternalId</span></p>
+                <p class="UOM" style="color: #8d8d8d;font-size: 18px;font-weight: 300;margin-bottom: 0px;">UOM:<span style="font-weight:bold">&nbsp;@Model.Product.Unit</span></p>
+                <p class="Colour" style="color: #8d8d8d; font-size: 18px;font-weight: 300;margin-bottom: 0px;">Colour:<span style="font-weight:bold">&nbsp;@Model.Product.Colour</span></p>
+                <p class="price" style="color: #ec8534;font-size: 50px;font-weight: 600;margin-bottom: 0px;">
+                    R @Model.Product.Value <span style="color: #8d8d8d; font-size: 18px; font-weight: 300; margin-bottom: 0px;">Excl. VAT</span>
+                    @if (Model.Product.ValueAdded)
+                    {
+                        <img src="/public/valueAdd_box.png" class="image is-24x24 is-pulled-right" />
+                    }
+                </p>
+                @*<p class="Colour" style="color: #8d8d8d; font-size: 18px;font-weight: 300;margin-bottom: 0px;">VA:<span style="font-weight:bold">&nbsp;@Model.Product.ValueAdded</span></p>*@
+            </section>
+
+            <footer class="is-marginless">
+                <form method="post"
+                      class="column is-marginless is-paddingless is-4"
+                      data-ajax="true"
+                      data-ajax-method="post"
+                      data-ajax-url="@Url.Action("AddToCart", "Shop")"
+                      data-ajax-update="#live-cart"
+                      data-ajax-begin="onAddToCartBegin('@Model.Product.Id')"
+                      data-ajax-complete="onAddToCartComplete('@Model.Product.Id')">
+                    <input type="hidden" class="product-id" name="Input.ProductId" value="@Model.Product.Id" />
+                    <div class="field">
+                        @if (Model.Product.outOfStock)
+                        {
+                            <button type="submit" id="@Model.Product.Id" style="width: 100%;" class="is-success button is-block" disabled>Out Of Stock</button>
+                            @*<a class="button is-success" title="Disabled button" disabled>Disabled</a>*@
+                        }
+                        else
+                        {
+                            <button type="submit" id="AddToCart_@Model.Product.Id" style="width: 100%;" class="secondary button is-block">Add to Cart</button>
+                        }
+                    </div>
+
+                    <div class="field">
+                        <div class="columns">
+                            <div class="column is-3">
+                                <div class="dropdown" tabindex="-1" id="product-dropdown-@Model.Product.Id">
+
+                                    <div class="dropdown-trigger" v-on:click="">
+                                        <button type="button" class="button is-paddingless is-text" onclick="openUserFavList('@Model.Product.Id')" aria-haspopup="true" aria-controls="product-dropdown-menu-@Model.Product.Id">
+                                            <img src="~/public/like-unselected-icon.png" />
+                                        </button>
+                                    </div>
+
+                                    <div class="dropdown-menu" id="product-dropdown-menu-@Model.Product.Id" role="menu">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column is-3">
+                                <button type="button" style="width: 30px;height: 30px;" class="button is-paddingless is-text"
+                                        onclick="openProductModal('@Model.Product.Id')">
+                                    <img src="~/public/broken-replaced.png" />
+                                </button>
+                            </div>
+                            <div class="column is-1"></div>
+                            <div class="column">
+                                <div class="input-group spinner">
+                                    <input class="input small form-control product-qty" type="number" min="1" name="Input.Qty" value="1" />
+                                    <div class="input-group-btn-vertical">
+                                        <button class="btn btn-default" type="button"><i class="fa fa-caret-up"></i></button>
+                                        <button class="btn btn-default" type="button"><i class="fa fa-caret-down"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </footer>
+        </div>
+    </div>
+</div>
+
+@if (Model.RelatedProducts.Count() > 0)
+{
+    <div class="container section">
+        <section class="hero is-success">
+            <div class="hero-body">
+                <div class="container">
+                    <h1 class="subtitle">
+                        Alternative Products
+                    </h1>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="container">
+        <div class="columns tile is-ancestor my-1 is-multiline is-mobile" id="valueAddedItems">
+            @foreach (var p in Model.RelatedProducts)
+            {
+                <partial name="Products/_ProductCard" model="p" />
+            }
+        </div>
+    </div>}
+

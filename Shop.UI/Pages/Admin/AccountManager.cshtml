@@ -1,0 +1,50 @@
+﻿@page
+@model Shop.UI.Pages.Admin.AccountManagerModel
+@{}
+
+<link type="text/css" rel="stylesheet" href="~/lib/DataTables/css/jquery.dataTables.min.css" />
+
+<style type="text/css">
+    #DataTable_processing {
+        background-color: #23d160;
+        z-index: 100;
+        height: 65px;
+    }
+</style>
+
+<table id="DataTable" class="display" style="width:100%" data-request-url="@Url.Action("GetData", "DataTable", new { dataSource = "Accounts" })">
+    <thead>
+        <tr>
+            <th data-name="Id" data-data="id">Id</th>
+            <th data-name="CompanyName" data-data="companyName">Company</th>
+            <th data-name="RegistrationNumber" data-data="registrationNumber">Registration #</th>
+            <th data-name="VatNumber" data-data="vatNumber">Vat #</th>
+            <th data-name="PhoneNumber" data-data="phoneNumber">Phone</th>
+            <th data-name="Email" data-data="email">Email</th>
+            <th data-orderable="false" data-name="Address" data-data="address">Address</th>
+            <th data-searchable="false" data-name="Limit" data-data="limit">Limit</th>
+            <th data-searchable="false" data-orderable="false" data-name="Action" data-data="action">30 Day Approved</th>
+            <th data-searchable="false" data-orderable="false" data-name="AccountLink" data-data="accountLink">View Account</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th data-name="Id" data-data="id">Id</th>
+            <th data-name="CompanyName" data-data="companyName">Company</th>
+            <th data-name="RegistrationNumber" data-data="registrationNumber">Registration #</th>
+            <th data-name="VatNumber" data-data="vatNumber">Vat #</th>
+            <th data-name="PhoneNumber" data-data="phoneNumber">Phone</th>
+            <th data-name="Email" data-data="email">Email</th>
+            <th data-orderable="false" data-name="Address" data-data="address">Address</th>
+            <th data-searchable="false" data-name="Limit" data-data="limit">Limit</th>
+            <th data-searchable="false" data-orderable="false" data-name="Action" data-data="action">30 Day Approved</th>
+            <th data-searchable="false" data-orderable="false" data-name="AccountLink" data-data="accountLink">View Account</th>
+        </tr>
+    </tfoot>
+</table>
+
+@section scripts {
+    <script src="/public/assets/js/jquery-3.1.0.min.js"></script>
+    <script type="text/javascript" src="~/lib/DataTables/js/jquery.dataTables.min.js"></script>
+    <script src="~/js/admin/dataTableInit.js"></script>
+}

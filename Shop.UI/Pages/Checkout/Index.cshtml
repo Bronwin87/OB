@@ -1,0 +1,249 @@
+﻿@page
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model Shop.UI.Pages.Checkout.IndexModel
+@{
+    ViewData["Title"] = "Cart";
+}
+<style>
+    .my-1 {
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .buttons .button {
+        flex-grow: 1;
+    }
+</style>
+
+<div id="app" class="container">
+    <h1 class="title my-1 primary--text">Checkout</h1>
+
+    @if (Model.Cart.Count() > 0)
+    {
+        <div class="columns my-1">
+            <div class="column is-3"><a class="button is-primary is-block is-bg-green">1. Cart</a></div>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="column is-3"><a class="button is-primary is-block is-bg-green" disabled>2. Customer Details</a></div>
+            }
+            else
+            {
+                <div class="column is-3">
+                    <div class="button is-primary is-block is-bg-green">
+                        <span class="primary has-text-grey-light" disabled>Sign In&nbsp;|&nbsp;</span>
+                        <span class="primary has-text-grey-light" disabled>Register</span>
+                    </div>
+                </div>
+            }
+            <div class="column is-3"><a class="button is-primary is-block is-bg-green" disabled>3. Payment</a></div>
+            <div class="column is-3"><a class="button is-primary is-block is-bg-green" disabled>4. Confirmation</a></div>
+        </div>
+
+        <div class="columns">
+            <div class="column is-9">
+                <table class="table is-fullwidth">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th class="has-text-weight-semibold">Product</th>
+                            <th class="has-text-weight-semibold">Code</th>
+                            <th class="has-text-weight-semibold">Unit Measure</th>
+                            <th class="has-text-weight-semibold">Unit Price</th>
+                            <th class="has-text-weight-semibold">QTY</th>
+                            <th class="has-text-weight-semibold">Total Price</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cart-items">
+                        <partial name="Cart/_CartItems" model="Model.Cart" />
+                    </tbody>
+                </table>
+                @*</div>*@
+
+                <a @@click="delete_modal = true" class="button is-radiusless secondary has-text-white is-uppercase has-text-weight-semibold">
+                    Clear Cart
+                </a>
+            </div>
+
+            <div class="column is-3">
+                <div class="has-background-grey-lighter side-content" style="position: sticky; top: 0;">
+                    <partial name="Cart/_CartSummary" model="Model.Cart" />
+                    <div class="field">
+                        <a class="button is-radiusless secondary is-block has-text-white is-uppercase has-text-weight-semibold is-size-6" asp-page="/Checkout/CustomerDetails">Proceed To Checkout</a>
+                    </div>
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        if (User.Claims.FirstOrDefault(x => x.Type == "type")?.Value != "user")
+                        {
+                            <div class="field">
+                                <a class="button is-radiusless primary is-block has-text-white is-uppercase has-text-weight-semibold is-size-6" id="ExportToPdfButton" target="_blank" asp-controller="PDF" asp-action="CartDownloadAsPDfAsync">Print PDF</a>
+                            </div>
+                            <div class="field">
+                                <a @@click="emailModal = true" class="button is-radiusless primary is-block has-text-white is-uppercase has-text-weight-semibold is-size-6">Email PDF</a>
+                            </div>
+                            if (User.Identity.IsAuthenticated)
+                            {
+                                <div class="field">
+                                    <a class="button is-radiusless secondary is-block is-uppercase has-text-white has-text-weight-semibold" onclick="requestPayment()">Create Quote</a>
+                                </div>
+                            }
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="payer-modal">
+            <div class="modal-background"></div>
+            <button type="button" class="modal-close is-large" aria-label="close" onclick="closeRequestPayment()"></button>
+            <form asp-controller="Quotes" asp-action="Create" method="post">
+                <div class="modal-content">
+                    <div class="card">
+
+                        <header class="card-header">
+                            <p class="card-header-title">
+                                Create Quote
+                            </p>
+                        </header>
+                        <div class="card-content">
+                            <div class="field">
+                                <label class="label">Quote Name</label>
+                                <div class="control">
+                                    <input class="input is-success" name="request.QuoteName" />
+                                </div>
+                            </div>
+                        </div>
+                        <footer class="card-footer has-text-centered">
+                            <div class="column">
+                                <button type="submit" class="button secondary">Submit</button>
+                            </div>
+                        </footer>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="modal" :class="{'is-active': emailModal}">
+            <div class="modal-background" @@click="emailModal = false"></div>
+            <div class="modal-content has-background-white-ter">
+                <div class="section">
+                    <div class="field">
+                        <label class="label">Email Pdf</label>
+                        <div class="control">
+                            <input class="input" type="email" v-model="form.email" placeholder="Enter recipient email" />
+                        </div>
+                        <br />
+                        <div class="control">
+                            <textarea class="textarea" v-model="form.message" placeholder="Message"></textarea>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <button class="button secondary" @@click="emailCartPdf">Send</button>
+                    </div>
+                </div>
+            </div>
+            <button class="modal-close is-large" aria-label="close" @@click="emailModal = false"></button>
+        </div>
+
+        <div class="modal" :class="{'is-active': delete_modal}">
+            <div class="modal-background" @@click="delete_modal = false"></div>
+            <div class="modal-content has-background-white-ter">
+                <div class="section">
+                    <div class="field">
+                        <label class="label">Clear Cart?</label>
+                    </div>
+                    <div class="field">
+                        Are you sure you want to clear your cart?
+                    </div>
+                    <div class="field">
+                        <button type="button" class="button primary" @@click="clearCart" style="color: #ffffff;">DELETE</button>
+                        <button type="button" class="button secondary" @@click="delete_modal = false">CANCEL</button>
+                    </div>
+                </div>
+            </div>
+            <button class="modal-close is-large" aria-label="close" @@click="delete_modal = false"></button>
+        </div>
+    }
+    else
+    {
+        <section class="hero is-bold">
+            <div class="hero-body" style="margin:0px">
+                <div class="container has-text-centered">
+                    <p class="title">You don't have any products</p>
+                    <a class="button secondary" asp-page="/Shop/Index">Resume Shopping</a>
+                </div>
+            </div>
+        </section>
+    }
+</div>
+
+@section scripts {
+
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    @* TODO: Rename "requestPayment" *@
+    <script>
+        var requestPayment = function () {
+            document.getElementById('payer-modal').classList.add('is-active')
+        }
+
+        var closeRequestPayment = function () {
+            document.getElementById('payer-modal').classList.remove('is-active')
+        }
+
+        var updateCartTimeout = null;
+
+        var updateCart = function (e, productId) {
+            var qty = e.target.value;
+
+            if (updateCartTimeout !== null)
+                clearTimeout(updateCartTimeout)
+
+            $(".qty-input").prop("disabled", true)
+                .prop("readonly", true);
+
+            updateCartTimeout = setTimeout(function () {
+
+                axios.post('/Shop/UpdateCart', {
+                    productId,
+                    qty
+                }).then(res => {
+                    $('#cart-items').html(res.data.cartItems)
+                    $('#cart-summary').replaceWith(res.data.cartSummary);
+                    $("#live-cart").html(res.data.cartPartial);
+                });
+            }, 300);
+        }
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                emailModal: false,
+                delete_modal: false,
+                form: {
+                    email: ""
+                }
+            },
+            methods: {
+                emailCartPdf() {
+                    axios.post('/pdf/EmailCartPdf?email=' + this.form.email + "&message=" + this.form.message, null)
+                        .then(res => {
+                            alert("Great stuff, email sent.");
+                        })
+                        .catch(err => {
+                            alert(err);
+                        })
+                        .then(() => {
+                            this.emailModal = false;
+                        })
+                },
+                ShowClearModal() {
+                    this.delete_modal = true;
+                },
+                clearCart() {
+                    window.location = "@Url.Action("ClearCart", "Shop")";
+                }
+            }
+        })
+    </script>
+
+}

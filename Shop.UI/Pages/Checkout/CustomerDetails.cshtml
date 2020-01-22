@@ -1,0 +1,268 @@
+﻿@page
+@model Shop.UI.Pages.Checkout.CustomerDetailsModel
+
+<style>
+    .my-1 {
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .buttons .button {
+        flex-grow: 1;
+    }
+
+    .hero-body {
+        padding: 40px !important;
+    }
+
+    .vl {
+        border-left: 2px solid #e0e0e0;
+        height: inherit;
+        width: 0% !important;
+    }
+
+    .marit {
+        margin: 10px !important;
+        margin-top: 20px !important;
+    }
+
+    column .is-1 {
+        width: 0% !important;
+    }
+</style>
+<div class="container" id="app">
+
+    @Html.ValidationSummary(false)
+
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <div class="columns" style="position:center">
+            <div class="column is-3"><a class="button is-primary is-block is-bg-green" asp-page="/Checkout/Index">1. Cart</a></div>
+            <div class="column is-2">
+                <div class="button is-primary is-block is-bg-green">
+                    <span class="" :class="{'primary':step === 0}" @@click="step = 0">Sign In</span>
+                    @*<span class="" :class="{'primary':step === 1}" @@click="step = 1">Register</span>*@
+                </div>
+            </div>
+            <div class="column is-2">
+                <div class="button is-primary is-block is-bg-green">
+                    @*<span class="" :class="{'primary':step === 0}" @@click="step = 0">Sign In</span>&nbsp;-&nbsp;*@
+                    <span class="" :class="{'primary':step === 1}" @@click="step = 1">Register</span>
+                </div>
+            </div>
+            <div class="column is-3"><a class="button is-primary is-block is-bg-green" disabled>3. Payment</a></div>
+            <div class="column is-2"><a class="button is-primary is-block is-bg-green" disabled>4. Confirmation</a></div>
+        </div>
+
+        <h1 class="title my-1 primary--text">Checkout</h1>
+        <h3 class="subtitle-text my-1 primary--text">
+            Please sign in to Complete the order process, <br />
+            If you do not have an account, Please click  here to register or the button above and follow the steps to create an account.
+        </h3>
+
+        <div v-if="step === 0">
+            <partial name="_GuestSignIn" model="@new Shop.UI.Pages.Accounts.LoginViewModel()" />
+        </div>
+        <div v-else-if="step === 1">
+            <partial name="_GuestRegister" />
+        </div>
+    }
+    else
+    {
+        <div class="columns marit my-1">
+            <div class="column is-3"><a class="button primary is-block is-radiusless" asp-page="/Checkout/Index">1. Cart</a></div>
+            <div class="column is-3"><a class="button primary is-block is-radiusless">2. Customer Details</a></div>
+            <div class="column is-3"><a class="button is-block is-radiusless" disabled>3. Payment</a></div>
+            <div class="column is-3"><a class="button is-block is-radiusless" disabled>4. Confirmation</a></div>
+        </div>
+
+        <h1 class="title my-1 primary--text">Checkout</h1>
+
+        @if (Model.IsBusiness)
+        {
+            <form class="column is-6 is-offset-3" asp-page-handler="Business" method="post">
+                @Html.HiddenFor(model => Model.Input.UserType)
+                @Html.HiddenFor(model => Model.Input.LocationId)
+                <div>
+                    @if (Model.IsBusiness)
+                    {
+                        <p class="title">Order Reference</p>
+                        <p class="subtitle">i.e. purchase order number or name, department etc.</p>
+                        <div class="field">
+                            <div class="control">
+                                <input class="input" asp-for="Input.OrderReference" />
+                            </div>
+                            <span class="help is-danger" asp-validation-for="Input.OrderReference"></span>
+                        </div>
+                    }
+                    <div class="field">
+                        <p class="subtitle">Delivery Address</p>
+                        <div class="control">
+                            <div class="select">
+                                <select asp-for="Input.AddressId" value="@Model.Locations.FirstOrDefault().AddressId" onchange="selectCostCenter(event)">
+                                    <option value="0">Select an address..</option>
+                                    @foreach (var l in Model.Locations)
+                                    {
+                                        <optgroup label="@l.Name">
+                                            <option value="@(l.Address.Id)" data-location-id="@l.Id">@l.Address.Address1 @l.Address.Address2, @l.Address.City, @l.Address.PostCode</option>
+                                        </optgroup>
+                                    }
+                                </select>
+                            </div>
+                            <span class="help is-danger" asp-validation-for="Input.AddressId"></span>
+                        </div>
+                        @if (Model.Locations.Any(l => l.Address?.Address1 == "Delivery Address To Be confirmed"))
+                        {
+                            <p>
+                                <span style="font-weight: bold; color: red;">It appears that one or more of your account locations does not have an address.</span>
+                                <br />
+                                To fix this please go to the locations screen for your profile <a asp-action="Locations" asp-controller="BusinessProfile">here</a>.
+                            </p>
+                        }
+                    </div>
+                    @foreach (var l in Model.Locations)
+                    {
+                        if (l.CostCenters.Any())
+                        {
+                            var hidden = "is-hidden";
+                            var disabled = "disabled";
+                            if (Model.Locations.FirstOrDefault().AddressId == l.AddressId)
+                            {
+                                hidden = "";
+                                disabled = "";
+                            }
+                            <div class="field @hidden cost-center" @disabled id="cost-center-@l.AddressId">
+                                <p class="subtitle">Cost Center</p>
+                                <div class="control">
+                                    <div class="select">
+                                        <select asp-for="Input.CostCenterId" value="@l.CostCenters.FirstOrDefault().Id">
+                                            @foreach (var c in l.CostCenters)
+                                            {
+                                                <option value="@c.Id">@c.Name</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    @*@if (Model.TypeOfUser == "authorizer" || (Model.TypeOfUser == "superuser"))
+                        {
+                            <button type="submit" class="button secondary">Complete Order</button>
+                        }
+                        else
+                        {
+                            if (Model.is30dayAccount)
+                            { <button type="submit" class="button secondary">Proceed To Payment</button>}
+                            else { <button type="submit" class="button secondary">Proceed To Payment</button>}
+                            <button type="submit" class="button secondary">Proceed To Payment</button>
+                        }*@
+
+                    @if (Model.is30dayAccount)
+                    {
+                        <button type="submit" class="button secondary">Complete Order</button>
+                    }
+                    else
+                    {
+                        @*if (Model.is30dayAccount)
+                            { <button type="submit" class="button secondary">Proceed To Payment</button>}
+                            else
+                            { <button type="submit" class="button secondary">Proceed To Payment</button>}*@
+                        <button type="submit" class="button secondary">Proceed To Payment</button>
+                    }
+
+
+                </div>
+            </form>
+        }
+        else
+        {
+            <form class="column is-6 is-offset-3" asp-page-handler="User" method="post">
+                <div class="field">
+                    <label class="label">Address 1</label>
+                    <div class="control">
+                        <input class="input" asp-for="AddressInput.Address1" />
+                    </div>
+                    <span class="help is-danger" asp-validation-for="AddressInput.Address1"></span>
+                </div>
+                <div class="field">
+                    <label class="label">Address 2</label>
+                    <div class="control">
+                        <input class="input" asp-for="AddressInput.Address2" />
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">City</label>
+                    <div class="control">
+                        <input class="input" asp-for="AddressInput.City" />
+                    </div>
+                    <span class="help is-danger" asp-validation-for="AddressInput.City"></span>
+                </div>
+                <div class="field">
+                    <label class="label">Post Code</label>
+                    <div class="control">
+                        <input class="input" asp-for="AddressInput.PostCode" />
+                    </div>
+                    <span class="help is-danger" asp-validation-for="AddressInput.PostCode"></span>
+                </div>
+                <div class="field">
+                    <label class="label">Phone Number</label>
+                    <div class="control">
+                        <input class="input" asp-for="AddressInput.PhoneNumber" />
+                    </div>
+                    <span class="help is-danger" asp-validation-for="AddressInput.PhoneNumber"></span>
+                </div>
+                @if (Model.TypeOfUser == "authorizer" || (Model.TypeOfUser == "superuser"))
+                {
+                    <button type="submit" class="button secondary">Complete Order</button>
+                }
+                else
+                {<button type="submit" class="button secondary">Proceed To Payment</button>}
+            </form>
+        }
+    }
+</div>
+
+@if (!User.Identity.IsAuthenticated)
+{
+    <div class="container">
+        <section class="hero is-medium is-bold" style="background:#f4f9f5">
+            <div class="hero-body" style="margin:0px">
+                <div class="main-header has-text-centered" style="align-self:center">
+                    <p style="font-weight:150;" class="title ">Have an account? <span style="color:#0bdd6f;font-weight:bold">SIGN IN</span> now.</p>
+                    <p>Glad to have you back.</p>
+                    <a style="background:#ee8534;color:#fff;margin-top:20px" class="button is-warning" asp-controller="Accounts" asp-action="BusinessRegister">SIGN IN </a>
+                </div>
+            </div>
+        </section>
+    </div>
+}
+
+@section scripts {
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                step: 0,
+            },
+        })
+        var selectCostCenter = function (e) {
+
+            var locationId = $(e.target).find("option:selected").data("location-id");
+            $("#Input_LocationId").val(locationId);
+            var id = e.target.value;
+
+            var costCenters = document.querySelectorAll('.cost-center');
+            if (costCenters) {
+                costCenters.forEach(function (el) {
+                    el.classList.add('is-hidden')
+
+                    el.getElementsByTagName("select")[0].setAttribute("disabled", "");
+                });
+                var costCenter = document.getElementById('cost-center-' + id);
+                costCenter.classList.remove('is-hidden')
+                costCenter.getElementsByTagName("select")[0].removeAttribute("disabled");
+            }
+        }
+    </script>
+}

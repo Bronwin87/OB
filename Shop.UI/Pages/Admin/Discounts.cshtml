@@ -1,0 +1,57 @@
+﻿@page
+@model Shop.UI.Pages.Admin.DiscountsModel
+@{
+}
+
+
+<div>
+
+    <form method="post">
+        <div class="field">
+            <label class="label">Account</label>
+            <div class="control">
+                <div class="select">
+                    <select asp-for="Input.AccountId">
+                        @foreach (var acc in Model.Accounts)
+                        {
+                            <option value="@acc.Id">@acc.CompanyName</option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Product</label>
+            <div class="control">
+                <div class="select">
+                    <select asp-for="Input.ProductId">
+                        @foreach (var p in Model.Products)
+                        {
+                            <option value="@p.Id">@p.Name</option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Discount Type</label>
+            <div class="control">
+                <div class="select">
+                    <select asp-for="Input.DiscountType">
+                        <option value="0">Percent</option>
+                        <option value="1">Amount</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Percent / Amount</label>
+            <div class="control">
+                <input class="input" asp-for="Input.Amount" />
+            </div>
+        </div>
+        <div class="field">
+            <button type="submit" class="button is-success">Add Discount</button>
+        </div>
+    </form>
+</div>

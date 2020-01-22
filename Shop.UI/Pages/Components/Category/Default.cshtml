@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Shop.Domain.Models.Products.MainCategory>
+
+<style>
+    .sub-cat {
+        /*z-index: 100;*/
+    }
+
+    .tri-cat {
+        position: absolute;
+        right: 0;
+        top: 0;
+        transform: translateX(100%);
+        padding: 10px;
+        z-index: 9999;
+    }
+</style>
+<div class="navbar navbar-menu-categories">
+    <div class="container navbar-menu">
+        <div class="navbar-start">
+            @if (Model != null) { Model.OrderBy(x => x.Order); }
+
+            @foreach (var main in Model.OrderBy(x => x.Order))
+            {
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a asp-page="/categorytiles" asp-route-category="main" asp-route-id="@main.Id" asp-route-topname="@main.Name" asp-route-sortvalue="AZ"class="navbar-link">@main.Name</a>
+
+                    <div class="navbar-dropdown">
+                        @if (main.SubCategories != null) { main.SubCategories.OrderBy(x => x.Name); }
+                        @foreach (var sub in main.SubCategories.OrderBy(x => x.Name))
+                        {
+                            @if (sub.TertiaryCategories.Count > 0)
+                            {
+                                sub.TertiaryCategories.OrderBy(x => x.Name);
+                                <div class="nested navbar-item dropdown">
+                                    <div class="dropdown-trigger">
+                                        <a asp-page="/categorytiles" asp-route-category="sub" asp-route-id="@sub.Id" asp-route-topname="@sub.Name"asp-route-sortvalue="AZ">
+                                            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                                                <span>@sub.Name</span>
+                                                <span class="icon is-small">
+                                                    <i class="fa fa-angle-right"></i>
+                                                </span>
+                                            </button>
+                                        </a>
+                                    </div>
+                                    <div class="dropdown-menu" id="dropdown-menu" role="menu">
+
+                                        @foreach (var tri in sub.TertiaryCategories.OrderBy(x => x.Name))
+                                        {
+                                            <div class="dropdown-content">
+                                                <a asp-page="/categorytiles" asp-route-category="tri" asp-route-id="@tri.Id" asp-route-topname="@tri.Name" asp-route-sortvalue="AZ"class="dropdown-item">@tri.Name</a>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <a class="navbar-item" style="font-size: 14px; color: #363636;" asp-page="/categorytiles" asp-route-category="sub" asp-route-id="@sub.Id" asp-route-topname="@sub.Name"asp-route-sortvalue="AZ">
+                                    @sub.Name
+                                </a>
+                            }
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

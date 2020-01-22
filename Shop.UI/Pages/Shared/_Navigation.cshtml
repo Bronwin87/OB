@@ -1,0 +1,40 @@
+@model IEnumerable<Shop.Domain.Models.Products.MainCategory>
+<div class="container navbar-menu">
+    <div class="navbar-start">
+        @foreach (var main in Model)
+        {
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">@main.Name</a>
+
+                <div class="navbar-dropdown">
+                    @foreach (var sub in main.SubCategories)
+                    {
+                        @if (sub.TertiaryCategories.Count > 0)
+                        {
+                            <div class="nested navbar-item dropdown">
+                                <div class="dropdown-trigger">
+                                    <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                                        <span>@sub.Name</span>
+                                        <span class="icon is-small">
+                                            <i class="fa fa-angle-right"></i>
+                                        </span>
+                                    </button>
+                                </div>
+                                    <div class="dropdown-menu"  role="menu">
+                                    @foreach (var tri in sub.TertiaryCategories)
+                                    {
+                                        <div>
+                                            <a href="#" class="dropdown-item">@tri.Name</a>
+                                        </div>
+                                    }
+                                    </div>
+                            </div>
+                        } else {
+                            <a class="dropdown-item is-primary-link">@sub.Name</a>
+                        }
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>

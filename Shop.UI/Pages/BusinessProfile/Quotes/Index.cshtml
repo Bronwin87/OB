@@ -1,0 +1,58 @@
+﻿@page
+@model Shop.UI.Pages.BusinessProfile.Quotes.IndexModel
+<style type="text/css">
+
+    #QuotesList * {
+        font-size: 13px;
+    }
+
+    #QuotesList .column {
+        padding: 0.75rem 0.3rem;
+    }
+
+        #QuotesList .column .columns {
+            margin-left: -0.3rem;
+            margin-right: -0.3rem;
+        }
+
+            #QuotesList .column .columns.is-1 .column {
+                padding: .25rem !important;
+                display: flex;
+                align-items: center;
+            }
+
+    #QuotesList .columns:not(:last-child) {
+        margin-bottom: 1rem;
+    }
+
+    .quote-line-heading {
+        background-color: #dbdbdb;
+    }
+
+    .quote-line {
+        background-color: #efeeec;
+    }
+</style>
+
+<p class="title secondary--text">Quotes</p>
+<div class="column is-12" id="QuotesList">
+    <div class="columns is-1 quote-line-heading">
+        <div class="column is-1"></div>
+        <div class="column is-3">CREATED DATE</div>
+        <div class="column is-4">QUOTE NAME</div>
+        <div class="column is-3">QUOTE TOTAL</div>
+        <div class="column is-1"></div>
+    </div>
+    @foreach (var item in Model.AllQuotes)
+    {
+        <div class="columns is-1 quote-line">
+            <div class="column is-1"></div>
+            <div class="column is-3">@item.DateCreated</div>
+            <div class="column is-4">@item.Name</div>
+            <div class="column is-3">R @item.Total</div>
+            <div class="column is-1">
+                <a class="button secondary" asp-page="/BusinessProfile/Quotes/Detail" asp-route-id="@item.Id">VIEW</a>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,1 @@
+﻿{"ContextClassName":"ApplicationDbContext","DefaultDacpacSchema":null,"IdReplace":false,"IncludeConnectionString":false,"OutputPath":null,"ProjectRootNamespace":"Shop.Domain","SelectedToBeGenerated":2,"Tables":[{"HasPrimaryKey":true,"Name":"dbo.CostCenterAuth"}],"UseDatabaseNames":true,"UseFluentApiOnly":false,"UseHandleBars":true,"UseInflector":false}
